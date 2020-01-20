@@ -1,0 +1,18 @@
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:9000/eureka/
+
+server:
+  port: 9001
+
+spring:
+  application:
+    name: iedu-base-zuul
+
+zuul:
+  routes:
+    api-test:
+      path: /api-test/**
+      serviceId: iedu-test
+
