@@ -4,15 +4,34 @@ eureka:
       defaultZone: http://localhost:9000/eureka/
 
 server:
-  port: 9001
+  port: 8080
 
 spring:
   application:
     name: iedu-base-zuul
+  datasource:
+    url: jdbc:mysql://localhost:3306/iedu?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
+    username: root
+    password:
+    driver-class-name: com.mysql.jdbc.Driver
+    jpa:
+      database: MySQL
+      database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+      show-sql: true
+      hibernate:
+        ddl-auto: update
 
 zuul:
   routes:
     api-test:
-      path: /api-test/**
+      path: /test/**
       serviceId: iedu-test
+
+    api-web:
+      path: /web/**
+      serviceId: iedu-front-web
+
+    api-sso:
+      path: /sso/**
+      serviceId: iedu-user-sso
 

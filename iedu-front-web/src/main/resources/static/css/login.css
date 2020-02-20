@@ -1,0 +1,138 @@
+body{
+    background-color: lightgray;
+    background-size: 100%,100%;
+    /*禁止选中页面内容*/
+    moz-user-select: -moz-none;
+    -moz-user-select: none;
+    -o-user-select:none;
+    -khtml-user-select:none;
+    -webkit-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
+}
+
+#container{
+    position: absolute;
+    transform: translate(-50%,-50%);
+    top: 50%;
+    left: 50%;
+    width: 380px;
+    height: 500px;
+    border: 1px solid dodgerblue;
+    border-radius: 20px;
+    background-color: #FAFAFA;
+}
+#title{
+    position: absolute;
+    transform: translate(-50%,-50%);
+    top: 12%;
+    left: 50%;
+    color: dodgerblue;
+    font-size: 30px;
+}
+#switcher{
+    position: absolute;
+    display: block;
+    transform: translate(-50%,-50%);
+    top: 25%;
+    left: 50%;
+    width: 240px;
+    border: 1px solid gray;
+
+}
+#switchLogin{
+    display: inline;
+    float: left;
+    width: 120px;
+    height: 30px;
+    color: white;
+    background-color: dodgerblue;
+    text-align: center;
+    line-height: 30px;
+    cursor: pointer;
+}
+#switchRegister{
+    display: inline;
+    float: right;
+    width: 120px;
+    height: 30px;
+    color: black;
+    background-color: white;
+    text-align: center;
+    line-height: 30px;
+    cursor: pointer;
+}
+#paneLogin{
+    display: block;
+}
+#paneRegister{
+    display: none;
+}
+.inputUserInfo{
+    position: absolute;
+    display: block;
+    transform: translate(-50%,-50%);
+    left: 50%;
+    width: 80%;
+    height: 30px;
+}
+#inputUsername{
+    top: 42%;
+}
+#inputPassword{
+    top: 54%;
+}
+#remCheckbox{
+    position: absolute;
+    top:60%;
+    left: 10%;
+}
+#remText{
+    position: absolute;
+    color:#88F;
+    font-size:12px;
+    top:60%;
+    left: 15%;
+}
+#forgotPassword{
+    position: absolute;
+    text-decoration:none;
+    color:#88F;
+    font-size:12px;
+    top:60%;
+    left: 75%;
+}
+#buttonLogin{
+    top: 70%;
+    width: 81.5%;
+    height: 40px;
+    border: 1px solid #FFF;
+    color: white;
+    background-color: dodgerblue;
+    cursor: pointer;
+}
+#regUsername{
+    top: 42%;
+}
+#regPassword{
+    top: 54%;
+}
+#regPassword2{
+    top: 66%;
+}
+#buttonRegister{
+    top: 79%;
+    width: 81.5%;
+    height: 40px;
+    border: 1px solid #FFF;
+    color: white;
+    background-color: #1A1;
+}
+#privateAgreement{
+    position: absolute;
+    transform: translate(-50%,0);
+    color:#77F;
+    font-size:12px;
+    top:85%;
+    left: 50%;
+}

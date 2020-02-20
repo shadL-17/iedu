@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>用户登录</title>
+    <link rel="stylesheet" type="text/css" th:href="@{~/css/login.css}" />
+    <script type="text/javascript" th:src="@{~/js/login.js}"></script>
+</head>
+
+<body>
+
+    <div id="container">
+
+        <div id="title"><b>你好，来访者</b></div>
+
+        <div id="switcher">
+            <div id="switchLogin" onclick="switchLogin()">登录</div>
+            <div id="switchRegister" onclick="switchRegister()">注册</div>
+        </div>
+
+        <div id="paneLogin">
+            <form action="http://localhost:8080/sso/login" method="post">
+                <input class="inputUserInfo" id="inputUsername" type="text" name="username" placeholder="请输入用户名">
+                <input class="inputUserInfo" id="inputPassword" type="password" name="password" placeholder="请输入密码">
+                <input class="inputUserInfo" id="buttonLogin" type="submit" value="安全登录">
+                <input id="remCheckbox" name="remember" type="checkbox">
+                <label id="remText">记住我</label>
+            </form>
+            <a id="forgotPassword" href="">忘记密码</a>
+        </div>
+
+        <div id="paneRegister">
+            <form action="" method="post">
+                <input class="inputUserInfo" id="regUsername" type="text" name="username" placeholder="请输入用户名">
+                <input class="inputUserInfo" id="regPassword" type="password" name="password" placeholder="请输入密码">
+                <input class="inputUserInfo" id="regPassword2" type="password" name="password2" placeholder="再次确认密码">
+                <input class="inputUserInfo" id="buttonRegister" type="submit" value="注册账户">
+                <a id="privateAgreement" href="">用户隐私协议</a>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>
