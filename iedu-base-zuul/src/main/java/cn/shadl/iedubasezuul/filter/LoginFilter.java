@@ -1,6 +1,5 @@
 package cn.shadl.iedubasezuul.filter;
 
-import cn.shadl.ieducommonbeans.domain.User;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
