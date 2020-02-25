@@ -23,6 +23,11 @@
                 <input class="inputUserInfo" id="inputUsername" type="text" name="username" placeholder="请输入用户名">
                 <input class="inputUserInfo" id="inputPassword" type="password" name="password" placeholder="请输入密码">
                 <input class="inputUserInfo" id="buttonLogin" type="submit" value="安全登录">
+                <div th:if="${#httpServletRequest.getCookies()}!=null">
+                    <div th:each="cookie : ${#httpServletRequest.getCookies()}">
+                        <p class="inputUserInfo" id="loginMsg" th:if="${cookie.getName().equals('msg')}" th:text="${cookie.getValue()}"></p>
+                    </div>
+                </div>
                 <input id="remCheckbox" name="remember" type="checkbox">
                 <label id="remText">记住我</label>
             </form>

@@ -13,7 +13,7 @@ spring:
     url: jdbc:mysql://localhost:3306/iedu?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
     username: root
     password:
-    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
     jpa:
       database: MySQL
       database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
@@ -23,15 +23,11 @@ spring:
 
 zuul:
   routes:
-    api-test:
-      path: /test/**
-      serviceId: iedu-test
-
-    api-web:
-      path: /web/**
-      serviceId: iedu-front-web
-
     api-sso:
       path: /sso/**
       serviceId: iedu-user-sso
+  sensitive-headers:
+  host:
+    connect-timeout-millis: 100000
+    socket-timeout-millis: 100000
 

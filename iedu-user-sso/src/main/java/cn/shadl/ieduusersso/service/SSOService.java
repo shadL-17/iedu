@@ -3,18 +3,21 @@ package cn.shadl.ieduusersso.service;
 import cn.shadl.ieducommonbeans.domain.User;
 import cn.shadl.ieduusersso.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import java.util.List;
+
+@Service
 public class SSOService {
 
     @Autowired
     private UserRepository userRepository;
 
-    public String getAccessToken() {
-        return null;
+    public List<User> findByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 
-    public User login(String username, String password) {
-        //return userRepository.findByUserNameAndPassword().get(0);
-        return null;
+    public List<User> findByUsernameAndPassword(String username, String password) {
+        return userRepository.findByUsernameAndPassword(username, password);
     }
 }

@@ -4,7 +4,21 @@
     <meta charset="UTF-8">
     <title>Index Page</title>
 </head>
-<body>
+<body th:with="user=${#httpServletRequest.setAttribute('user',null)}">
     <h1>Welcome to index page.</h1>
+    <div th:if="${#httpServletRequest.getCookies()!=null}">
+        <div th:each="cookie : ${#httpServletRequest.getCookies()}">
+            <p th:if="${cookie.getName().equals('user')}" th:with="user=${#httpServletRequest.setAttribute('user',cookie.getValue())}"></p>
+        </div>
+    </div>
+
+    <div th:switch="${#httpServletRequest.getAttribute('user')}">
+        <div th:case="null">未登录</div>
+        <div th:case="*">
+            <span th:text="'当前用户：'+${user}"></span>
+            <a href="http://localhost:8080/sso/logout">退出</a>
+        </div>
+    </div>
+
 </body>
 </html>
