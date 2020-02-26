@@ -15,6 +15,10 @@ function switchRegister() {
     document.getElementById("paneRegister").style.display = 'block';
 }
 
+function setValue(id,val) {
+    document.getElementById(id).value = val;
+}
+
 function showMsg(msg) {
     if(msg!=null) {
         alert(msg);

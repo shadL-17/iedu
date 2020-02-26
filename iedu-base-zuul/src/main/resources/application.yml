@@ -13,7 +13,7 @@ spring:
 zuul:
   routes:
     api-sso:
-      path: /sso/**
+      path: /user/**
       serviceId: iedu-user-sso
   sensitive-headers:
   host:

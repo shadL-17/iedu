@@ -36,6 +36,18 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
+        <!-- Common层的实体类 -->
+        <dependency>
+            <groupId>cn.shadl</groupId>
+            <artifactId>iedu-common-beans</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <!--阿里的Json工具-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.62</version>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>

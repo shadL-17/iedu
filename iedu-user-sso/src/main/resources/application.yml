@@ -22,4 +22,5 @@ spring:
       ddl-auto: update
 
 host:
-  ip: 47.112.227.13
+  #ip: 47.112.227.13
+  ip: 127.0.0.1

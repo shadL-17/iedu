@@ -2,24 +2,27 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Index Page</title>
+    <title>iEdu - 在线教育平台</title>
 </head>
-<body th:with="host='47.112.227.13',user=${#httpServletRequest.setAttribute('user',null)}">
-    <h1>Welcome to index page.</h1>
+<body th:with="host='127.0.0.1'">
     <div th:if="${#httpServletRequest.getCookies()!=null}">
         <div th:each="cookie : ${#httpServletRequest.getCookies()}">
             <p th:if="${cookie.getName().equals('user')}" th:with="user=${#httpServletRequest.setAttribute('user',cookie.getValue())}"></p>
         </div>
     </div>
 
-    <div th:switch="${#httpServletRequest.getAttribute('user')}">
-        <div th:case="null">
-            <span>游客，请登录</span>
-            <a th:href="'http://'+${host}+'/login'">登录</a>
-        </div>
-        <div th:case="*">
-            <span th:text="'当前用户：'+${user}"></span>
-            <a th:href="'http://'+${host}+':8080/sso/logout'">退出</a>
+    <div th:with="user=${T(com.alibaba.fastjson.JSON).parse(T(java.net.URLDecoder).decode(#httpServletRequest.getAttribute('user')))}">
+        <div th:switch="${user}">
+            <div th:case="null">
+                <span>游客，请登录</span>
+                <a th:href="'http://'+${host}+'/login'">登录</a>
+            </div>
+            <div th:case="*">
+                <p th:text="'当前用户：'+${user}"></p>
+                <p th:text="${user.username}"></p>
+                <p th:text="${user.password}"></p>
+                <a th:href="'http://'+${host}+':8080/user/logout'">退出</a>
+            </div>
         </div>
     </div>
 
