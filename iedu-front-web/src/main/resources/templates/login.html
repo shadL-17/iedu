@@ -7,7 +7,7 @@
     <script type="text/javascript" th:src="@{~/js/login.js}"></script>
 </head>
 
-<body>
+<body th:with="host='47.112.227.13'">
 
     <div id="container">
 
@@ -19,7 +19,7 @@
         </div>
 
         <div id="paneLogin">
-            <form action="http://localhost:8080/sso/login" method="post">
+            <form th:action="'http://'+${host}+':8080/sso/login'" method="post">
                 <input class="inputUserInfo" id="inputUsername" type="text" name="username" placeholder="请输入用户名">
                 <input class="inputUserInfo" id="inputPassword" type="password" name="password" placeholder="请输入密码">
                 <input class="inputUserInfo" id="buttonLogin" type="submit" value="安全登录">

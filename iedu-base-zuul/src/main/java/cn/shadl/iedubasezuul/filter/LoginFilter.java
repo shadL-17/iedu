@@ -22,11 +22,11 @@ public class LoginFilter extends ZuulFilter {
 
     @Override
     public boolean shouldFilter() {
-        return true;
+        return false;
     }
 
     @Override
-    public Object run() throws ZuulException {
+    public Object run() {
 
         RequestContext ctx = RequestContext.getCurrentContext();//获取请求上下文
         HttpServletRequest request = ctx.getRequest();//获取请求
@@ -54,7 +54,7 @@ public class LoginFilter extends ZuulFilter {
         ctx.setResponseStatusCode(403);
         ctx.setResponseBody("检测到您未登录，即将跳转到登录页面。");
         try {
-            ctx.getResponse().sendRedirect("http://localhost:8080/web/login");//跳转到登录页面
+            ctx.getResponse().sendRedirect("http://47.112.227.13:8080/web/login");//跳转到登录页面
         } catch (IOException e) {
             e.printStackTrace();
         }

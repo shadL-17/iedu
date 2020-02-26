@@ -3,9 +3,9 @@ server:
 
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/iedu?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
+    url: jdbc:mysql://47.112.227.13:3306/iedu?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
     username: root
-    password:
+    password: ShadL-17
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     database: MySQL

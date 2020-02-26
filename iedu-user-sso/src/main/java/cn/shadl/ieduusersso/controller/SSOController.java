@@ -1,6 +1,7 @@
 package cn.shadl.ieduusersso.controller;
 
 import cn.shadl.ieducommonbeans.domain.User;
+import cn.shadl.ieduusersso.config.HostConfig;
 import cn.shadl.ieduusersso.service.SSOService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,6 +16,9 @@ import java.util.List;
 public class SSOController {
 
     @Autowired
+    private HostConfig hostConfig;
+
+    @Autowired
     private SSOService ssoService;
 
     @RequestMapping("/login")
@@ -26,7 +30,7 @@ public class SSOController {
             cookie_msg.setMaxAge(1);
             response.addCookie(cookie_msg);
             try {
-                response.sendRedirect("http://localhost/login");
+                response.sendRedirect("http://"+hostConfig.getIp()+"/login");
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -38,7 +42,7 @@ public class SSOController {
             cookie_user.setPath("/");
             response.addCookie(cookie_user);
             try {
-                response.sendRedirect("http://localhost/index");
+                response.sendRedirect("http://"+hostConfig.getIp()+"/index");
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -53,7 +57,7 @@ public class SSOController {
         cookie_user.setMaxAge(0);
         response.addCookie(cookie_user);
         try {
-            response.sendRedirect("http://localhost/index");
+            response.sendRedirect("http://"+hostConfig.getIp()+"/index");
         } catch (IOException e) {
             e.printStackTrace();
         }
