@@ -8,3 +8,20 @@
 #search-button{
     font-size: 0.8rem;
 }
+.list-btn{
+    display: block !important;
+    border-radius: 0px !important;
+    padding: 0.855rem 1rem !important;
+    width: 100% !important;
+}
+#type-list{
+    float: left;
+    margin-left: 7%;
+    margin-top: 18px;
+    width: 17%;
+}
+#image-carousel{
+    float: left;
+    margin-top: 18px;
+    width: 70%;
+}
