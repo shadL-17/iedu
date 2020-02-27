@@ -7,7 +7,7 @@
     <script type="text/javascript" th:src="@{~/js/login.js}"></script>
 </head>
 
-<body th:with="host='127.0.0.1'">
+<body th:with="host='192.168.100.6'">
 
     <div id="container">
 
@@ -19,17 +19,18 @@
         </div>
 
         <div id="paneLogin">
-            <form th:action="'http://'+${host}+':8080/user/login'" method="post">
-                <input class="inputUserInfo" id="inputUsername" type="text" name="username" placeholder="请输入用户名">
-                <input class="inputUserInfo" id="inputPassword" type="password" name="password" placeholder="请输入密码">
-                <input class="inputUserInfo" id="buttonLogin" type="submit" value="安全登录">
-                <div th:if="${#httpServletRequest.getCookies()}!=null">
-                    <div th:each="cookie : ${#httpServletRequest.getCookies()}">
-                        <p class="inputUserInfo" id="loginMsg" th:if="${cookie.getName().equals('msg')}" th:text="${cookie.getValue()}"></p>
-                        <script th:if="${cookie.getName().equals('usr')}" type="text/javascript">setValue('inputUsername',[[${cookie.getValue()}]])</script>
-                        <script th:if="${cookie.getName().equals('pwd')}" type="text/javascript">setValue('inputPassword',[[${cookie.getValue()}]])</script>
-                    </div>
+            <!--上一次登录失败返回此页面显示的信息-->
+            <div th:if="${#httpServletRequest.getCookies()}!=null">
+                <div th:each="cookie : ${#httpServletRequest.getCookies()}">
+                    <p class="inputUserInfo" id="loginMsg" th:if="${cookie.getName().equals('msg')}" th:text="${cookie.getValue()}"></p>
+                    <script th:if="${cookie.getName().equals('usr')}" th:with="setUsr=${#httpServletRequest.setAttribute('usr',cookie.getValue())}"></script>
+                    <script th:if="${cookie.getName().equals('pwd')}" th:with="setPwd=${#httpServletRequest.setAttribute('pwd',cookie.getValue())}"></script>
                 </div>
+            </div>
+            <form th:action="'http://'+${host}+':8080/user/login'" method="post">
+                <input class="inputUserInfo" id="inputUsername" type="text" name="username" placeholder="请输入用户名" th:value="${#httpServletRequest.getAttribute('usr')}">
+                <input class="inputUserInfo" id="inputPassword" type="password" name="password" placeholder="请输入密码" th:value="${#httpServletRequest.getAttribute('pwd')}">
+                <input class="inputUserInfo" id="buttonLogin" type="submit" value="安全登录">
                 <input id="remCheckbox" name="remember" type="checkbox">
                 <label id="remText">记住我</label>
             </form>

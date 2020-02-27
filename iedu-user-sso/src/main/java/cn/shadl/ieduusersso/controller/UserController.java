@@ -62,7 +62,7 @@ public class UserController {
             cookie_user.setPath("/");
             response.addCookie(cookie_user);
             try {
-                response.sendRedirect("http://"+hostConfig.getIp()+"/index");
+                response.sendRedirect("http://"+hostConfig.getIp());
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -77,7 +77,7 @@ public class UserController {
         cookie_user.setMaxAge(0);
         response.addCookie(cookie_user);
         try {
-            response.sendRedirect("http://"+hostConfig.getIp()+"/index");
+            response.sendRedirect("http://"+hostConfig.getIp());
         } catch (IOException e) {
             e.printStackTrace();
         }
