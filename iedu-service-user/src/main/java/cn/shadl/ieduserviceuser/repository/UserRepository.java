@@ -1,4 +1,4 @@
-package cn.shadl.ieduusersso.repository;
+package cn.shadl.ieduserviceuser.repository;
 
 import cn.shadl.ieducommonbeans.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;

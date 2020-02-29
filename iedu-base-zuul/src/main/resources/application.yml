@@ -12,9 +12,12 @@ spring:
 
 zuul:
   routes:
-    api-sso:
+    api-user:
       path: /user/**
-      serviceId: iedu-user-sso
+      serviceId: iedu-service-user
+    api-course:
+      path: /course/**
+      serviceId: iedu-service-course
   sensitive-headers:
   host:
     connect-timeout-millis: 100000

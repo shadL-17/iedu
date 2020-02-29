@@ -1,8 +1,8 @@
-package cn.shadl.ieduusersso.controller;
+package cn.shadl.ieduserviceuser.controller;
 
 import cn.shadl.ieducommonbeans.domain.User;
-import cn.shadl.ieduusersso.config.HostConfig;
-import cn.shadl.ieduusersso.service.UserService;
+import cn.shadl.ieduserviceuser.config.HostConfig;
+import cn.shadl.ieduserviceuser.service.UserService;
 import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

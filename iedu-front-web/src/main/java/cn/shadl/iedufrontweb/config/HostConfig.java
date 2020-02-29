@@ -1,4 +1,4 @@
-package cn.shadl.ieduusersso.config;
+package cn.shadl.iedufrontweb.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

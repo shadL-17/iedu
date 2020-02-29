@@ -74,43 +74,55 @@
         </ul>
     </nav>
 
-    <!--热门分类列表-->
-    <div id="type-list" class="dropright" style="display:inline-block; vertical-align:top;">
-        <button type="button" class="list-btn btn btn-dark" data-toggle="dropdown">热门推荐</button>
-        <button type="button" class="list-btn btn btn-dark" data-toggle="dropdown">计算机/编程语言/数据分析</button>
-        <button type="button" class="list-btn btn btn-dark" data-toggle="dropdown">多媒体/平面设计/图像处理</button>
-        <button type="button" class="list-btn btn btn-dark" data-toggle="dropdown">办公室/办公软件/文档处理</button>
-        <button type="button" class="list-btn btn btn-dark" data-toggle="dropdown">兴趣课/文化艺术/人文历史</button>
-        <button type="button" class="list-btn btn btn-dark" data-toggle="dropdown">培训班/公关单位/营销策略</button>
+    <!--分类列表和轮播图-->
+    <div id="main-info">
+        <!--热门分类列表-->
+        <div id="type-list" class="dropright" style="display:inline-block; vertical-align:top;">
+            <div type="button" class="list-btn bg-dark" data-toggle="dropdown" style="color:white;padding:1rem"><b>热 门 分 类</b></div>
+            <button type="button" class="list-btn btn btn-dark" data-toggle="dropdown">计算机/编程语言/数据分析</button>
+            <button type="button" class="list-btn btn btn-dark" data-toggle="dropdown">多媒体/平面设计/图像处理</button>
+            <button type="button" class="list-btn btn btn-dark" data-toggle="dropdown">办公室/办公软件/文档处理</button>
+            <button type="button" class="list-btn btn btn-dark" data-toggle="dropdown">兴趣课/文化艺术/人文历史</button>
+            <button type="button" class="list-btn btn btn-dark" data-toggle="dropdown">培训班/公关单位/营销策略</button>
+        </div>
+
+        <!--热门推荐轮播图-->
+        <div id="image-carousel" class="carousel slide" data-ride="carousel" style="display: inline-block">
+            <!-- 指示符 -->
+            <ul class="carousel-indicators">
+                <li data-target="#image-carousel" data-slide-to="0" class="active"></li>
+                <li data-target="#image-carousel" data-slide-to="1"></li>
+                <li data-target="#image-carousel" data-slide-to="2"></li>
+            </ul>
+            <!-- 轮播图片 -->
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img th:src="@{~/image/news1.jpg}">
+                </div>
+                <div class="carousel-item">
+                    <img th:src="@{~/image/news2.jpg}">
+                </div>
+                <div class="carousel-item">
+                    <img th:src="@{~/image/news3.jpg}">
+                </div>
+            </div>
+            <!-- 左右切换按钮 -->
+            <a class="carousel-control-prev" href="#image-carousel" data-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+            </a>
+            <a class="carousel-control-next" href="#image-carousel" data-slide="next">
+                <span class="carousel-control-next-icon"></span>
+            </a>
+        </div>
     </div>
 
-    <!--热门推荐轮播图-->
-    <div id="image-carousel" class="carousel slide" data-ride="carousel" style="display: inline-block">
-        <!-- 指示符 -->
-        <ul class="carousel-indicators">
-            <li data-target="#image-carousel" data-slide-to="0" class="active"></li>
-            <li data-target="#image-carousel" data-slide-to="1"></li>
-            <li data-target="#image-carousel" data-slide-to="2"></li>
-        </ul>
-        <!-- 轮播图片 -->
-        <div class="carousel-inner">
-            <div class="carousel-item active">
-                <img th:src="@{~/image/news1.jpg}">
-            </div>
-            <div class="carousel-item">
-                <img th:src="@{~/image/news2.jpg}">
-            </div>
-            <div class="carousel-item">
-                <img th:src="@{~/image/news3.jpg}">
-            </div>
+    <h5 class="view-title">精品课程</h5>
+    <!--获取热门课程信息-->
+    <div th:with="hot_courses=${#httpServletRequest.getAttribute('hot_courses')}" class="courses-view">
+        <div th:each="course : ${hot_courses}" class="course-view">
+            <img th:src="${course.image}" class="course-image rounded img-thumbnail">
+            <span th:text="${course.name}" class="course-title" href="#"></span>
         </div>
-        <!-- 左右切换按钮 -->
-        <a class="carousel-control-prev" href="#image-carousel" data-slide="prev">
-            <span class="carousel-control-prev-icon"></span>
-        </a>
-        <a class="carousel-control-next" href="#image-carousel" data-slide="next">
-            <span class="carousel-control-next-icon"></span>
-        </a>
     </div>
 
 </body>

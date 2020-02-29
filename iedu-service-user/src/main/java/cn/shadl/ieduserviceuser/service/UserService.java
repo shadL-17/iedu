@@ -1,7 +1,7 @@
-package cn.shadl.ieduusersso.service;
+package cn.shadl.ieduserviceuser.service;
 
 import cn.shadl.ieducommonbeans.domain.User;
-import cn.shadl.ieduusersso.repository.UserRepository;
+import cn.shadl.ieduserviceuser.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

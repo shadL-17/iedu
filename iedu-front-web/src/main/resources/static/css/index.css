@@ -9,10 +9,15 @@
     font-size: 0.8rem;
 }
 .list-btn{
+    text-align: center !important;
     display: block !important;
     border-radius: 0px !important;
-    padding: 0.855rem 1rem !important;
     width: 100% !important;
+    height: 3.33rem !important;
+    overflow: hidden !important;
+}
+#main-info{
+    overflow: hidden;
 }
 #type-list{
     float: left;
@@ -24,4 +29,28 @@
     float: left;
     margin-top: 18px;
     width: 70%;
+}
+.view-title{
+    margin-top: 50px;
+    margin-left: 7%;
+}
+.courses-view{
+    padding: 0px 5.6%;
+}
+.course-view{
+    display: inline-block;
+    padding: 20px;
+    overflow: hidden;
+    cursor: pointer;
+}
+.course-image{
+    width: 180px;
+    height: 110px;
+    display: block;
+    cursor: pointer;
+}
+.course-title{
+    font-size: 12px;
+    text-align: center;
+    cursor: pointer;
 }

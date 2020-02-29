@@ -5,14 +5,14 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.2.3.RELEASE</version>
+        <version>2.2.4.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>cn.shadl</groupId>
-    <artifactId>iedu-front-web</artifactId>
+    <artifactId>iedu-service-user</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>iedu-front-web</name>
-    <description>Front web for iedu</description>
+    <name>iedu-service-user</name>
+    <description>User service for iEdu</description>
 
     <properties>
         <java.version>1.8</java.version>
@@ -21,24 +21,23 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.8</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- JPA -->
+        <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-thymeleaf</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-openfeign</artifactId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
         <!-- Common层的实体类 -->
         <dependency>
@@ -46,11 +45,16 @@
             <artifactId>iedu-common-beans</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
-        <!--User服务-->
+        <!-- mysql连接的jar包 -->
         <dependency>
-            <groupId>cn.shadl</groupId>
-            <artifactId>iedu-service-user</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+        <!-- 数据库连接池 可选其他数据连接池 -->
+        <dependency>
+            <groupId>com.mchange</groupId>
+            <artifactId>c3p0</artifactId>
+            <version>0.9.5.2</version>
         </dependency>
         <!--阿里的Json工具-->
         <dependency>
@@ -77,6 +81,10 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <!--被依赖的公共模块必须加上这个，打包之后启动，选择后面带EXE的启动，依赖该模块的其他模块就不会因为找不到依赖而打包出错-->
+                    <classifier>exe</classifier>
+                </configuration>
             </plugin>
         </plugins>
     </build>

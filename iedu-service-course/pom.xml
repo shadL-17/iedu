@@ -5,14 +5,14 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.2.4.RELEASE</version>
+        <version>2.2.5.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>cn.shadl</groupId>
-    <artifactId>iedu-user-sso</artifactId>
+    <artifactId>iedu-service-course</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>iedu-user-sso</name>
-    <description>Demo project for Spring Boot</description>
+    <name>iedu-service-course</name>
+    <description>Course service for iEdu</description>
 
     <properties>
         <java.version>1.8</java.version>
