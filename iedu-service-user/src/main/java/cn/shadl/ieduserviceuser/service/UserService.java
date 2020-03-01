@@ -13,6 +13,11 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    public User findByUid(Integer uid) {
+        List<User> users = userRepository.findByUid(uid);
+        return (users!=null&&!users.isEmpty()) ? users.get(0) : null;
+    }
+
     public List<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
     }

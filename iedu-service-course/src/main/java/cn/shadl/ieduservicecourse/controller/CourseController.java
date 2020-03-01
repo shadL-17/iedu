@@ -32,9 +32,14 @@ public class CourseController {
         return courseService.findAll();
     }
 
-    @GetMapping("/find-topX")
+    @GetMapping("/findTopXCourses")
     public List<Course> findTopXCourses(@RequestParam("x") int x) {
         return courseService.findTopX(x);
+    }
+
+    @GetMapping("/findCourseByCid")
+    public Course findCourseByCid(@RequestParam("cid") Integer cid) {
+        return courseService.findByCid(cid);
     }
 
 }

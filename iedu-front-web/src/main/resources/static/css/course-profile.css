@@ -1,0 +1,37 @@
+.course-introduce{
+    margin: 10px 5%;
+    width: 90%;
+}
+.course-image{
+    width: 20% !important;
+    display: inline-block !important;
+    vertical-align: top;
+}
+.course-info{
+    width: 75%;
+    display: inline-block;
+}
+.course-title{
+    font-size: 25px;
+    line-height: 40px;
+    margin-bottom: 18px;
+    font-weight: bolder;
+    cursor: text !important;
+}
+.course-description{
+    color: gray;
+    font-size: 13px;
+    cursor: text !important;
+}
+.course-structure{
+    display: inline-block;
+    margin: 0% 4%;
+    padding: 20px;
+    width: 60%;
+}
+.course-user{
+    display: inline-block;
+    width: 28%;
+    padding: 20px;
+    background-color: lightgray;
+}

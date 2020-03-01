@@ -11,4 +11,6 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
 
     @Query(nativeQuery = true, value = "select * from course where 1=1 limit :#{#x}")
     List<Course> findTopX(@Param("x") int x);
+
+    List<Course> findByCid(Integer cid);
 }

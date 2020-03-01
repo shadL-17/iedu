@@ -20,4 +20,9 @@ public class CourseService {
     public List<Course> findTopX(int x) {
         return courseRepository.findTopX(x);
     }
+
+    public Course findByCid(Integer cid) {
+        List<Course> courses = courseRepository.findByCid(cid);
+        return (courses!=null&&!courses.isEmpty()) ? courses.get(0) : null;
+    }
 }

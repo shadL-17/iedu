@@ -1,7 +1,59 @@
 b{
     cursor: pointer;
 }
+.nav-user{
+    float: right;
+}
+#search-input{
+    font-size: 0.8rem;
+    width: 15rem;
+}
+#search-button{
+    font-size: 0.8rem;
+}
 .order-option{
     font-size: 12px;
     cursor: pointer;
+}
+.courses-view{
+
+}
+.course-view{
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    margin: 15px 50px;
+    padding: 8px;
+    width: 65%;
+    cursor: pointer;
+}
+.course-info{
+    display: inline-block;
+    vertical-align: top;
+    width: 75%;
+}
+.course-image{
+    width: 20% !important;
+    display: inline-block !important;
+}
+.course-title{
+    font-weight: bolder;
+}
+.course-description{
+    color: gray;
+    font-size: 12px;
+}
+.course-link{
+    font-size: 13px !important;
+    color: dodgerblue !important;
+    text-decoration: none !important;
+}
+.course-link:hover{
+    font-size: 13px !important;
+    color: dodgerblue !important;
+    text-decoration: dodgerblue !important;
+}
+.course-link:visited{
+    font-size: 13px !important;
+    color: dodgerblue !important;
+    text-decoration: none !important;
 }
