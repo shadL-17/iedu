@@ -13,6 +13,10 @@ public class CourseService {
     @Autowired
     private CourseRepository courseRepository;
 
+    public List<Course> findAll() {
+        return courseRepository.findAll();
+    }
+
     public List<Course> findTopX(int x) {
         return courseRepository.findTopX(x);
     }

@@ -6,11 +6,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
 
 @Data
 @Entity
 @Table(name = "course")
-public class Course {
+public class Course implements Serializable, Cloneable {
 
     @Id
     private Integer cid;//ID

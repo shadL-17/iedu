@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>iEdu - 在线教育平台</title>
+    <link rel="stylesheet" type="text/css" th:href="@{~/css/index.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{~/css/course-center.css}" />
+    <!-- 新 Bootstrap4 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+    <!-- bootstrap.bundle.min.js 用于弹窗、提示、下拉菜单，包含了 popper.min.js -->
+    <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+    <!-- 最新的 Bootstrap4 核心 JavaScript 文件 -->
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body th:with="host='192.168.100.6'">
+
+<!--从Cookies中获取用户登录信息-->
+<div th:if="${#httpServletRequest.getCookies()!=null}">
+    <div th:each="cookie : ${#httpServletRequest.getCookies()}">
+        <div th:if="${cookie.getName().equals('user')}" th:with="setUser=${#httpServletRequest.setAttribute('user',T(com.alibaba.fastjson.JSON).parse(T(java.net.URLDecoder).decode(cookie.getValue())))}"></div>
+    </div>
+</div>
+
+<!--顶部导航栏-->
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+    <ul class="navbar-nav">
+        <li class="nav-item active">
+            <span class="nav-link"><b>iEdu</b></span>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+        </li>
+        <li class="nav-item active">
+            <a class="nav-link" href="/CourseCenter">所有课程</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/Community">社区中心</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/About">关于网站</a>
+        </li>
+        <li class="nav-item">
+            <span class="nav-link">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        </li>
+        <form class="form-inline">
+            <input id="search-input" class="form-control" type="text" placeholder="输入你想要找的内容">
+            <button id="search-button" class="btn btn-secondary" type="button">搜索</button>
+        </form>
+        <li class="nav-item">
+            <span class="nav-link">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        </li>
+        <div class="nav-user float-right" th:switch="${#httpServletRequest.getAttribute('user')}">
+            <!--无登录状态信息-->
+            <div th:case="null">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="'http://'+${host}+'/login'">登录/注册</a>
+                </li>
+            </div>
+            <!--有登录状态信息-->
+            <div th:case="*">
+                <div th:with="user=${#httpServletRequest.getAttribute('user')}">
+                    <div class="dropdown">
+                        <li class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown" th:text="'当前用户：'+${user.username}"></li>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#">个人中心</a>
+                            <a class="dropdown-item" href="#">账号管理</a>
+                            <a class="dropdown-item" th:href="'http://'+${host}+':8080/user/logout'">退出登录</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ul>
+</nav>
+
+<img th:src="@{~/image/news4.jpg}" style="display:block;width:100%;">
+
+<div style="padding: 30px;">
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <b class="nav-link active" data-toggle="tab" href="">全部</b>
+        </li>
+        <li class="nav-item">
+            <b class="nav-link" data-toggle="tab" href="">编程语言</b>
+        </li>
+        <li class="nav-item">
+            <b class="nav-link" data-toggle="tab" href="">测试运维</b>
+        </li>
+        <li class="nav-item">
+            <b class="nav-link" data-toggle="tab" href="">平面设计</b>
+        </li>
+        <li class="nav-item">
+            <b class="nav-link" data-toggle="tab" href="">公关营销</b>
+        </li>
+        <li class="nav-item">
+            <b class="nav-link" data-toggle="tab" href="">创业培训</b>
+        </li>
+    </ul>
+    <br>
+    <span>排序方式：</span><br><br>
+    <ul class="nav nav-pills" role="tablist">
+        <li class="nav-item">
+            <span class="nav-link order-option active" data-toggle="pill" href="">默认</span>
+        </li>
+        <li class="nav-item">
+            <span class="nav-link order-option" data-toggle="pill" href="">最新</span>
+        </li>
+        <li class="nav-item">
+            <span class="nav-link order-option" data-toggle="pill" href="">最热门</span>
+        </li>
+    </ul>
+    <br>
+    <!--课程列表-->
+    <div th:with="courses=${#httpServletRequest.getAttribute('courses')}" class="courses-view">
+        <div th:each="course : ${courses}" class="course-view">
+            <img th:src="${course.image}" class="course-image rounded img-thumbnail">
+            <span th:text="${course.name}" class="course-title" href="#"></span>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
