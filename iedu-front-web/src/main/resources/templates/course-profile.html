@@ -89,15 +89,15 @@
     <!--课程结构-->
     <div th:with="chapters=${#httpServletRequest.getAttribute('chapters')}" class="course-structure">
         <div th:each="chapter : ${chapters}">
-            <p th:text="${chapter.title}"></p>
+            <div th:text="${chapter.title}" class="card bg-primary text-white card-body course-chapter"></div>
             <div th:with="lessions=${#httpServletRequest.getAttribute('chapterLessions'+chapter.chid)}">
-                <div th:each="lession : ${lessions}">
-                    <p th:text="${lession.title}"></p>
+                <div th:each="lession : ${lessions}" class="course-lession">
+                    <button class="btn btn-outline-primary btn-sm btn-block course-lession-btn">[[${lession.title}]]</button>
                 </div>
             </div>
             <div th:with="exams=${#httpServletRequest.getAttribute('chapterExams'+chapter.chid)}">
-                <div th:each="exam : ${exams}">
-                    <p th:text="${exam.title}"></p>
+                <div th:each="exam : ${exams}" class="course-lession">
+                    <button class="btn btn-outline-primary btn-sm btn-block course-lession-btn">[[${exam.title}]]</button>
                 </div>
             </div>
         </div>

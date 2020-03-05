@@ -26,7 +26,6 @@
 .course-structure{
     display: inline-block;
     margin: 0% 4%;
-    padding: 20px;
     width: 60%;
 }
 .course-user{
@@ -35,4 +34,12 @@
     padding: 20px;
     background-color: lightgray;
     vertical-align: top;
+}
+.course-chapter{
+
+}
+.course-lession{
+}
+.course-lession-btn{
+    padding: 0.5rem 0.5rem !important;
 }
