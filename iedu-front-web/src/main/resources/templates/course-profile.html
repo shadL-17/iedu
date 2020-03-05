@@ -87,8 +87,20 @@
     <hr size="1" color="lightgray" width="95%">
 
     <!--课程结构-->
-    <div class="course-structure">
-        <p th:text="'course: '+${course}"></p>
+    <div th:with="chapters=${#httpServletRequest.getAttribute('chapters')}" class="course-structure">
+        <div th:each="chapter : ${chapters}">
+            <p th:text="${chapter.title}"></p>
+            <div th:with="lessions=${#httpServletRequest.getAttribute('chapterLessions'+chapter.chid)}">
+                <div th:each="lession : ${lessions}">
+                    <p th:text="${lession.title}"></p>
+                </div>
+            </div>
+            <div th:with="exams=${#httpServletRequest.getAttribute('chapterExams'+chapter.chid)}">
+                <div th:each="exam : ${exams}">
+                    <p th:text="${exam.title}"></p>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!--课程用户情况-->

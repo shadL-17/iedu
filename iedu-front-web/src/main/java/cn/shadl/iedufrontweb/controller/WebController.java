@@ -1,7 +1,6 @@
 package cn.shadl.iedufrontweb.controller;
 
-import cn.shadl.ieducommonbeans.domain.Course;
-import cn.shadl.ieducommonbeans.domain.User;
+import cn.shadl.ieducommonbeans.domain.*;
 import cn.shadl.iedufrontweb.config.HostConfig;
 import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +60,19 @@ public class WebController {
             ResponseEntity<User> responseEntity2 = restTemplate.exchange("http://" + hostConfig.getIp() + ":8080/user/findByUid?uid=" + course.getCreator(), HttpMethod.GET, null, new ParameterizedTypeReference<User>() {});
             User creator = responseEntity2.getBody();
             request.setAttribute("creator", creator);
+            ResponseEntity<List<Chapter>> responseEntity3 = restTemplate.exchange("http://" + hostConfig.getIp() + ":8080/course/findChaptersByCid?cid=" + course.getCid(), HttpMethod.GET, null, new ParameterizedTypeReference<List<Chapter>>() {});
+            List<Chapter> chapters = responseEntity3.getBody();
+            request.setAttribute("chapters", chapters);
+            if(chapters!=null && !chapters.isEmpty()) {
+                for(Chapter chapter : chapters) {
+                    ResponseEntity<List<Lession>> lessionResponseEntity = restTemplate.exchange("http://" + hostConfig.getIp() + ":8080/course/findLessionsByChid?chid=" + chapter.getChid(), HttpMethod.GET, null, new ParameterizedTypeReference<List<Lession>>(){});
+                    List<Lession> lessions = lessionResponseEntity.getBody();
+                    request.setAttribute("chapterLessions"+chapter.getChid(), lessions);
+                    ResponseEntity<List<Exam>> examResponseEntity = restTemplate.exchange("http://" + hostConfig.getIp() + ":8080/course/findExamsByChid?chid=" + chapter.getChid(), HttpMethod.GET, null, new ParameterizedTypeReference<List<Exam>>() {});
+                    List<Exam> exams = examResponseEntity.getBody();
+                    request.setAttribute("chapterExams"+chapter.getChid(), exams);
+                }
+            }
         }
         return "course-profile";
     }
