@@ -2,10 +2,7 @@ package cn.shadl.ieducommonbeans.domain;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Data
@@ -14,6 +11,7 @@ import java.io.Serializable;
 public class Chapter implements Serializable, Cloneable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer chid;//
 
     @Column
