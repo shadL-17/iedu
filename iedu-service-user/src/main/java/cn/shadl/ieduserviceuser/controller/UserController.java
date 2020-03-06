@@ -5,10 +5,7 @@ import cn.shadl.ieduserviceuser.config.HostConfig;
 import cn.shadl.ieduserviceuser.service.UserService;
 import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -83,6 +80,15 @@ public class UserController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @PostMapping("/loginCheck")
+    public User loginCheck(@RequestParam("username") String username, @RequestParam("password") String password) {
+        List<User> users = userService.findByUsernameAndPassword(username, password);
+        if(users!=null && !users.isEmpty()) {
+            return users.get(0);
+        }
+        return null;
     }
 
     @GetMapping("/findByUid")

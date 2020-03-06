@@ -7,7 +7,7 @@
     <script type="text/javascript" th:src="@{~/js/login.js}"></script>
 </head>
 
-<body th:with="host='192.168.100.6'">
+<body th:with="host=${#httpServletRequest.getAttribute('host')}">
 
     <div id="container">
 

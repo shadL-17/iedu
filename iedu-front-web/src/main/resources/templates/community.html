@@ -13,14 +13,7 @@
     <!-- 最新的 Bootstrap4 核心 JavaScript 文件 -->
     <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </head>
-<body th:with="host='192.168.100.6'">
-
-<!--从Cookies中获取用户登录信息-->
-<div th:if="${#httpServletRequest.getCookies()!=null}">
-    <div th:each="cookie : ${#httpServletRequest.getCookies()}">
-        <div th:if="${cookie.getName().equals('user')}" th:with="setUser=${#httpServletRequest.setAttribute('user',T(com.alibaba.fastjson.JSON).parse(T(java.net.URLDecoder).decode(cookie.getValue())))}"></div>
-    </div>
-</div>
+<body th:with="host=${#httpServletRequest.getAttribute('host')}, user=${#httpServletRequest.getAttribute('user')}">
 
 <!--顶部导航栏-->
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
@@ -50,7 +43,7 @@
         <li class="nav-item">
             <span class="nav-link">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
         </li>
-        <div class="nav-user float-right" th:switch="${#httpServletRequest.getAttribute('user')}">
+        <div class="nav-user float-right" th:switch="${user}">
             <!--无登录状态信息-->
             <div th:case="null">
                 <li class="nav-item">
@@ -59,14 +52,12 @@
             </div>
             <!--有登录状态信息-->
             <div th:case="*">
-                <div th:with="user=${#httpServletRequest.getAttribute('user')}">
-                    <div class="dropdown">
-                        <li class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown" th:text="'当前用户：'+${user.username}"></li>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#">个人中心</a>
-                            <a class="dropdown-item" href="#">账号管理</a>
-                            <a class="dropdown-item" th:href="'http://'+${host}+':8080/user/logout'">退出登录</a>
-                        </div>
+                <div class="dropdown">
+                    <li class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown" th:text="'当前用户：'+${user.username}"></li>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="#">个人中心</a>
+                        <a class="dropdown-item" href="#">账号管理</a>
+                        <a class="dropdown-item" th:href="'http://'+${host}+':8080/user/logout'">退出登录</a>
                     </div>
                 </div>
             </div>
