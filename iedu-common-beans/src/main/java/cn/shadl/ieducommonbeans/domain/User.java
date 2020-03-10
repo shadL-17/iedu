@@ -31,4 +31,7 @@ public class User {
 
     @Column
     private String contact;//联系方式
+
+    @Column
+    private String avatar;//头像URL
 }

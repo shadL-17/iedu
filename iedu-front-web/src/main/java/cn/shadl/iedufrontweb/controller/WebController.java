@@ -19,7 +19,9 @@ import org.springframework.web.client.RestTemplate;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.net.URLDecoder;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class WebController {
@@ -88,9 +90,14 @@ public class WebController {
     @GetMapping("/Course")
     public String courseProfile(HttpServletRequest request, @RequestParam("cid") Integer cid) {
         initRequest(request);
-        ResponseEntity<Course> responseEntity1 = restTemplate.exchange("http://" + hostConfig.getIp() + ":8080/course/findCourseByCid?cid=" + cid, HttpMethod.GET, null, new ParameterizedTypeReference<Course>() {});
-        Course course = responseEntity1.getBody();
+        Course course = restTemplate.exchange("http://"+hostConfig.getIp()+":8080/course/findCourseByCid?cid="+cid, HttpMethod.GET, null, new ParameterizedTypeReference<Course>() {}).getBody();
+        Integer numOfStu = restTemplate.exchange("http://"+hostConfig.getIp()+":8080/course/getNumberOfStudentsByCid?cid="+cid, HttpMethod.GET, null, new ParameterizedTypeReference<Integer>() {}).getBody();
+        Integer numOfLes = restTemplate.exchange("http://"+hostConfig.getIp()+":8080/course/getNumberOfLessionsByCid?cid="+cid, HttpMethod.GET, null, new ParameterizedTypeReference<Integer>() {}).getBody();
+        Map<String, Object> courseInfo = new HashMap<String, Object>();
+        courseInfo.put("numberOfStudents", numOfStu);
+        courseInfo.put("numberOfLessions", numOfLes);
         request.setAttribute("course", course);
+        request.setAttribute("courseInfo", courseInfo);
         if(course!=null) {
             ResponseEntity<User> responseEntity2 = restTemplate.exchange("http://" + hostConfig.getIp() + ":8080/user/findByUid?uid=" + course.getCreator(), HttpMethod.GET, null, new ParameterizedTypeReference<User>() {});
             User creator = responseEntity2.getBody();

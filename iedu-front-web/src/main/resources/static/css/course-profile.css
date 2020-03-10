@@ -43,3 +43,21 @@
 .course-lession-btn{
     padding: 0.5rem 0.5rem !important;
 }
+.title-text{
+
+}
+.content-text{
+    font-size: 15px;
+}
+.creator-avatar{
+    width: 65px;
+    display: inline-block;
+    vertical-align: top;
+}
+.creator-info{
+    display: inline-block;
+    margin-left: 5px;
+}
+.creator-name{
+    font-size: 18px;
+}

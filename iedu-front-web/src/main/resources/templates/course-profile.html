@@ -14,7 +14,7 @@
     <!-- 最新的 Bootstrap4 核心 JavaScript 文件 -->
     <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </head>
-<body th:with="host=${#httpServletRequest.getAttribute('host')},user=${#httpServletRequest.getAttribute('user')},course=${#httpServletRequest.getAttribute('course')},creator=${#httpServletRequest.getAttribute('creator')}">
+<body th:with="host=${#httpServletRequest.getAttribute('host')},user=${#httpServletRequest.getAttribute('user')},course=${#httpServletRequest.getAttribute('course')},creator=${#httpServletRequest.getAttribute('creator')},courseInfo=${#httpServletRequest.getAttribute('courseInfo')}">
 
     <!--顶部导航栏-->
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
@@ -22,11 +22,11 @@
             <li class="nav-item active">
                 <a class="nav-link" href="/"><b>iEdu</b></a>
             </li>
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" href="/">首页</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/CourseCenter">所有课程</a>
+            <li class="nav-item active">
+                <a class="nav-link" href="/CourseCenter">课程中心</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="/Community">社区中心</a>
@@ -96,7 +96,18 @@
 
     <!--课程用户情况-->
     <div class="course-user">
-        <p th:text="'creator:'+${creator}"></p>
+        <p class="title-text"><b>创建者</b></p>
+        <img class="creator-avatar" th:src="${creator.avatar}">
+        <div class="creator-info">
+            <p class="creator-name" th:text="${creator.username}"></p>
+            <a class="content-text" href="">个人主页</a>
+            <a class="content-text" href="">关注动态</a>
+        </div>
+        <br><br>
+        <p class="title-text"><b>课程概况</b></p>
+        <span class="content-text" th:text="'学习人数：'+${courseInfo.numberOfStudents}"></span>
+        <br>
+        <span class="content-text" th:text="'总课堂数：'+${courseInfo.numberOfLessions}"></span>
     </div>
 
 </body>

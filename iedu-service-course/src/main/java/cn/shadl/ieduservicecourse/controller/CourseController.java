@@ -44,6 +44,16 @@ public class CourseController {
         return courseService.findByCid(cid);
     }
 
+    @GetMapping("/getNumberOfStudentsByCid")
+    public Integer getNumberOfStudentsByCid(@RequestParam("cid") Integer cid) {
+        return courseService.getNumberOfStudents(cid);
+    }
+
+    @GetMapping("/getNumberOfLessionsByCid")
+    public Integer getNumberOfLessionsByCid(@RequestParam("cid") Integer cid) {
+        return courseService.getNumberOfLessions(cid);
+    }
+
     @GetMapping("/findChaptersByCid")
     public List<Chapter> findChaptersByCid(@RequestParam("cid") Integer cid) {
         return chapterService.findByCid(cid);
