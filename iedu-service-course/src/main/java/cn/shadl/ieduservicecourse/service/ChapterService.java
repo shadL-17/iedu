@@ -13,6 +13,11 @@ public class ChapterService {
     @Autowired
     private ChapterRepository chapterRepository;
 
+    public Chapter findByChid(Integer chid) {
+        List<Chapter> chapters = chapterRepository.findByChid(chid);
+        return (chapters!=null&&!chapters.isEmpty()) ? chapters.get(0) : null;
+    }
+
     public List<Chapter> findByCid(Integer cid) {
         return chapterRepository.findByCid(cid);
     }

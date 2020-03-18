@@ -59,6 +59,16 @@ public class CourseController {
         return chapterService.findByCid(cid);
     }
 
+    @GetMapping("/findChapterByChid")
+    public Chapter findChapterByChid(@RequestParam("chid") Integer chid) {
+        return chapterService.findByChid(chid);
+    }
+
+    @GetMapping("/findLessionByLid")
+    public Lession findLessionByLid(@RequestParam("lid") Integer lid) {
+        return lessionService.findByLid(lid);
+    }
+
     @GetMapping("/findLessionsByChid")
     public List<Lession> findLessionsByChid(@RequestParam("chid") Integer chid) {
         return lessionService.findByChid(chid);

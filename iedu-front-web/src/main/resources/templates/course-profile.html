@@ -5,6 +5,7 @@
     <title>iEdu - 在线教育平台</title>
     <link rel="stylesheet" type="text/css" th:href="@{~/css/index.css}" />
     <link rel="stylesheet" type="text/css" th:href="@{~/css/course-profile.css}" />
+    <script th:src="@{~/js/common.js}"></script>
     <!-- 新 Bootstrap4 核心 CSS 文件 -->
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
     <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
@@ -83,7 +84,7 @@
             <div th:text="${chapter.title}" class="card bg-primary text-white card-body course-chapter"></div>
             <div th:with="lessions=${#httpServletRequest.getAttribute('chapterLessions'+chapter.chid)}">
                 <div th:each="lession : ${lessions}" class="course-lession">
-                    <button class="btn btn-outline-primary btn-sm btn-block course-lession-btn">[[${lession.title}]]</button>
+                    <button class="btn btn-outline-primary btn-sm btn-block course-lession-btn" th:onclick="'toURL(\'/Lession?lid='+${lession.lid}+'\')'">[[${lession.title}]]</button>
                 </div>
             </div>
             <div th:with="exams=${#httpServletRequest.getAttribute('chapterExams'+chapter.chid)}">
@@ -109,6 +110,8 @@
         <br>
         <span class="content-text" th:text="'总课堂数：'+${courseInfo.numberOfLessions}"></span>
     </div>
+
+    <br><br><br><br>
 
 </body>
 </html>

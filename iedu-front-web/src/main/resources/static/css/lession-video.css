@@ -1,0 +1,63 @@
+.course-introduce{
+    margin: 10px 5%;
+    width: 90%;
+}
+.course-image{
+    width: 20% !important;
+    display: inline-block !important;
+    vertical-align: top;
+}
+.course-info{
+    width: 75%;
+    display: inline-block;
+}
+.course-title{
+    font-size: 25px;
+    line-height: 40px;
+    margin-bottom: 18px;
+    font-weight: bolder;
+    cursor: text !important;
+}
+.course-description{
+    color: gray;
+    font-size: 13px;
+    cursor: text !important;
+}
+.course-structure{
+    display: inline-block;
+    margin: 0% 4%;
+    width: 60%;
+}
+.course-user{
+    display: inline-block;
+    width: 28%;
+    padding: 20px;
+    background-color: lightgray;
+    vertical-align: top;
+}
+.course-chapter{
+
+}
+.course-lession{
+}
+.course-lession-btn{
+    padding: 0.5rem 0.5rem !important;
+}
+.title-text{
+
+}
+.content-text{
+    font-size: 15px;
+}
+.creator-avatar{
+    width: 65px;
+    display: inline-block;
+    vertical-align: top;
+}
+.creator-info{
+    display: inline-block;
+    margin-left: 5px;
+}
+.creator-name{
+    font-size: 18px;
+}

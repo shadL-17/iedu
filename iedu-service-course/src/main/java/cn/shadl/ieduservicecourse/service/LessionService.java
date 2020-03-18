@@ -13,6 +13,11 @@ public class LessionService {
     @Autowired
     private LessionRepository lessionRepository;
 
+    public Lession findByLid(Integer lid) {
+        List<Lession> lessions = lessionRepository.findByLid(lid);
+        return (lessions!=null&&!lessions.isEmpty()) ? lessions.get(0) : null;
+    }
+
     public List<Lession> findByChid(Integer chid) {
         return lessionRepository.findByChid(chid);
     }
