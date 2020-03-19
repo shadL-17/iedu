@@ -1,32 +1,12 @@
-.course-introduce{
-    margin: 10px 5%;
-    width: 90%;
-}
-.course-image{
-    width: 20% !important;
-    display: inline-block !important;
-    vertical-align: top;
-}
-.course-info{
-    width: 75%;
-    display: inline-block;
-}
-.course-title{
-    font-size: 25px;
-    line-height: 40px;
-    margin-bottom: 18px;
-    font-weight: bolder;
-    cursor: text !important;
-}
-.course-description{
-    color: gray;
-    font-size: 13px;
-    cursor: text !important;
+.page-course-title{
+    text-align: center;
+    margin: 2rem;
 }
 .course-structure{
     display: inline-block;
-    margin: 0% 4%;
-    width: 60%;
+    width: 25%;
+    height: 100%;
+    overflow: scroll;
 }
 .course-user{
     display: inline-block;
@@ -36,12 +16,14 @@
     vertical-align: top;
 }
 .course-chapter{
-
+    padding: 0.5rem 1rem !important;
+    height: auto;
 }
 .course-lession{
 }
 .course-lession-btn{
-    padding: 0.5rem 0.5rem !important;
+    padding: 0.35rem !important;
+    font-size: 12px !important;
 }
 .title-text{
 
@@ -49,15 +31,14 @@
 .content-text{
     font-size: 15px;
 }
-.creator-avatar{
-    width: 65px;
+.course-lession-info{
+    height: 26rem;
+    overflow: hidden;
+    margin-left: 7%;
+    margin-bottom: 200px;
+}
+.lession-video{
     display: inline-block;
     vertical-align: top;
-}
-.creator-info{
-    display: inline-block;
-    margin-left: 5px;
-}
-.creator-name{
-    font-size: 18px;
+    height: 100%;
 }
