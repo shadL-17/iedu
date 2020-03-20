@@ -35,10 +35,59 @@
     height: 26rem;
     overflow: hidden;
     margin-left: 7%;
-    margin-bottom: 200px;
 }
 .lession-video{
     display: inline-block;
     vertical-align: top;
     height: 100%;
+}
+/*评论区*/
+.comment-area{
+    margin: 0% 7%;
+}
+.comment-area-title{
+    margin-bottom: 1rem;
+}
+.comment-text-area{
+    width: 97%;
+    height: 6rem;
+    display: block;
+    resize: none;
+}
+.comment-send-button{
+    display: block;
+    font-size: 14px;
+    color: white;
+    background-color: darkorange;
+}
+.comment-floor{
+    background-color: lavender;
+    margin: 0.5rem 0rem;
+    width: 97%;
+}
+.comment-main{
+    border-bottom: 1px solid lightgray;
+}
+.comment-user-avatar{
+    width: 64px;
+    display: inline-block;
+}
+.comment-user-username{
+    display: inline-block;
+    vertical-align: top;
+}
+.comment-content-text{
+
+}
+.comment-date{
+
+}
+.comment-link-reply{
+
+}
+.comment-reply-user{
+    display: inline;
+}
+.comment-reply-content{
+
 }

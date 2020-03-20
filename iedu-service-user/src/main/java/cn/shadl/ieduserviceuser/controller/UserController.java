@@ -95,4 +95,5 @@ public class UserController {
     public User findByUid(@RequestParam("uid") Integer uid) {
         return userService.findByUid(uid);
     }
+
 }

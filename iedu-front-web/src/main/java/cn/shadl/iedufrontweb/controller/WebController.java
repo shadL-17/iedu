@@ -1,6 +1,7 @@
 package cn.shadl.iedufrontweb.controller;
 
 import cn.shadl.ieducommonbeans.domain.*;
+import cn.shadl.ieducommonbeans.domain.dto.CommentFloorDTO;
 import cn.shadl.iedufrontweb.config.HostConfig;
 import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -157,6 +158,8 @@ public class WebController {
                 }
             }
         }
+        List<CommentFloorDTO> comments = restTemplate.exchange("http://" + hostConfig.getIp() + ":8080/course/findCommentsByTargetTypeAndTargetId?targetType=lession&targetId=" + currentLession.getLid(), HttpMethod.GET, null, new ParameterizedTypeReference<List<CommentFloorDTO>>() {}).getBody();
+        request.setAttribute("comments", comments);
         return "lession-video";
     }
 

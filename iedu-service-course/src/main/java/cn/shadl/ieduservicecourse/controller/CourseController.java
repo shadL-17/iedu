@@ -1,15 +1,11 @@
 package cn.shadl.ieduservicecourse.controller;
 
-import cn.shadl.ieducommonbeans.domain.Chapter;
-import cn.shadl.ieducommonbeans.domain.Course;
-import cn.shadl.ieducommonbeans.domain.Exam;
-import cn.shadl.ieducommonbeans.domain.Lession;
-import cn.shadl.ieduservicecourse.service.ChapterService;
-import cn.shadl.ieduservicecourse.service.CourseService;
-import cn.shadl.ieduservicecourse.service.ExamService;
-import cn.shadl.ieduservicecourse.service.LessionService;
+import cn.shadl.ieducommonbeans.domain.*;
+import cn.shadl.ieducommonbeans.domain.dto.CommentFloorDTO;
+import cn.shadl.ieduservicecourse.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
@@ -28,6 +24,12 @@ public class CourseController {
 
     @Autowired
     private ExamService examService;
+
+    @Autowired
+    private CommentService commentService;
+
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/findAllCourses")
     public List<Course> findAllCourses() {
@@ -77,6 +79,11 @@ public class CourseController {
     @GetMapping("/findExamsByChid")
     public List<Exam> findExamsByChid(@RequestParam("chid") Integer chid) {
         return examService.findByChid(chid);
+    }
+
+    @GetMapping("/findCommentsByTargetTypeAndTargetId")
+    public List<CommentFloorDTO> findCommentsByTargetTypeAndTargetId(String targetType, Integer targetId) {
+            return commentService.getCommentFloor(commentService.findByTargetTypeAndTargetId(targetType, targetId));
     }
 
 }

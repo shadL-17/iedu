@@ -21,7 +21,7 @@ public class Lession implements Serializable, Cloneable {
     private String description;//
 
     @Column
-    private Integer vid;//
+    private String vid;//
 
     @Column
     private Integer chid;//
