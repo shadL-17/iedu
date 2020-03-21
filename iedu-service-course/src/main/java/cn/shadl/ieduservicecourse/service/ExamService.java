@@ -13,6 +13,11 @@ public class ExamService {
     @Autowired
     ExamRepository examRepository;
 
+    public Exam findByEid(Integer eid) {
+        List<Exam> exams = examRepository.findByEid(eid);
+        return (exams!=null&&!exams.isEmpty()) ? exams.get(0) : null;
+    }
+
     public List<Exam> findByChid(Integer chid) {
         return examRepository.findByChid(chid);
     }

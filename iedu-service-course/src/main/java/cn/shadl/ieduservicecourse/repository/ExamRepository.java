@@ -6,5 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface ExamRepository extends JpaRepository<Exam, Long> {
+    List<Exam> findByEid(Integer eid);
     List<Exam> findByChid(Integer chid);
 }

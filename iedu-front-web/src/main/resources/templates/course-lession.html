@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>iEdu - 在线教育平台</title>
     <link rel="stylesheet" type="text/css" th:href="@{~/css/index.css}" />
-    <link rel="stylesheet" type="text/css" th:href="@{~/css/lession-video.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{~/css/course-lession.css}" />
     <script th:src="@{~/js/common.js}"></script>
     <!-- 新 Bootstrap4 核心 CSS 文件 -->
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
@@ -78,14 +78,14 @@
             <div th:with="lessions=${#httpServletRequest.getAttribute('chapterLessions'+chapter.chid)}">
                 <div th:each="lession : ${lessions}" class="course-lession">
                     <div th:switch="${lession.lid}">
-                        <button th:case="${currentLession.lid}" class="btn btn-outline-secondary btn-sm btn-block course-lession-btn" disabled>[[${lession.title}]]</button>
+                        <button th:case="${currentLession.lid}" class="btn btn-outline-secondary btn-sm btn-block course-lession-btn bg-secondary" style="color: white" disabled>[[${lession.title}]]</button>
                         <button th:case="*" class="btn btn-outline-secondary btn-sm btn-block course-lession-btn" th:onclick="'toURL(\'/Lession?lid='+${lession.lid}+'\')'">[[${lession.title}]]</button>
                     </div>
                 </div>
             </div>
             <div th:with="exams=${#httpServletRequest.getAttribute('chapterExams'+chapter.chid)}">
                 <div th:each="exam : ${exams}" class="course-lession">
-                    <button class="btn btn-outline-secondary btn-sm btn-block course-lession-btn">[[${exam.title}]]</button>
+                    <button class="btn btn-outline-secondary btn-sm btn-block course-lession-btn" th:onclick="'toURL(\'/Exam?eid='+${exam.eid}+'\')'">[[${exam.title}]]</button>
                 </div>
             </div>
         </div>

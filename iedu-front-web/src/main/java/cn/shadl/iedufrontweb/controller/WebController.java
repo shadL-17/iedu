@@ -2,6 +2,7 @@ package cn.shadl.iedufrontweb.controller;
 
 import cn.shadl.ieducommonbeans.domain.*;
 import cn.shadl.ieducommonbeans.domain.dto.CommentFloorDTO;
+import cn.shadl.ieducommonbeans.domain.dto.ExamQuestionDTO;
 import cn.shadl.iedufrontweb.config.HostConfig;
 import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -160,7 +161,27 @@ public class WebController {
         }
         List<CommentFloorDTO> comments = restTemplate.exchange("http://" + hostConfig.getIp() + ":8080/course/findCommentsByTargetTypeAndTargetId?targetType=lession&targetId=" + currentLession.getLid(), HttpMethod.GET, null, new ParameterizedTypeReference<List<CommentFloorDTO>>() {}).getBody();
         request.setAttribute("comments", comments);
-        return "lession-video";
+        return "course-lession";
+    }
+
+    @GetMapping("/Exam")
+    public String examPage(HttpServletRequest request, @RequestParam("eid") Integer eid) {
+        initRequest(request);
+        Exam exam = restTemplate.exchange("http://"+hostConfig.getIp()+":8080/course/findExamByEid?eid="+eid, HttpMethod.GET, null, new ParameterizedTypeReference<Exam>() {}).getBody();
+        List<ExamQuestionDTO> questions = restTemplate.exchange("http://"+hostConfig.getIp()+":8080/course/findQuestionByEid?eid="+eid, HttpMethod.GET, null, new ParameterizedTypeReference<List<ExamQuestionDTO>>() {}).getBody();
+        request.setAttribute("exam", exam);
+        request.setAttribute("questions", questions);
+        Chapter currentChapter = restTemplate.exchange("http://" + hostConfig.getIp() + ":8080/course/findChapterByChid?chid=" + exam.getChid(), HttpMethod.GET, null, new ParameterizedTypeReference<Chapter>() {}).getBody();
+        Integer cid = currentChapter.getCid();
+        Course course = restTemplate.exchange("http://"+hostConfig.getIp()+":8080/course/findCourseByCid?cid="+cid, HttpMethod.GET, null, new ParameterizedTypeReference<Course>() {}).getBody();
+        Integer numOfStu = restTemplate.exchange("http://"+hostConfig.getIp()+":8080/course/getNumberOfStudentsByCid?cid="+cid, HttpMethod.GET, null, new ParameterizedTypeReference<Integer>() {}).getBody();
+        Integer numOfLes = restTemplate.exchange("http://"+hostConfig.getIp()+":8080/course/getNumberOfLessionsByCid?cid="+cid, HttpMethod.GET, null, new ParameterizedTypeReference<Integer>() {}).getBody();
+        Map<String, Object> courseInfo = new HashMap<String, Object>();
+        courseInfo.put("numberOfStudents", numOfStu);
+        courseInfo.put("numberOfLessions", numOfLes);
+        request.setAttribute("course", course);
+        request.setAttribute("courseInfo", courseInfo);
+        return "course-exam";
     }
 
 }

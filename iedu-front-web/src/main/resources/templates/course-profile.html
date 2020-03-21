@@ -89,7 +89,7 @@
             </div>
             <div th:with="exams=${#httpServletRequest.getAttribute('chapterExams'+chapter.chid)}">
                 <div th:each="exam : ${exams}" class="course-lession">
-                    <button class="btn btn-outline-primary btn-sm btn-block course-lession-btn">[[${exam.title}]]</button>
+                    <button class="btn btn-outline-primary btn-sm btn-block course-lession-btn" th:onclick="'toURL(\'/Exam?eid='+${exam.eid}+'\')'">[[${exam.title}]]</button>
                 </div>
             </div>
         </div>

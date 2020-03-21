@@ -2,6 +2,7 @@ package cn.shadl.ieduservicecourse.controller;
 
 import cn.shadl.ieducommonbeans.domain.*;
 import cn.shadl.ieducommonbeans.domain.dto.CommentFloorDTO;
+import cn.shadl.ieducommonbeans.domain.dto.ExamQuestionDTO;
 import cn.shadl.ieduservicecourse.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +28,9 @@ public class CourseController {
 
     @Autowired
     private CommentService commentService;
+
+    @Autowired
+    private QuestionService questionService;
 
     @Autowired
     private UserService userService;
@@ -76,6 +80,11 @@ public class CourseController {
         return lessionService.findByChid(chid);
     }
 
+    @GetMapping("/findExamByEid")
+    public Exam findExamByEid(@RequestParam("eid") Integer eid) {
+        return examService.findByEid(eid);
+    }
+
     @GetMapping("/findExamsByChid")
     public List<Exam> findExamsByChid(@RequestParam("chid") Integer chid) {
         return examService.findByChid(chid);
@@ -84,6 +93,11 @@ public class CourseController {
     @GetMapping("/findCommentsByTargetTypeAndTargetId")
     public List<CommentFloorDTO> findCommentsByTargetTypeAndTargetId(String targetType, Integer targetId) {
             return commentService.getCommentFloor(commentService.findByTargetTypeAndTargetId(targetType, targetId));
+    }
+
+    @GetMapping("/findQuestionByEid")
+    public List<ExamQuestionDTO> findQuestionByEid(Integer eid) {
+        return questionService.findByEid(eid);
     }
 
 }
