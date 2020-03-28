@@ -25,6 +25,14 @@
     padding: 0.35rem !important;
     font-size: 12px !important;
 }
+.course-lession-btn-current{
+    padding: 0.35rem !important;
+    font-size: 12px !important;
+    color: white !important;
+}
+.lession-status{
+    float: right !important;
+}
 .title-text{
 
 }

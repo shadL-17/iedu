@@ -19,6 +19,8 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.List;
@@ -33,11 +35,12 @@ public class WebController {
     @Autowired
     private RestTemplate restTemplate;
 
-    public void setHostIp(HttpServletRequest req) {
+    public String setHostIp(HttpServletRequest req) {
         req.setAttribute("host",hostConfig.getIp());
+        return hostConfig.getIp();
     }
 
-    public void setUser(HttpServletRequest req) {
+    public User setUser(HttpServletRequest req) {
         Cookie[] cookies = req.getCookies();
         try{
             for(Cookie cookie : cookies) {
@@ -48,21 +51,26 @@ public class WebController {
                     params.add("username",user_cookie.getUsername());
                     params.add("password",user_cookie.getPassword());
                     User user_database = restTemplate.postForObject(url, params, User.class);
+                    //将cookies中的用户账密和数据库中的用户账密作校对
                     if(user_database.getUsername().equals(user_cookie.getUsername()) && user_database.getPassword().equals(user_cookie.getPassword())) {
                         req.setAttribute("user", user_database);
+                        return user_database;
                     }
-                    return;
+                    return null;
                 }
             }
         } catch (Exception e) {
-            return;
+            return null;
         }
+        return null;
     }
 
     //初始化，读取主机配置和登录状态
-    public void initRequest(HttpServletRequest req) {
-        setHostIp(req);
-        setUser(req);
+    public Map<String, Object> initRequest(HttpServletRequest req) {
+        Map<String, Object> info = new HashMap<>();
+        info.put("host", setHostIp(req));
+        info.put("user", setUser(req));
+        return info;
     }
 
     @RequestMapping("/")
@@ -130,11 +138,32 @@ public class WebController {
     }
 
     @GetMapping("/Lession")
-    public String lessionPage(HttpServletRequest request, @RequestParam("lid") Integer lid) {
-        initRequest(request);
+    public String lessionPage(HttpServletRequest request, HttpServletResponse response, @RequestParam("lid") Integer lid) {
+        //登录检测
+        //TODO:应设计为网关拦截
+        Map<String, Object> info = initRequest(request);
+        User user = (User) info.get("user");
+        if (user==null) {
+            return "login";
+        }
+        //获取课程、章节、课目信息
         Lession currentLession = restTemplate.exchange("http://" + hostConfig.getIp() + ":8080/course/findLessionByLid?lid=" + lid, HttpMethod.GET, null, new ParameterizedTypeReference<Lession>() {}).getBody();
         Chapter currentChapter = restTemplate.exchange("http://" + hostConfig.getIp() + ":8080/course/findChapterByChid?chid=" + currentLession.getChid(), HttpMethod.GET, null, new ParameterizedTypeReference<Chapter>() {}).getBody();
         Integer cid = currentChapter.getCid();
+        //检测是否已加入该课程，是则获取进度，否则跳转申请加入页
+        Integer progress = restTemplate.exchange("http://" + hostConfig.getIp() + ":8080/course/getStudentCourseProgress?uid="+user.getUid()+"&cid="+cid, HttpMethod.GET, null, new ParameterizedTypeReference<Integer>() {}).getBody();
+        if(progress==null) {
+            try {
+                response.sendRedirect("http://" + hostConfig.getIp() + "/Course?cid="+cid);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;//跳转到申请加入
+        }
+        else {
+            request.setAttribute("progress", progress);
+        }
+        //加载基本信息并经请求传到网页
         Course course = restTemplate.exchange("http://"+hostConfig.getIp()+":8080/course/findCourseByCid?cid="+cid, HttpMethod.GET, null, new ParameterizedTypeReference<Course>() {}).getBody();
         Integer numOfStu = restTemplate.exchange("http://"+hostConfig.getIp()+":8080/course/getNumberOfStudentsByCid?cid="+cid, HttpMethod.GET, null, new ParameterizedTypeReference<Integer>() {}).getBody();
         Integer numOfLes = restTemplate.exchange("http://"+hostConfig.getIp()+":8080/course/getNumberOfLessionsByCid?cid="+cid, HttpMethod.GET, null, new ParameterizedTypeReference<Integer>() {}).getBody();
@@ -166,7 +195,11 @@ public class WebController {
 
     @GetMapping("/Exam")
     public String examPage(HttpServletRequest request, @RequestParam("eid") Integer eid) {
-        initRequest(request);
+        //TODO:登录检测，以后需要改为网关拦截
+        Map<String, Object> info = initRequest(request);
+        if (info.get("user")==null) {
+            return "login";
+        }
         Exam exam = restTemplate.exchange("http://"+hostConfig.getIp()+":8080/course/findExamByEid?eid="+eid, HttpMethod.GET, null, new ParameterizedTypeReference<Exam>() {}).getBody();
         List<ExamQuestionDTO> questions = restTemplate.exchange("http://"+hostConfig.getIp()+":8080/course/findQuestionByEid?eid="+eid, HttpMethod.GET, null, new ParameterizedTypeReference<List<ExamQuestionDTO>>() {}).getBody();
         request.setAttribute("exam", exam);

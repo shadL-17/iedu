@@ -43,4 +43,8 @@ public class CourseService {
         }
         return num;
     }
+
+    public Integer getStudentCourseProgress(Integer uid, Integer cid) {
+        return courseRepository.getStudentCourseProgress(uid, cid);
+    }
 }

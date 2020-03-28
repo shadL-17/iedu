@@ -6,7 +6,6 @@ import cn.shadl.ieducommonbeans.domain.dto.ExamQuestionDTO;
 import cn.shadl.ieduservicecourse.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
@@ -53,6 +52,11 @@ public class CourseController {
     @GetMapping("/getNumberOfStudentsByCid")
     public Integer getNumberOfStudentsByCid(@RequestParam("cid") Integer cid) {
         return courseService.getNumberOfStudents(cid);
+    }
+
+    @GetMapping("/getStudentCourseProgress")
+    public Integer getStudentCourseProgress(Integer uid, Integer cid) {
+        return courseService.getStudentCourseProgress(uid, cid);
     }
 
     @GetMapping("/getNumberOfLessionsByCid")

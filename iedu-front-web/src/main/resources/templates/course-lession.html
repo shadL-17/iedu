@@ -6,6 +6,7 @@
     <link rel="stylesheet" type="text/css" th:href="@{~/css/index.css}" />
     <link rel="stylesheet" type="text/css" th:href="@{~/css/course-lession.css}" />
     <script th:src="@{~/js/common.js}"></script>
+    <script th:src="@{~/js/course-lession.js}"></script>
     <!-- 新 Bootstrap4 核心 CSS 文件 -->
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
     <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
@@ -15,7 +16,7 @@
     <!-- 最新的 Bootstrap4 核心 JavaScript 文件 -->
     <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </head>
-<body th:with="host=${#httpServletRequest.getAttribute('host')},user=${#httpServletRequest.getAttribute('user')},course=${#httpServletRequest.getAttribute('course')},currentChapter=${#httpServletRequest.getAttribute('chapter')},currentLession=${#httpServletRequest.getAttribute('lession')},creator=${#httpServletRequest.getAttribute('creator')},comments=${#httpServletRequest.getAttribute('comments')}">
+<body th:with="host=${#httpServletRequest.getAttribute('host')},user=${#httpServletRequest.getAttribute('user')},course=${#httpServletRequest.getAttribute('course')},currentChapter=${#httpServletRequest.getAttribute('chapter')},currentLession=${#httpServletRequest.getAttribute('lession')},creator=${#httpServletRequest.getAttribute('creator')},comments=${#httpServletRequest.getAttribute('comments')},progress=${#httpServletRequest.getAttribute('progress')}">
 
 <!--顶部导航栏-->
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
@@ -69,30 +70,51 @@
 
 <!--课程标题-->
 <h4 th:text="${course.name}" class="page-course-title"></h4>
-
+<!--课程目录及视频窗口-->
 <div class="course-lession-info">
     <!--课程结构及视频窗口-->
-    <div th:with="chapters=${#httpServletRequest.getAttribute('chapters')}" class="course-structure">
+    <div th:with="chapters=${#httpServletRequest.getAttribute('chapters')},setItemNo=${#httpServletRequest.setAttribute('itemNo',1)}" class="course-structure">
         <div th:each="chapter : ${chapters}">
             <div th:text="${chapter.title}" class="card bg-secondary text-white card-body course-chapter"></div>
             <div th:with="lessions=${#httpServletRequest.getAttribute('chapterLessions'+chapter.chid)}">
-                <div th:each="lession : ${lessions}" class="course-lession">
+                <div th:each="lession : ${lessions}" class="course-lession" th:with="itemNo=${#httpServletRequest.getAttribute('itemNo')}">
                     <div th:switch="${lession.lid}">
-                        <button th:case="${currentLession.lid}" class="btn btn-outline-secondary btn-sm btn-block course-lession-btn bg-secondary" style="color: white" disabled>[[${lession.title}]]</button>
-                        <button th:case="*" class="btn btn-outline-secondary btn-sm btn-block course-lession-btn" th:onclick="'toURL(\'/Lession?lid='+${lession.lid}+'\')'">[[${lession.title}]]</button>
+                        <div th:case="${currentLession.lid}">
+                            <div th:if="${itemNo<=progress}">
+                                <button class="btn btn-outline-secondary btn-sm btn-block course-lession-btn-current bg-secondary" disabled>[[${'['+itemNo+'] '+lession.title}]]<span class="badge badge-success lession-status">已完成</span></button>
+                            </div>
+                            <div th:if="${itemNo>progress}">
+                                <button class="btn btn-outline-secondary btn-sm btn-block course-lession-btn-current bg-secondary" disabled>[[${'['+itemNo+'] '+lession.title}]]<span class="badge badge-secondary lession-status">未解锁</span></button>
+                            </div>
+                        </div>
+                        <div th:case="*">
+                            <div th:if="${itemNo<=progress}">
+                                <button class="btn btn-outline-secondary btn-sm btn-block course-lession-btn" th:onclick="'toURL(\'/Lession?lid='+${lession.lid}+'\')'">[[${'['+itemNo+'] '+lession.title}]]<span class="badge badge-success lession-status">已完成</span></button>
+                            </div>
+                            <div th:if="${itemNo>progress}">
+                                <button class="btn btn-outline-secondary btn-sm btn-block course-lession-btn" th:onclick="'toURL(\'/Lession?lid='+${lession.lid}+'\')'">[[${'['+itemNo+'] '+lession.title}]]<span class="badge badge-secondary lession-status">未解锁</span></button>
+                            </div>
+                        </div>
+                        <script th:with="setItemNo=${#httpServletRequest.setAttribute('itemNo',itemNo+1)}"></script>
                     </div>
                 </div>
             </div>
             <div th:with="exams=${#httpServletRequest.getAttribute('chapterExams'+chapter.chid)}">
-                <div th:each="exam : ${exams}" class="course-lession">
-                    <button class="btn btn-outline-secondary btn-sm btn-block course-lession-btn" th:onclick="'toURL(\'/Exam?eid='+${exam.eid}+'\')'">[[${exam.title}]]</button>
+                <div th:each="exam : ${exams}" class="course-lession" th:with="itemNo=${#httpServletRequest.getAttribute('itemNo')}">
+                    <div th:if="${itemNo<=progress}">
+                        <button class="btn btn-outline-secondary btn-sm btn-block course-lession-btn" th:onclick="'toURL(\'/Exam?eid='+${exam.eid}+'\')'">[[${'['+itemNo+'] '+exam.title}]]<span class="badge badge-success lession-status">已完成</span></button>
+                    </div>
+                    <div th:if="${itemNo>progress}">
+                        <button class="btn btn-outline-secondary btn-sm btn-block course-lession-btn" th:onclick="'toURL(\'/Exam?eid='+${exam.eid}+'\')'">[[${'['+itemNo+'] '+exam.title}]]<span class="badge badge-secondary lession-status">未解锁</span></button>
+                    </div>
+                    <script th:with="setItemNo=${#httpServletRequest.setAttribute('itemNo',itemNo+1)}"></script>
                 </div>
             </div>
         </div>
     </div>
     <!--视频窗口-->
     <div class="lession-video">
-        <video width="100%" height="100%" controls autoplay>
+        <video id="lession-video" width="100%" height="100%" controls autoplay onseeked="showTime()">
             <source th:src="${currentLession.vid}" type="video/mp4">
         </video>
     </div>
