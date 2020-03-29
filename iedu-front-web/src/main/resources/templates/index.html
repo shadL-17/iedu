@@ -114,6 +114,8 @@
         <div th:each="course : ${hot_courses}" class="course-view" th:onclick="'toURL(\'/Course?cid='+${course.cid}+'\')'">
             <img th:src="${course.image}" class="course-image rounded img-thumbnail">
             <span th:text="${course.name}" class="course-title"></span>
+            <span th:if="${course.status=='已完结'}" class="badge badge-success">· 已完结</span>
+            <span th:if="${course.status=='更新中'}" class="badge badge-warning">· 更新中</span>
         </div>
     </div>
 

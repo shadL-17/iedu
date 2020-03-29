@@ -110,6 +110,8 @@
             <div class="course-info">
                 <h5 th:text="${course.name}" class="course-title"></h5>
                 <p th:text="${course.description}" class="course-description"></p>
+                <span th:if="${course.status=='已完结'}" class="badge badge-success">· 已完结</span>
+                <span th:if="${course.status=='更新中'}" class="badge badge-warning">· 更新中</span>
                 <a class="course-link">查看详情</a>
                 <a class="course-link">加入课程</a>
             </div>
