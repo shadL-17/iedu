@@ -38,10 +38,13 @@
         </div>
 
         <div id="paneRegister">
-            <form action="" method="post">
+            <form th:action="'http://'+${host}+':8080/user/register'" method="post" onsubmit="return registerCheck()">
                 <input class="inputUserInfo" id="regUsername" type="text" name="username" placeholder="请输入用户名">
+                <p class="regCheckMsg" id="usernameCheck">该用户名已存在</p>
                 <input class="inputUserInfo" id="regPassword" type="password" name="password" placeholder="请输入密码">
+                <p class="regCheckMsg" id="passwordCheck">密码必须为6-12位字母数字下划线</p>
                 <input class="inputUserInfo" id="regPassword2" type="password" name="password2" placeholder="再次确认密码">
+                <p class="regCheckMsg" id="password2Check">两次输入密码不一致</p>
                 <input class="inputUserInfo" id="buttonRegister" type="submit" value="注册账户">
                 <a id="privateAgreement" href="">用户隐私协议</a>
             </form>

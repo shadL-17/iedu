@@ -3,15 +3,22 @@ package cn.shadl.ieduservicecourse.controller;
 import cn.shadl.ieducommonbeans.domain.*;
 import cn.shadl.ieducommonbeans.domain.dto.CommentFloorDTO;
 import cn.shadl.ieducommonbeans.domain.dto.ExamQuestionDTO;
+import cn.shadl.ieduservicecourse.config.HostConfig;
 import cn.shadl.ieduservicecourse.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
 public class CourseController {
+
+    @Autowired
+    private HostConfig hostConfig;
 
     @Autowired
     private CourseService courseService;
@@ -62,6 +69,17 @@ public class CourseController {
     @GetMapping("/getNumberOfLessionsByCid")
     public Integer getNumberOfLessionsByCid(@RequestParam("cid") Integer cid) {
         return courseService.getNumberOfLessions(cid);
+    }
+
+    @GetMapping("/joinCourse")
+    public StudentCourse joinCourse(@RequestParam("uid") Integer uid, @RequestParam("cid") Integer cid, HttpServletResponse response) {
+        StudentCourse sc = courseService.joinCourse(uid, cid);
+        try {
+            response.sendRedirect("http://"+hostConfig.getIp()+"/Course?cid="+cid);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return sc;
     }
 
     @GetMapping("/findChaptersByCid")

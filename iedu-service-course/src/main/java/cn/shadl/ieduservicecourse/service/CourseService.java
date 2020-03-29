@@ -2,8 +2,10 @@ package cn.shadl.ieduservicecourse.service;
 
 import cn.shadl.ieducommonbeans.domain.Chapter;
 import cn.shadl.ieducommonbeans.domain.Course;
+import cn.shadl.ieducommonbeans.domain.StudentCourse;
 import cn.shadl.ieduservicecourse.repository.ChapterRepository;
 import cn.shadl.ieduservicecourse.repository.CourseRepository;
+import cn.shadl.ieduservicecourse.repository.StudentCourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,9 @@ public class CourseService {
 
     @Autowired
     private ChapterRepository chapterRepository;
+
+    @Autowired
+    private StudentCourseRepository studentCourseRepository;
 
     public List<Course> findAll() {
         return courseRepository.findAll();
@@ -32,7 +37,7 @@ public class CourseService {
     }
 
     public Integer getNumberOfStudents(Integer cid) {
-        return courseRepository.getNumberOfStudents(cid);
+        return studentCourseRepository.getNumberOfStudents(cid);
     }
 
     public Integer getNumberOfLessions(Integer cid) {
@@ -45,6 +50,15 @@ public class CourseService {
     }
 
     public Integer getStudentCourseProgress(Integer uid, Integer cid) {
-        return courseRepository.getStudentCourseProgress(uid, cid);
+        return studentCourseRepository.getStudentCourseProgress(uid, cid);
+    }
+
+    public StudentCourse joinCourse(Integer uid, Integer cid) {
+        StudentCourse scData = new StudentCourse();
+        scData.setUid(uid);
+        scData.setCid(cid);
+        scData.setProgress(0);
+        scData.setScore(0);
+        return studentCourseRepository.save(scData);
     }
 }

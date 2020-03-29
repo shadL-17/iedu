@@ -91,6 +91,32 @@ public class UserController {
         return null;
     }
 
+    @PostMapping("/register")
+    public User register(HttpServletRequest request, HttpServletResponse response, @RequestParam("username") String username, @RequestParam("password") String password) {
+        User checkUsername = userService.findByUsername(username);
+        if(checkUsername==null) {
+            User user = new User();
+            user.setUsername(username);
+            user.setPassword(password);
+            user.setRole("student");
+            User returnUser = userService.save(user);
+            try {
+                response.sendRedirect("http://"+hostConfig.getIp()+"/login");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return returnUser;
+        }
+        else {
+            try {
+                response.sendRedirect("http://"+hostConfig.getIp()+"/login");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+
     @GetMapping("/findByUid")
     public User findByUid(@RequestParam("uid") Integer uid) {
         return userService.findByUid(uid);

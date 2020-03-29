@@ -111,8 +111,26 @@ public class WebController {
 
     @GetMapping("/Course")
     public String courseProfile(HttpServletRequest request, @RequestParam("cid") Integer cid) {
-        initRequest(request);
+        Map<String, Object> info = initRequest(request);
+        User user = (User) info.get("user");
         Course course = restTemplate.exchange("http://"+hostConfig.getIp()+":8080/course/findCourseByCid?cid="+cid, HttpMethod.GET, null, new ParameterizedTypeReference<Course>() {}).getBody();
+        User creator = restTemplate.exchange("http://" + hostConfig.getIp() + ":8080/user/findByUid?uid=" + course.getCreator(), HttpMethod.GET, null, new ParameterizedTypeReference<User>() {}).getBody();
+        //检测身份
+        if (user==null) {
+            request.setAttribute("role", "anonymous");
+        }
+        else if (user.getUid()==creator.getUid()){
+            request.setAttribute("role", "creator");
+        }
+        else {
+            Integer progress = restTemplate.exchange("http://" + hostConfig.getIp() + ":8080/course/getStudentCourseProgress?uid="+user.getUid()+"&cid="+cid, HttpMethod.GET, null, new ParameterizedTypeReference<Integer>() {}).getBody();
+            if(progress!=null) {
+                request.setAttribute("role", "student");
+            }
+            else {
+                request.setAttribute("role", "guest");
+            }
+        }
         Integer numOfStu = restTemplate.exchange("http://"+hostConfig.getIp()+":8080/course/getNumberOfStudentsByCid?cid="+cid, HttpMethod.GET, null, new ParameterizedTypeReference<Integer>() {}).getBody();
         Integer numOfLes = restTemplate.exchange("http://"+hostConfig.getIp()+":8080/course/getNumberOfLessionsByCid?cid="+cid, HttpMethod.GET, null, new ParameterizedTypeReference<Integer>() {}).getBody();
         Map<String, Object> courseInfo = new HashMap<String, Object>();
@@ -120,20 +138,18 @@ public class WebController {
         courseInfo.put("numberOfLessions", numOfLes);
         request.setAttribute("course", course);
         request.setAttribute("courseInfo", courseInfo);
-        if(course!=null) {
-            User creator = restTemplate.exchange("http://" + hostConfig.getIp() + ":8080/user/findByUid?uid=" + course.getCreator(), HttpMethod.GET, null, new ParameterizedTypeReference<User>() {}).getBody();
-            request.setAttribute("creator", creator);
-            List<Chapter> chapters = restTemplate.exchange("http://" + hostConfig.getIp() + ":8080/course/findChaptersByCid?cid=" + course.getCid(), HttpMethod.GET, null, new ParameterizedTypeReference<List<Chapter>>() {}).getBody();
-            request.setAttribute("chapters", chapters);
-            if(chapters!=null && !chapters.isEmpty()) {
-                for(Chapter chapter : chapters) {
-                    List<Lession> lessions = restTemplate.exchange("http://" + hostConfig.getIp() + ":8080/course/findLessionsByChid?chid=" + chapter.getChid(), HttpMethod.GET, null, new ParameterizedTypeReference<List<Lession>>(){}).getBody();
-                    request.setAttribute("chapterLessions"+chapter.getChid(), lessions);
-                    List<Exam> exams = restTemplate.exchange("http://" + hostConfig.getIp() + ":8080/course/findExamsByChid?chid=" + chapter.getChid(), HttpMethod.GET, null, new ParameterizedTypeReference<List<Exam>>() {}).getBody();
-                    request.setAttribute("chapterExams"+chapter.getChid(), exams);
-                }
+        request.setAttribute("creator", creator);
+        List<Chapter> chapters = restTemplate.exchange("http://" + hostConfig.getIp() + ":8080/course/findChaptersByCid?cid=" + course.getCid(), HttpMethod.GET, null, new ParameterizedTypeReference<List<Chapter>>() {}).getBody();
+        request.setAttribute("chapters", chapters);
+        if(chapters!=null && !chapters.isEmpty()) {
+            for(Chapter chapter : chapters) {
+                List<Lession> lessions = restTemplate.exchange("http://" + hostConfig.getIp() + ":8080/course/findLessionsByChid?chid=" + chapter.getChid(), HttpMethod.GET, null, new ParameterizedTypeReference<List<Lession>>(){}).getBody();
+                request.setAttribute("chapterLessions"+chapter.getChid(), lessions);
+                List<Exam> exams = restTemplate.exchange("http://" + hostConfig.getIp() + ":8080/course/findExamsByChid?chid=" + chapter.getChid(), HttpMethod.GET, null, new ParameterizedTypeReference<List<Exam>>() {}).getBody();
+                request.setAttribute("chapterExams"+chapter.getChid(), exams);
             }
         }
+
         return "course-profile";
     }
 
@@ -150,9 +166,15 @@ public class WebController {
         Lession currentLession = restTemplate.exchange("http://" + hostConfig.getIp() + ":8080/course/findLessionByLid?lid=" + lid, HttpMethod.GET, null, new ParameterizedTypeReference<Lession>() {}).getBody();
         Chapter currentChapter = restTemplate.exchange("http://" + hostConfig.getIp() + ":8080/course/findChapterByChid?chid=" + currentLession.getChid(), HttpMethod.GET, null, new ParameterizedTypeReference<Chapter>() {}).getBody();
         Integer cid = currentChapter.getCid();
+        Course course = restTemplate.exchange("http://"+hostConfig.getIp()+":8080/course/findCourseByCid?cid="+cid, HttpMethod.GET, null, new ParameterizedTypeReference<Course>() {}).getBody();
+        User creator = restTemplate.exchange("http://" + hostConfig.getIp() + ":8080/user/findByUid?uid=" + course.getCreator(), HttpMethod.GET, null, new ParameterizedTypeReference<User>() {}).getBody();
+        request.setAttribute("creator", creator);
         //检测是否已加入该课程，是则获取进度，否则跳转申请加入页
         Integer progress = restTemplate.exchange("http://" + hostConfig.getIp() + ":8080/course/getStudentCourseProgress?uid="+user.getUid()+"&cid="+cid, HttpMethod.GET, null, new ParameterizedTypeReference<Integer>() {}).getBody();
-        if(progress==null) {
+        if(progress!=null || user.getUid()==creator.getUid()) {//是该课程学员或创建者
+            request.setAttribute("progress", progress);
+        }
+        else {//未加入该课程
             try {
                 response.sendRedirect("http://" + hostConfig.getIp() + "/Course?cid="+cid);
             } catch (IOException e) {
@@ -160,11 +182,7 @@ public class WebController {
             }
             return null;//跳转到申请加入
         }
-        else {
-            request.setAttribute("progress", progress);
-        }
         //加载基本信息并经请求传到网页
-        Course course = restTemplate.exchange("http://"+hostConfig.getIp()+":8080/course/findCourseByCid?cid="+cid, HttpMethod.GET, null, new ParameterizedTypeReference<Course>() {}).getBody();
         Integer numOfStu = restTemplate.exchange("http://"+hostConfig.getIp()+":8080/course/getNumberOfStudentsByCid?cid="+cid, HttpMethod.GET, null, new ParameterizedTypeReference<Integer>() {}).getBody();
         Integer numOfLes = restTemplate.exchange("http://"+hostConfig.getIp()+":8080/course/getNumberOfLessionsByCid?cid="+cid, HttpMethod.GET, null, new ParameterizedTypeReference<Integer>() {}).getBody();
         Map<String, Object> courseInfo = new HashMap<String, Object>();
@@ -175,8 +193,6 @@ public class WebController {
         request.setAttribute("chapter", currentChapter);
         request.setAttribute("lession", currentLession);
         if(course!=null) {
-            User creator = restTemplate.exchange("http://" + hostConfig.getIp() + ":8080/user/findByUid?uid=" + course.getCreator(), HttpMethod.GET, null, new ParameterizedTypeReference<User>() {}).getBody();
-            request.setAttribute("creator", creator);
             List<Chapter> chapters = restTemplate.exchange("http://" + hostConfig.getIp() + ":8080/course/findChaptersByCid?cid=" + course.getCid(), HttpMethod.GET, null, new ParameterizedTypeReference<List<Chapter>>() {}).getBody();
             request.setAttribute("chapters", chapters);
             if(chapters!=null && !chapters.isEmpty()) {
@@ -215,6 +231,20 @@ public class WebController {
         request.setAttribute("course", course);
         request.setAttribute("courseInfo", courseInfo);
         return "course-exam";
+    }
+
+    @GetMapping("/JoinCourse")
+    public void joinCourse(HttpServletResponse response, @RequestParam("uid") Integer uid, @RequestParam("cid") Integer cid) {
+        try{
+            StudentCourse sc = restTemplate.exchange("http://"+hostConfig.getIp()+":8080/course/joinCourse?uid="+uid+"&cid="+cid, HttpMethod.GET, null, new ParameterizedTypeReference<StudentCourse>() {}).getBody();
+        } catch (Exception e) {
+
+        }
+        try {
+            response.sendRedirect("http://"+hostConfig.getIp()+"/Course?cid="+cid);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

@@ -15,7 +15,7 @@
     <!-- 最新的 Bootstrap4 核心 JavaScript 文件 -->
     <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </head>
-<body th:with="host=${#httpServletRequest.getAttribute('host')},user=${#httpServletRequest.getAttribute('user')},course=${#httpServletRequest.getAttribute('course')},creator=${#httpServletRequest.getAttribute('creator')},courseInfo=${#httpServletRequest.getAttribute('courseInfo')}">
+<body th:with="host=${#httpServletRequest.getAttribute('host')},user=${#httpServletRequest.getAttribute('user')},course=${#httpServletRequest.getAttribute('course')},creator=${#httpServletRequest.getAttribute('creator')},courseInfo=${#httpServletRequest.getAttribute('courseInfo')},role=${#httpServletRequest.getAttribute('role')}">
 
     <!--顶部导航栏-->
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
@@ -84,12 +84,16 @@
             <div th:text="${chapter.title}" class="card bg-primary text-white card-body course-chapter"></div>
             <div th:with="lessions=${#httpServletRequest.getAttribute('chapterLessions'+chapter.chid)}">
                 <div th:each="lession : ${lessions}" class="course-lession">
-                    <button class="btn btn-outline-primary btn-sm btn-block course-lession-btn" th:onclick="'toURL(\'/Lession?lid='+${lession.lid}+'\')'">[[${lession.title}]]</button>
+                    <button th:if="${role=='student'||role=='creator'}" class="btn btn-outline-primary btn-sm btn-block course-lession-btn" th:onclick="'toURL(\'/Lession?lid='+${lession.lid}+'\')'">[[${lession.title}]]</button>
+                    <button th:if="${role=='guest'}" class="btn btn-outline-primary btn-sm btn-block course-lession-btn" data-toggle="modal" data-target="#apply">[[${lession.title}]]</button>
+                    <button th:if="${role=='anonymous'}" class="btn btn-outline-primary btn-sm btn-block course-lession-btn" onclick="toURL('/login')">[[${lession.title}]]</button>
                 </div>
             </div>
             <div th:with="exams=${#httpServletRequest.getAttribute('chapterExams'+chapter.chid)}">
                 <div th:each="exam : ${exams}" class="course-lession">
-                    <button class="btn btn-outline-primary btn-sm btn-block course-lession-btn" th:onclick="'toURL(\'/Exam?eid='+${exam.eid}+'\')'">[[${exam.title}]]</button>
+                    <button th:if="${role=='student'||role=='creator'}" class="btn btn-outline-primary btn-sm btn-block course-lession-btn" th:onclick="'toURL(\'/Exam?eid='+${exam.eid}+'\')'">[[${exam.title}]]</button>
+                    <button th:if="${role=='guest'}" class="btn btn-outline-primary btn-sm btn-block course-lession-btn" data-toggle="modal" data-target="#apply">[[${exam.title}]]</button>
+                    <button th:if="${role=='anonymous'}" class="btn btn-outline-primary btn-sm btn-block course-lession-btn" onclick="toURL('/login')">[[${exam.title}]]</button>
                 </div>
             </div>
         </div>
@@ -109,9 +113,33 @@
         <span class="content-text" th:text="'学习人数：'+${courseInfo.numberOfStudents}"></span>
         <br>
         <span class="content-text" th:text="'总课堂数：'+${courseInfo.numberOfLessions}"></span>
+        <br th:if="${role=='guest'||role=='anonymous'}"><br th:if="${role=='guest'||role=='anonymous'}">
+        <button th:if="${role=='anonymous'}" type="button" class="btn btn-primary" onclick="toURL('/login')">申请加入</button>
+        <button th:if="${role=='guest'}" type="button" class="btn btn-primary" th:onclick="'toURL(\'/JoinCourse?uid='+${user.uid}+'&cid='+${course.cid}+'\')'">申请加入</button>
     </div>
 
     <br><br><br><br>
+
+    <!-- 申请加入框 -->
+    <div class="modal fade" id="apply">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h4 class="modal-title">申请加入</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <div class="modal-body">检测到目前您不是该课程的成员，是否申请加入本课程？</div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" th:onclick="'toURL(\'/JoinCourse?uid='+${user.uid}+'&cid='+${course.cid}+'\')'">加入</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
 
 </body>
 </html>

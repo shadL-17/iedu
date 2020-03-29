@@ -126,6 +126,22 @@ body{
 #regPassword2{
     top: 66%;
 }
+.regCheckMsg{
+    display: none;
+    position: absolute;
+    left: 9.4%;
+    font-size: 12px;
+    color: red;
+}
+#usernameCheck{
+    top: 44%;
+}
+#passwordCheck{
+    top: 56%;
+}
+#password2Check{
+    top: 68%;
+}
 #buttonRegister{
     top: 79%;
     width: 81.5%;

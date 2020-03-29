@@ -15,12 +15,23 @@ function switchRegister() {
     document.getElementById("paneRegister").style.display = 'block';
 }
 
-function setValue(id,val) {
-    document.getElementById(id).value = val;
-}
-
-function showMsg(msg) {
-    if(msg!=null) {
-        alert(msg);
+function registerCheck() {
+    var patt = /^[A-Za-z0-9]{6,12}$/;
+    var pwd1 = document.getElementById("regPassword").value;
+    var pwd2 = document.getElementById("regPassword2").value;
+    var info_usrn = document.getElementById("usernameCheck");
+    var info_pwd1 = document.getElementById("passwordCheck");
+    var info_pwd2 = document.getElementById("password2Check");
+    if(!patt.test(pwd1)) {
+        info_pwd1.style.display = 'block';
+        info_pwd2.style.display = 'none';
+        return false;
     }
+    if(pwd1 != pwd2) {
+        info_pwd1.style.display = 'none';
+        info_pwd2.style.display = 'block';
+        return false;
+    }
+    alert("注册成功！");
+    return true;
 }

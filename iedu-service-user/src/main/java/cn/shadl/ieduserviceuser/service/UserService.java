@@ -18,11 +18,16 @@ public class UserService {
         return (users!=null&&!users.isEmpty()) ? users.get(0) : null;
     }
 
-    public List<User> findByUsername(String username) {
-        return userRepository.findByUsername(username);
+    public User findByUsername(String username) {
+        List<User> users = userRepository.findByUsername(username);
+        return (users!=null && !users.isEmpty()) ? users.get(0) : null;
     }
 
     public List<User> findByUsernameAndPassword(String username, String password) {
         return userRepository.findByUsernameAndPassword(username, password);
+    }
+
+    public User save(User user) {
+        return userRepository.save(user);
     }
 }

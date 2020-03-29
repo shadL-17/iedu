@@ -1,6 +1,8 @@
 package cn.shadl.ieducommonbeans.domain;
 
 import lombok.Data;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -8,6 +10,8 @@ import java.util.Date;
 @Data
 @Entity
 @Table(name = "user")
+@DynamicInsert
+@DynamicUpdate
 public class User {
 
     @Id

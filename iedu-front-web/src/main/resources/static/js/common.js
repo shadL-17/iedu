@@ -5,3 +5,7 @@ function toURL(url) {
 function showMsg(msg) {
     alert(msg);
 }
+
+function setValue(id,val) {
+    document.getElementById(id).value = val;
+}
