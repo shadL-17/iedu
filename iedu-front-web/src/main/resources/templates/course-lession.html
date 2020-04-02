@@ -69,7 +69,7 @@
 </nav>
 
 <!--课程标题-->
-<h4 th:text="${course.name}" class="page-course-title"></h4>
+<h4 th:text="${course.name}" id="page-course-title"></h4>
 <!--课程目录及视频窗口-->
 <div class="course-lession-info">
     <!--课程结构及视频窗口-->
@@ -114,13 +114,22 @@
     </div>
     <!--视频窗口-->
     <div class="lession-video">
-        <video id="lession-video" width="100%" height="100%" controls autoplay onseeked="showTime()">
+        <video id="video-obj" width="100%" height="97.8%" controls autoplay oncanplay="init()" onplay="startVideoTimer()" onpause="stopVideoTimer()" onseeked="setCurrentTime()">
             <source th:src="${currentLession.vid}" type="video/mp4">
         </video>
+        <!--进度条-->
+        <div id="progress-bar-bg" data-toggle="tooltip" title="当前进度：0%" data-original-title>
+            <div id="progress-bar" style="width: 0%"></div>
+            <script>
+                $(document).ready(function(){
+                    $('[data-toggle="tooltip"]').tooltip();
+                });
+            </script>
+        </div>
     </div>
 </div>
 
-<br><br>
+<br><button onclick="get()">get</button><button onclick="set()">set</button><br>
 
 <!--评论区-->
 <div class="comment-area">

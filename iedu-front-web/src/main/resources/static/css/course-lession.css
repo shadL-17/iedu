@@ -1,4 +1,4 @@
-.page-course-title{
+#page-course-title{
     text-align: center;
     margin: 2rem;
 }
@@ -48,6 +48,17 @@
     display: inline-block;
     vertical-align: top;
     height: 100%;
+}
+#progress-bar-bg{
+    width: 100%;
+    height: 3px;
+    background-color: lightgray;
+    cursor: pointer;
+}
+#progress-bar{
+    height: 100%;
+    background-color: darkorange;
+    cursor: pointer;
 }
 /*评论区*/
 .comment-area{
