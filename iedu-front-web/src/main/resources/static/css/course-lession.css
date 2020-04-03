@@ -49,13 +49,13 @@
     vertical-align: top;
     height: 100%;
 }
-#progress-bar-bg{
+.progress-bar-bg{
     width: 100%;
     height: 3px;
     background-color: lightgray;
     cursor: pointer;
 }
-#progress-bar{
+.progress-bar{
     height: 100%;
     background-color: darkorange;
     cursor: pointer;

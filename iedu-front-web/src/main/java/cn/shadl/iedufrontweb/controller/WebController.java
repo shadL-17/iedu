@@ -206,6 +206,8 @@ public class WebController {
         }
         List<CommentFloorDTO> comments = restTemplate.exchange("http://" + hostConfig.getIp() + ":8080/course/findCommentsByTargetTypeAndTargetId?targetType=lession&targetId=" + currentLession.getLid(), HttpMethod.GET, null, new ParameterizedTypeReference<List<CommentFloorDTO>>() {}).getBody();
         request.setAttribute("comments", comments);
+        Integer lessionNo = restTemplate.exchange("http://" + hostConfig.getIp() + ":8080/course/getLessionNumInCourse?lid="+currentLession.getLid()+"&cid="+cid, HttpMethod.GET, null, new ParameterizedTypeReference<Integer>() {}).getBody();
+        request.setAttribute("lessionNo", lessionNo);
         return "course-lession";
     }
 

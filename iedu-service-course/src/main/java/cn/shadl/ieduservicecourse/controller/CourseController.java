@@ -122,4 +122,8 @@ public class CourseController {
         return questionService.findByEid(eid);
     }
 
+    @GetMapping("/getLessionNumInCourse")
+    public Integer getLessionNumInCourse(Integer lid, Integer cid) {
+        return lessionService.getLessionNumInCourse(lid, cid);
+    }
 }

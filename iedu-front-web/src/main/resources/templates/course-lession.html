@@ -16,7 +16,7 @@
     <!-- 最新的 Bootstrap4 核心 JavaScript 文件 -->
     <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </head>
-<body th:with="host=${#httpServletRequest.getAttribute('host')},user=${#httpServletRequest.getAttribute('user')},course=${#httpServletRequest.getAttribute('course')},currentChapter=${#httpServletRequest.getAttribute('chapter')},currentLession=${#httpServletRequest.getAttribute('lession')},creator=${#httpServletRequest.getAttribute('creator')},comments=${#httpServletRequest.getAttribute('comments')},progress=${#httpServletRequest.getAttribute('progress')}">
+<body th:with="host=${#httpServletRequest.getAttribute('host')},user=${#httpServletRequest.getAttribute('user')},course=${#httpServletRequest.getAttribute('course')},currentChapter=${#httpServletRequest.getAttribute('chapter')},currentLession=${#httpServletRequest.getAttribute('lession')},creator=${#httpServletRequest.getAttribute('creator')},comments=${#httpServletRequest.getAttribute('comments')},progress=${#httpServletRequest.getAttribute('progress')},lessionNo=${#httpServletRequest.getAttribute('lessionNo')}">
 
 <!--顶部导航栏-->
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
@@ -69,7 +69,7 @@
 </nav>
 
 <!--课程标题-->
-<h4 th:text="${course.name}" id="page-course-title"></h4>
+<h4 th:text="${course.name+' ['+lessionNo+']'}" id="page-course-title"></h4>
 <!--课程目录及视频窗口-->
 <div class="course-lession-info">
     <!--课程结构及视频窗口-->
@@ -114,12 +114,26 @@
     </div>
     <!--视频窗口-->
     <div class="lession-video">
-        <video id="video-obj" width="100%" height="97.8%" controls autoplay oncanplay="init()" onplay="startVideoTimer()" onpause="stopVideoTimer()" onseeked="setCurrentTime()">
+        <!--视频对象（未解锁的课程）-->
+        <video th:if="${progress<lessionNo}" id="video-obj" width="100%" height="97.8%" controls autoplay oncanplay="init()" onplay="startVideoTimer()" onpause="stopVideoTimer()" onseeked="setCurrentTime()">
             <source th:src="${currentLession.vid}" type="video/mp4">
         </video>
-        <!--进度条-->
-        <div id="progress-bar-bg" data-toggle="tooltip" title="当前进度：0%" data-original-title>
-            <div id="progress-bar" style="width: 0%"></div>
+        <!--视频对象（已完成的课程）-->
+        <video th:if="${progress>=lessionNo}" id="video-obj-1" width="100%" height="97.8%" controls autoplay>
+            <source th:src="${currentLession.vid}" type="video/mp4">
+        </video>
+        <!--进度条（未解锁的课程）-->
+        <div th:if="${progress<lessionNo}" id="progress-bar-bg" class="progress-bar-bg" data-toggle="tooltip" title="当前进度：0%" data-original-title>
+            <div id="progress-bar" class="progress-bar" style="width: 0%"></div>
+            <script>
+                $(document).ready(function(){
+                    $('[data-toggle="tooltip"]').tooltip();
+                });
+            </script>
+        </div>
+        <!--进度条（已完成的课程）-->
+        <div th:if="${progress>=lessionNo}" id="progress-bar-bg-1" class="progress-bar-bg" data-toggle="tooltip" title="当前进度：100%" data-original-title>
+            <div id="progress-bar-1" class="progress-bar" style="width: 100%"></div>
             <script>
                 $(document).ready(function(){
                     $('[data-toggle="tooltip"]').tooltip();
@@ -129,7 +143,7 @@
     </div>
 </div>
 
-<br><button onclick="get()">get</button><button onclick="set()">set</button><br>
+<br><br>
 
 <!--评论区-->
 <div class="comment-area">
