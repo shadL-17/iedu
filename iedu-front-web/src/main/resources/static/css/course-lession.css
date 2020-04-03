@@ -110,3 +110,6 @@
 .comment-reply-content{
 
 }
+#requestSender{
+    display: none;
+}

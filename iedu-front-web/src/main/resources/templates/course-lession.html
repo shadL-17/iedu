@@ -115,11 +115,11 @@
     <!--视频窗口-->
     <div class="lession-video">
         <!--视频对象（未解锁的课程）-->
-        <video th:if="${progress<lessionNo}" id="video-obj" width="100%" height="97.8%" controls autoplay oncanplay="init()" onplay="startVideoTimer()" onpause="stopVideoTimer()" onseeked="setCurrentTime()">
+        <video th:if="${progress<lessionNo}" id="video-obj" width="100%" height="97.8%" controls oncanplay="init()" onplay="startVideoTimer()" onpause="stopVideoTimer()" onseeked="setCurrentTime()">
             <source th:src="${currentLession.vid}" type="video/mp4">
         </video>
         <!--视频对象（已完成的课程）-->
-        <video th:if="${progress>=lessionNo}" id="video-obj-1" width="100%" height="97.8%" controls autoplay>
+        <video th:if="${progress>=lessionNo}" id="video-obj-1" width="100%" height="97.8%" controls>
             <source th:src="${currentLession.vid}" type="video/mp4">
         </video>
         <!--进度条（未解锁的课程）-->
@@ -143,7 +143,10 @@
     </div>
 </div>
 
-<br><br>
+<br>
+<img id="requestSender" src="">
+<input id="hostConfig" th:value="${host}" th:attr="data-uid=${user.uid},data-cid=${course.cid}" type="hidden">
+<br>
 
 <!--评论区-->
 <div class="comment-area">

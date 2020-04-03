@@ -41,6 +41,9 @@ public class CourseController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private StudentCourseService studentCourseService;
+
     @GetMapping("/findAllCourses")
     public List<Course> findAllCourses() {
         return courseService.findAll();
@@ -125,5 +128,10 @@ public class CourseController {
     @GetMapping("/getLessionNumInCourse")
     public Integer getLessionNumInCourse(Integer lid, Integer cid) {
         return lessionService.getLessionNumInCourse(lid, cid);
+    }
+
+    @GetMapping("/upgradeProgress")
+    public StudentCourse upgradeProgress(Integer uid, Integer cid) {
+        return studentCourseService.upgradeProgress(uid, cid);
     }
 }
