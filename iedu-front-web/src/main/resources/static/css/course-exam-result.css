@@ -1,0 +1,21 @@
+.result-area{
+    position: absolute;
+    transform: translate(-50%,-50%);
+    top: 50%;
+    left: 50%;
+    width: 500px;
+    height: 200px;
+    padding: 20px;
+    background-color: #fff969;
+    border: 1px solid black;
+}
+.result-tips{
+
+}
+.result-score{
+    font-weight: bolder;
+    color: darkorange;
+}
+.result-backToCourse{
+
+}

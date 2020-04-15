@@ -6,6 +6,7 @@
     <link rel="stylesheet" type="text/css" th:href="@{~/css/index.css}" />
     <link rel="stylesheet" type="text/css" th:href="@{~/css/course-lession.css}" />
     <link rel="stylesheet" type="text/css" th:href="@{~/css/course-exam.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{~/css/course-exam-result.css}" />
     <script th:src="@{~/js/common.js}"></script>
     <!-- 新 Bootstrap4 核心 CSS 文件 -->
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
@@ -16,7 +17,7 @@
     <!-- 最新的 Bootstrap4 核心 JavaScript 文件 -->
     <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </head>
-<body th:with="host=${#httpServletRequest.getAttribute('host')},user=${#httpServletRequest.getAttribute('user')},course=${#httpServletRequest.getAttribute('course')},currentChapter=${#httpServletRequest.getAttribute('chapter')},exam=${#httpServletRequest.getAttribute('exam')},questions=${#httpServletRequest.getAttribute('questions')},examNo=${#httpServletRequest.getAttribute('examNo')}">
+<body th:with="host=${#httpServletRequest.getAttribute('host')},user=${#httpServletRequest.getAttribute('user')},course=${#httpServletRequest.getAttribute('course')},currentChapter=${#httpServletRequest.getAttribute('chapter')},exam=${#httpServletRequest.getAttribute('exam')},examNo=${#httpServletRequest.getAttribute('examNo')},score=${#httpServletRequest.getAttribute('score')}">
 
 <!--顶部导航栏-->
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
@@ -71,48 +72,14 @@
 <!--课程标题-->
 <h4 th:text="${course.name+' ['+examNo+']'}" id="page-course-title"></h4>
 
-<div class="exam-area">
-<!--测验标题-->
-<h4 class="exam-title" th:text="${exam.title}"></h4>
-<br>
-
-<!--测验内容-->
-<form action="/SubmitAnswer" method="get">
-    <div class="exam-question card" th:each="question,questionStat : ${questions}">
-        <div th:switch="${question.type}">
-            <!--单选题-->
-            <div th:case="'single'">
-                <p class="exam-question-text" th:text="${questionStat.index+1 + '. ' + question.question}"></p>
-                <div class="exam-question-option radio" th:each="option : ${question.options}">
-                    <label><input type="radio" th:name="'question'+${questionStat.index+1}" th:value="${option}" th:text="${T(cn.shadl.ieducommonbeans.domain.dto.ExamQuestionDTO).marks[optionStat.index] + option}"></label>
-                </div>
-            </div>
-            <!--多选题-->
-            <div th:case="'multiple'">
-                <p class="exam-question-text" th:text="${questionStat.index+1 + '. ' + question.question}"></p>
-                <div class="exam-question-option radio" th:each="option,optionStat : ${question.options}">
-                    <label class="form-check-label">
-                        <input type="checkbox" th:name="'question'+${questionStat.index+1}" th:value="${option}">[[${T(cn.shadl.ieducommonbeans.domain.dto.ExamQuestionDTO).marks[optionStat.index] + option}]]
-                    </label>
-                </div>
-            </div>
-            <!--填空题-->
-            <div th:case="'blank'">
-                <span class="exam-question-text" th:text="${questionStat.index+1 + '. ' + question.question}"></span>
-                <div class="exam-question-option radio" th:each="option : ${question.options}">
-                    <input type="text" class="exam-question-blankinput" th:name="'question'+${questionStat.index+1}" th:value="${option}">
-                </div>
-            </div>
-        </div>
-        <br>
-    </div>
+<div class="result-area">
+    <!--测验标题-->
+    <h4 class="exam-title" th:text="${exam.title}"></h4>
     <br>
-    <input type="hidden" name="uid" th:value="${user.uid}">
-    <input type="hidden" name="eid" th:value="${exam.eid}">
-    <input type="submit" value="提交">
-</form>
+    <!--测验结果-->
+    <span class="result-tips">你的分数是：<span class="result-score">[[${score}]] </span></span>
+    <a class="result-backToCourse" th:href="'/Course?cid='+${course.cid}"> 返回课程</a>
 </div>
-
 <br><br><br>
 
 </body>

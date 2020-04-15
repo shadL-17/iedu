@@ -22,4 +22,11 @@ public class StudentCourseService {
         record.setProgress(record.getProgress()+1);
         return studentCourseRepository.saveAndFlush(record);
     }
+
+    public StudentCourse addScore(Integer uid, Integer cid, Integer score) {
+        StudentCourse record = findByUidAndCid(uid, cid);
+        record.setScore(record.getScore()+score);
+        return studentCourseRepository.save(record);
+    }
+
 }

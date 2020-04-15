@@ -33,7 +33,7 @@ public class LessionService {
 
     public Integer getLessionNumInCourse(Integer lid, Integer cid) {//获取课目在课程中的顺序序号（包括测验）
         try{
-            Lession currentLession = lessionRepository.findByLid(lid).get(0);
+            Lession currentLession = findByLid(lid);
             List<Lession> lessions = lessionRepository.findByCid(cid);
             List<Exam> exams = examRepository.findByCid(cid);
             Integer lessionNo = 1;
@@ -58,4 +58,5 @@ public class LessionService {
         }
         return -1;
     }
+
 }

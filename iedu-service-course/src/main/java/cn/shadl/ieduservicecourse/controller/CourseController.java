@@ -6,13 +6,14 @@ import cn.shadl.ieducommonbeans.domain.dto.ExamQuestionDTO;
 import cn.shadl.ieduservicecourse.config.HostConfig;
 import cn.shadl.ieduservicecourse.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpEntity;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class CourseController {
@@ -130,8 +131,21 @@ public class CourseController {
         return lessionService.getLessionNumInCourse(lid, cid);
     }
 
+    @GetMapping("/getExamNumInCourse")
+    public Integer getExamNumInCourse(Integer eid, Integer cid) {
+        return examService.getExamNumInCourse(eid, cid);
+    }
+
     @GetMapping("/upgradeProgress")
     public StudentCourse upgradeProgress(Integer uid, Integer cid) {
         return studentCourseService.upgradeProgress(uid, cid);
+    }
+
+    @PostMapping("/countScoreByAnswer")
+    public Integer countScoreByAnswer(@RequestBody Map<String, Object> params) {
+        Integer uid = Integer.valueOf(params.get("uid").toString());
+        Integer eid = Integer.valueOf(params.get("eid").toString());
+        Map<String, String[]> answers = (Map<String, String[]>) params.get("answers");
+        return examService.countScoreByAnswer(uid, eid, answers);
     }
 }

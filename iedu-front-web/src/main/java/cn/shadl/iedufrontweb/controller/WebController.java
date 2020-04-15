@@ -7,14 +7,14 @@ import cn.shadl.iedufrontweb.config.HostConfig;
 import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.Cookie;
@@ -232,6 +232,8 @@ public class WebController {
         courseInfo.put("numberOfLessions", numOfLes);
         request.setAttribute("course", course);
         request.setAttribute("courseInfo", courseInfo);
+        Integer examNo = restTemplate.exchange("http://" + hostConfig.getIp() + ":8080/course/getExamNumInCourse?eid="+exam.getEid()+"&cid="+cid, HttpMethod.GET, null, new ParameterizedTypeReference<Integer>() {}).getBody();
+        request.setAttribute("examNo", examNo);
         return "course-exam";
     }
 
@@ -247,6 +249,41 @@ public class WebController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @GetMapping("SubmitAnswer")
+    public String submitAnswer(HttpServletRequest request, @RequestParam("uid") Integer uid, @RequestParam("eid") Integer eid) {
+        Map<String, Object> info = initRequest(request);
+        User user = (User) info.get("user");
+        String host = (String) info.get("host");
+        if (info.get("user")==null) {
+            return "login";
+        }
+        Exam exam = restTemplate.exchange("http://"+hostConfig.getIp()+":8080/course/findExamByEid?eid="+eid, HttpMethod.GET, null, new ParameterizedTypeReference<Exam>() {}).getBody();
+        request.setAttribute("exam", exam);
+        Chapter currentChapter = restTemplate.exchange("http://" + hostConfig.getIp() + ":8080/course/findChapterByChid?chid=" + exam.getChid(), HttpMethod.GET, null, new ParameterizedTypeReference<Chapter>() {}).getBody();
+        Integer cid = currentChapter.getCid();
+        Course course = restTemplate.exchange("http://"+hostConfig.getIp()+":8080/course/findCourseByCid?cid="+cid, HttpMethod.GET, null, new ParameterizedTypeReference<Course>() {}).getBody();
+        Integer examNo = restTemplate.exchange("http://" + hostConfig.getIp() + ":8080/course/getExamNumInCourse?eid="+exam.getEid()+"&cid="+cid, HttpMethod.GET, null, new ParameterizedTypeReference<Integer>() {}).getBody();
+        request.setAttribute("examNo", examNo);
+        request.setAttribute("user", user);
+        request.setAttribute("host", host);
+        request.setAttribute("course", course);
+        Map<String, String[]> answers = request.getParameterMap();
+        Map<String, Object> params = new HashMap<>();
+        params.put("uid", uid);
+        params.put("eid", eid);
+        params.put("answers", answers);
+        String url = "http://" + hostConfig.getIp() + ":8080/course/countScoreByAnswer";
+        Integer score = restTemplate.postForObject(url, params, Integer.class);
+        request.setAttribute("score", score);
+        return "course-exam-result";
+    }
+
+    @RequestMapping("/test")
+    @ResponseBody
+    public Object test(HttpServletRequest request) {
+        return request.getParameterMap();
     }
 
 }
