@@ -2,9 +2,11 @@ package cn.shadl.ieduservicecourse.service;
 
 import cn.shadl.ieducommonbeans.domain.Chapter;
 import cn.shadl.ieducommonbeans.domain.Course;
+import cn.shadl.ieducommonbeans.domain.Exam;
 import cn.shadl.ieducommonbeans.domain.StudentCourse;
 import cn.shadl.ieduservicecourse.repository.ChapterRepository;
 import cn.shadl.ieduservicecourse.repository.CourseRepository;
+import cn.shadl.ieduservicecourse.repository.ExamRepository;
 import cn.shadl.ieduservicecourse.repository.StudentCourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,9 @@ public class CourseService {
 
     @Autowired
     private ChapterRepository chapterRepository;
+
+    @Autowired
+    private ExamRepository examRepository;
 
     @Autowired
     private StudentCourseRepository studentCourseRepository;
@@ -47,6 +52,25 @@ public class CourseService {
             num += chapterRepository.getNumberOfLessions(chapter.getChid());
         }
         return num;
+    }
+
+    public Integer getNumberOfExams(Integer cid) {
+        int num = 0;
+        List<Chapter> chapters = chapterRepository.findByCid(cid);
+        for (Chapter chapter : chapters) {
+            List<Exam> exams = examRepository.findByChid(chapter.getChid());
+            if (exams == null || exams.isEmpty()) {
+                num += 0;
+            }
+            else {
+                num += exams.size();
+            }
+        }
+        return num;
+    }
+
+    public Integer getNumberOfCourseStages(Integer cid) {
+        return getNumberOfLessions(cid) + getNumberOfExams(cid);
     }
 
     public Integer getStudentCourseProgress(Integer uid, Integer cid) {

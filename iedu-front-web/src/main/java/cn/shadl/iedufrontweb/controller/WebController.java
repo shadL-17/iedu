@@ -3,6 +3,7 @@ package cn.shadl.iedufrontweb.controller;
 import cn.shadl.ieducommonbeans.domain.*;
 import cn.shadl.ieducommonbeans.domain.dto.CommentFloorDTO;
 import cn.shadl.ieducommonbeans.domain.dto.ExamQuestionDTO;
+import cn.shadl.ieducommonbeans.domain.dto.StudentCourseProgressDTO;
 import cn.shadl.iedufrontweb.config.HostConfig;
 import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -251,7 +252,7 @@ public class WebController {
         }
     }
 
-    @GetMapping("SubmitAnswer")
+    @GetMapping("/SubmitAnswer")
     public String submitAnswer(HttpServletRequest request, @RequestParam("uid") Integer uid, @RequestParam("eid") Integer eid) {
         Map<String, Object> info = initRequest(request);
         User user = (User) info.get("user");
@@ -278,6 +279,22 @@ public class WebController {
         Integer score = restTemplate.postForObject(url, params, Integer.class);
         request.setAttribute("score", score);
         return "course-exam-result";
+    }
+
+    @GetMapping("/Console")
+    public String console(HttpServletRequest request, Integer cid) {
+        Map<String, Object> info = initRequest(request);
+        User user = (User) info.get("user");
+        Course course = restTemplate.exchange("http://"+hostConfig.getIp()+":8080/course/findCourseByCid?cid="+cid, HttpMethod.GET, null, new ParameterizedTypeReference<Course>() {}).getBody();
+        if (user==null || user.getUid()!=course.getCreator()) {
+            request.setAttribute("msg", "你无权访问此页面。");
+            request.setAttribute("link", "http://"+hostConfig.getIp()+"/Course?cid="+cid);
+            return "warn";
+        }
+        List<StudentCourseProgressDTO> studentsProgress = restTemplate.exchange("http://"+hostConfig.getIp()+":8080/course/getAllStudentsProgressOfCourse?cid="+cid, HttpMethod.GET, null, new ParameterizedTypeReference<List<StudentCourseProgressDTO>>() {}).getBody();
+        request.setAttribute("course", course);
+        request.setAttribute("studentsProgress", studentsProgress);
+        return "course-console";
     }
 
     @RequestMapping("/test")

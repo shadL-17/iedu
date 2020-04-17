@@ -1,0 +1,34 @@
+.area-title{
+    text-align: center;
+}
+.studentsProgress{
+    margin: 2rem 15%;
+    padding: 10px 25px;
+    background-color: #F7F7F7;
+}
+.progress-row-student-name{
+    width: 7%;
+    overflow: hidden;
+    display: inline-block;
+}
+.student-name{
+    font-size: 16px;
+}
+.progress-row-progress-bar{
+    width: 80%;
+    overflow: hidden;
+    display: inline-block;
+}
+.progress-bar-bg{
+    width: 100%;
+    height: 3px;
+    background-color: lightgray;
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: middle;
+}
+.progress-bar{
+    height: 100%;
+    background-color: darkorange !important;
+    cursor: pointer;
+}

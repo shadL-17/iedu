@@ -57,7 +57,7 @@
 }
 .progress-bar{
     height: 100%;
-    background-color: darkorange;
+    background-color: darkorange !important;
     cursor: pointer;
 }
 /*评论区*/
@@ -112,4 +112,8 @@
 }
 #requestSender{
     display: none;
+}
+.teacher-console{
+    font-size: 13px;
+    margin: 7%;
 }

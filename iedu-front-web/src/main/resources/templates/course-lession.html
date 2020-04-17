@@ -70,6 +70,7 @@
 
 <!--课程标题-->
 <h4 th:text="${course.name+' ['+lessionNo+']'}" id="page-course-title"></h4>
+
 <!--课程目录及视频窗口-->
 <div class="course-lession-info">
     <!--课程结构及视频窗口-->
@@ -146,7 +147,11 @@
 <br>
 <img id="requestSender" src="">
 <input id="hostConfig" th:value="${host}" th:attr="data-uid=${user.uid},data-cid=${course.cid}" type="hidden">
-<br>
+
+<!--教师后台-->
+<a class="teacher-console" th:if="${user.uid==creator.uid}" th:href="'/Console?cid='+${course.cid}">教师后台>></a>
+
+<br><br>
 
 <!--评论区-->
 <div class="comment-area">
@@ -159,14 +164,15 @@
     <div th:each="comment : ${comments}" class="comment-floor">
         <div class="comment-main">
             <img class="comment-user-avatar" th:src="${comment.user.avatar}">
-            <h5 class="comment-user-username" th:text="${comment.user.username}"></h5>
-            <p class="comment-content-text" th:text="${comment.content}"></p>
+            <h5 class="comment-user-username">[[${comment.user.username}]] <span th:if="${comment.user.uid==creator.uid}" class="badge badge-warning">创建者</span></h5>
+            <p class="comment-content-text" th:utext="${comment.content}"></p>
             <span class="comment-date" th:text="${comment.date}"></span>
             <a class="comment-link-reply" th:href="'#'">回复</a>
         </div>
         <div th:each="reply : ${comment.replies}">
-            <h5 th:text="${reply.user.username}+': '" class="comment-reply-user"></h5>
-            <span th:text="${reply.content}" class="comment-reply-content"></span>
+            <h5 class="comment-reply-user">[[${reply.user.username}]] <span th:if="${reply.user.uid==creator.uid}" class="badge badge-warning">创建者</span>: </h5>
+            <span th:utext="${reply.content}" class="comment-reply-content"></span>
+            <span class="comment-date" th:text="' '+${comment.date}"></span>
         </div>
     </div>
 </div>

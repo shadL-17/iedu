@@ -3,6 +3,7 @@ package cn.shadl.ieduservicecourse.controller;
 import cn.shadl.ieducommonbeans.domain.*;
 import cn.shadl.ieducommonbeans.domain.dto.CommentFloorDTO;
 import cn.shadl.ieducommonbeans.domain.dto.ExamQuestionDTO;
+import cn.shadl.ieducommonbeans.domain.dto.StudentCourseProgressDTO;
 import cn.shadl.ieduservicecourse.config.HostConfig;
 import cn.shadl.ieduservicecourse.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -147,5 +148,10 @@ public class CourseController {
         Integer eid = Integer.valueOf(params.get("eid").toString());
         Map<String, String[]> answers = (Map<String, String[]>) params.get("answers");
         return examService.countScoreByAnswer(uid, eid, answers);
+    }
+
+    @GetMapping("/getAllStudentsProgressOfCourse")
+    public List<StudentCourseProgressDTO> getAllStudentsProgressOfCourse(Integer cid) {
+        return studentCourseService.getAllStudentsProgressOfCourse(cid);
     }
 }
