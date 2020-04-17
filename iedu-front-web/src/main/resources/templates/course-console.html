@@ -68,11 +68,13 @@
         </ul>
     </nav>
 
-    <br><br><br>
+    <br><br>
+    <h3 class="course-title" th:text="${course.name}+' - 教师后台'"></h3>
+    <br><br>
 
     <h4 class="area-title">学生进度</h4>
 
-    <div class="studentsProgress">
+    <div class="console-area">
         <div th:each="studentProgress : ${studentsProgress}">
             <div class="progress-row-student-name">
                 <span class="student-name">[[${studentProgress.student.username}]]: </span>
@@ -88,6 +90,18 @@
                 </script>
             </div>
         </div>
+    </div>
+
+    <br>
+
+    <h4 class="area-title">课程热点</h4>
+    <div class="console-area">
+        <p>主要显示课程中哪些章节、哪些课目被重复访问得最多</p>
+    </div>
+
+    <h4 class="area-title">视频日志</h4>
+    <div class="console-area">
+        <p>主要记录课程视频哪些地方经常被跳过、哪些经常被回退重复观看</p>
     </div>
 
 </body>

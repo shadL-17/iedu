@@ -1,8 +1,11 @@
-.area-title{
+.course-title{
     text-align: center;
 }
-.studentsProgress{
-    margin: 2rem 15%;
+.area-title{
+    margin: 0rem 15%;
+}
+.console-area{
+    margin: 1rem 15%;
     padding: 10px 25px;
     background-color: #F7F7F7;
 }
