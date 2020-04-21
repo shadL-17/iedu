@@ -15,6 +15,8 @@
     <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
     <!-- 最新的 Bootstrap4 核心 JavaScript 文件 -->
     <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <!--jQuery_新浪CDN-->
+    <script src="https://lib.sinaapp.com/js/jquery/2.0.2/jquery-2.0.2.min.js"></script>
 </head>
 <body th:with="host=${#httpServletRequest.getAttribute('host')},user=${#httpServletRequest.getAttribute('user')},course=${#httpServletRequest.getAttribute('course')},currentChapter=${#httpServletRequest.getAttribute('chapter')},currentLession=${#httpServletRequest.getAttribute('lession')},creator=${#httpServletRequest.getAttribute('creator')},comments=${#httpServletRequest.getAttribute('comments')},progress=${#httpServletRequest.getAttribute('progress')},lessionNo=${#httpServletRequest.getAttribute('lessionNo')}">
 
@@ -70,6 +72,7 @@
 
 <!--课程标题-->
 <h4 th:text="${course.name+' ['+lessionNo+']'}" id="page-course-title"></h4>
+<input id="lessionStat" type="hidden" value="unfinish">
 
 <!--课程目录及视频窗口-->
 <div class="course-lession-info">
@@ -116,12 +119,14 @@
     <!--视频窗口-->
     <div class="lession-video">
         <!--视频对象（未解锁的课程）-->
-        <video th:if="${progress<lessionNo}" id="video-obj" width="100%" height="97.8%" controls oncanplay="init()" onplay="startVideoTimer()" onpause="stopVideoTimer()" onseeked="setCurrentTime()">
+        <video th:if="${progress<lessionNo}" id="video-obj" width="100%" height="97.8%" controls oncanplay="init()" onplay="startVideoTimer();clearPauseTimer();" onpause="stopVideoTimer();startPauseTimer();" onseeked="setCurrentTime();clearPauseTimer();">
             <source th:src="${currentLession.vid}" type="video/mp4">
+            <script>document.getElementById("lessionStat").value = "unfinish";</script>
         </video>
         <!--视频对象（已完成的课程）-->
-        <video th:if="${progress>=lessionNo}" id="video-obj-1" width="100%" height="97.8%" controls>
+        <video th:if="${progress>=lessionNo}" id="video-obj-1" width="100%" height="97.8%" controls onplay="recordReview()">
             <source th:src="${currentLession.vid}" type="video/mp4">
+            <script>document.getElementById("lessionStat").value = "finished";</script>
         </video>
         <!--进度条（未解锁的课程）-->
         <div th:if="${progress<lessionNo}" id="progress-bar-bg" class="progress-bar-bg" data-toggle="tooltip" title="当前进度：0%" data-original-title>
@@ -146,7 +151,7 @@
 
 <br>
 <img id="requestSender" src="">
-<input id="hostConfig" th:value="${host}" th:attr="data-uid=${user.uid},data-cid=${course.cid}" type="hidden">
+<input id="hostConfig" th:value="${host}" th:attr="data-uid=${user.uid},data-cid=${course.cid},data-lid=${currentLession.lid}" type="hidden">
 
 <!--教师后台-->
 <a class="teacher-console" th:if="${user.uid==creator.uid}" th:href="'/Console?cid='+${course.cid}">教师后台>></a>
@@ -178,6 +183,15 @@
 </div>
 
 <br><br><br>
+
+<form id="video-action-param-form" action="/VideoAction" method="post">
+    <input type="hidden" id="param-uid" name="uid" value="">
+    <input type="hidden" id="param-lid" name="lid" value="">
+    <input type="hidden" id="param-action" name="action" value="">
+    <input type="hidden" id="param-timeBefore" name="timeBefore" value="">
+    <input type="hidden" id="param-timeAfter" name="timeAfter" value="">
+    <input type="hidden" id="param-actionTime" name="actionTime" value="">
+</form>
 
 </body>
 </html>

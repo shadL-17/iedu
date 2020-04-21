@@ -7,8 +7,6 @@ import cn.shadl.ieducommonbeans.domain.dto.StudentCourseProgressDTO;
 import cn.shadl.ieduservicecourse.config.HostConfig;
 import cn.shadl.ieduservicecourse.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -45,6 +43,9 @@ public class CourseController {
 
     @Autowired
     private StudentCourseService studentCourseService;
+
+    @Autowired
+    private VideoActionService videoActionService;
 
     @GetMapping("/findAllCourses")
     public List<Course> findAllCourses() {
@@ -153,5 +154,22 @@ public class CourseController {
     @GetMapping("/getAllStudentsProgressOfCourse")
     public List<StudentCourseProgressDTO> getAllStudentsProgressOfCourse(Integer cid) {
         return studentCourseService.getAllStudentsProgressOfCourse(cid);
+    }
+
+    @PostMapping("/saveVideoActionRecord")
+    public void saveVideoActionRecord(Integer uid, Integer lid, String action, String timeBefore, String timeAfter, String actionTime) {
+        videoActionService.save(uid, lid, action, timeBefore, timeAfter, actionTime);
+    }
+
+    @RequestMapping("/test")
+    public void test() {
+        System.out.println(videoActionService.formatTime("15.651651"));
+        System.out.println(videoActionService.formatTime("47.74"));
+        System.out.println(videoActionService.formatTime("72.4242001"));
+        System.out.println(videoActionService.formatTime("102.7441"));
+        System.out.println(videoActionService.formatTime("3600.111"));
+        System.out.println(videoActionService.formatTime("5776.752889"));
+        System.out.println(videoActionService.formatTime("83049.87"));
+        System.out.println(videoActionService.formatTime("SG651SVAQE5FV"));
     }
 }

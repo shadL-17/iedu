@@ -1,5 +1,6 @@
 var video_obj;
 var video_timer;
+var pause_timer;
 var progress_bar;
 var progress_bar_bg;
 var v_total = 0;
@@ -8,6 +9,7 @@ var v_now = 0;
 var persent;
 var page_title;
 var reqSender;
+var pauseTime;
 
 function init() {
     progress_bar = document.getElementById("progress-bar");
@@ -31,6 +33,7 @@ function updateProgress() {
         const host_ip = document.getElementById('hostConfig').value;
         const uid = document.getElementById('hostConfig').dataset.uid;
         const cid = document.getElementById('hostConfig').dataset.cid;
+        document.getElementById('lessionStat').value = 'finished';
         reqSender.src = 'http://'+host_ip+':8080/course/upgradeProgress?uid='+uid+'&cid='+cid;
         window.location.reload();
     }
@@ -45,9 +48,92 @@ function stopVideoTimer() {
 }
 
 function setCurrentTime() {
+    const v_before = v_now;
     v_now = video_obj.currentTime;
+    recordSeeked(v_before, v_now);
+}
+
+function recordPause() {
+    var datetime = new Date();
+    var timeStr = datetime.getFullYear()+'-'+datetime.getMonth()+'-'+datetime.getDay()+' '+datetime.getHours()+':'+datetime.getMinutes()+':'+datetime.getSeconds();
+    recordVideoAction('pause', v_now, v_now, timeStr);
+}
+
+function recordSeeked(before, after) {
+    var datetime = new Date();
+    var timeStr = datetime.getFullYear()+'-'+datetime.getMonth()+'-'+datetime.getDay()+' '+datetime.getHours()+':'+datetime.getMinutes()+':'+datetime.getSeconds();
+    if (before < after) {//向后定位
+        recordVideoAction('skip', before, after, timeStr);
+    }
+    else if(before > after) {//向前定位
+        recordVideoAction('fallback', before, after, timeStr);
+    }
+}
+
+function recordAbandon() {
+    var datetime = new Date();
+    var timeStr = datetime.getFullYear()+'-'+datetime.getMonth()+'-'+datetime.getDay()+' '+datetime.getHours()+':'+datetime.getMinutes()+':'+datetime.getSeconds();
+    recordVideoAction('abandon', v_now, v_now, timeStr);
+}
+
+function recordReview() {
+    var datetime = new Date();
+    var timeStr = datetime.getFullYear()+'-'+datetime.getMonth()+'-'+datetime.getDay()+' '+datetime.getHours()+':'+datetime.getMinutes()+':'+datetime.getSeconds();
+    recordVideoAction('review', v_now, v_now, timeStr);
 }
 
 window.onblur = function () {
     video_obj.pause();
+}
+
+window.onunload = function () {
+    if (document.getElementById("lessionStat").value == 'unfinish') {
+        recordAbandon();
+    }
+}
+
+/*video_action_recorder*/
+function recordVideoAction(action, timeBefore, timeAfter, actionTime) {
+    const host_ip = document.getElementById('hostConfig').value;
+    const uid = document.getElementById('hostConfig').dataset.uid;
+    const lid = document.getElementById('hostConfig').dataset.lid;
+    $.ajax({
+        type: "POST",
+        url: "http://"+host_ip + ":8080/course/saveVideoActionRecord",
+        data: {
+            uid: uid,
+            lid: lid,
+            action: action,
+            timeBefore: timeBefore,
+            timeAfter: timeAfter,
+            actionTime: actionTime
+        },
+        dataType: "text",
+        success: function(result) {
+
+        }/*,
+        error: function (xhr, textStatus, errorThrown) {
+            alert("ajax run failed, host: "+host_ip+", status code："+xhr.status+", state: "+xhr.readyState+", message: "+xhr.statusText+", response: "+xhr.responseText+", requestStat: "+textStatus);
+        }*/
+    });
+}
+
+function startPauseTimer() {
+    pause_timer = setInterval(pauseTimeCounter, 1000);
+}
+
+function clearPauseTimer() {
+    pauseTime = 0;
+    clearInterval(pause_timer);
+}
+
+function pauseTimeCounter() {
+    if (pauseTime<5) {
+        pauseTime++;
+    }
+    else {
+        recordPause();
+        pauseTime = 0;
+        clearInterval(pause_timer);
+    }
 }
