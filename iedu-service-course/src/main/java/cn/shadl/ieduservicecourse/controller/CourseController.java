@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -46,6 +47,9 @@ public class CourseController {
 
     @Autowired
     private VideoActionService videoActionService;
+
+    @Autowired
+    private StudentCourseDailyService studentCourseDailyService;
 
     @GetMapping("/findAllCourses")
     public List<Course> findAllCourses() {
@@ -161,15 +165,19 @@ public class CourseController {
         videoActionService.save(uid, lid, action, timeBefore, timeAfter, actionTime);
     }
 
+    @GetMapping("/getStudentsOnlineNumOfCourseLastDay")
+    public Integer getStudentsOnlineNumOfCourseLastDay(Integer cid, Date date) {
+        System.out.println("param: cid="+cid+", date="+date);
+        return studentCourseDailyService.getStudentsOnlineNumOfCourseLastDay(cid, date);
+    }
+
+    @GetMapping("/getStudentsOnlineNumTrendOfCourseInPastXDay")
+    public Integer[] getStudentsOnlineNumTrendOfCourseInPastXDay(Integer x) {
+        return studentCourseDailyService.getStudentsOnlineNumTrendOfCourseInPastXDay(x);
+    }
+
     @RequestMapping("/test")
     public void test() {
-        System.out.println(videoActionService.formatTime("15.651651"));
-        System.out.println(videoActionService.formatTime("47.74"));
-        System.out.println(videoActionService.formatTime("72.4242001"));
-        System.out.println(videoActionService.formatTime("102.7441"));
-        System.out.println(videoActionService.formatTime("3600.111"));
-        System.out.println(videoActionService.formatTime("5776.752889"));
-        System.out.println(videoActionService.formatTime("83049.87"));
-        System.out.println(videoActionService.formatTime("SG651SVAQE5FV"));
+
     }
 }

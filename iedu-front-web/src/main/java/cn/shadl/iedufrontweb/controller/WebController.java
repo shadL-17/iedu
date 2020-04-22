@@ -23,6 +23,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URLDecoder;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -292,8 +294,15 @@ public class WebController {
             return "warn";
         }
         List<StudentCourseProgressDTO> studentsProgress = restTemplate.exchange("http://"+hostConfig.getIp()+":8080/course/getAllStudentsProgressOfCourse?cid="+cid, HttpMethod.GET, null, new ParameterizedTypeReference<List<StudentCourseProgressDTO>>() {}).getBody();
+        String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date(System.currentTimeMillis()));
+        Integer studentsOnlineNumLastDay = restTemplate.exchange("http://"+hostConfig.getIp()+":8080/course/getStudentsOnlineNumOfCourseLastDay?cid="+cid+"&date="+date, HttpMethod.GET, null, new ParameterizedTypeReference<Integer>() {}).getBody();
+        Integer onlineTrendLast7Days = restTemplate.exchange("http://"+hostConfig.getIp()+":8080/course/getStudentsOnlineNumTrendOfCourseInPastXDay?x=7", HttpMethod.GET, null, new ParameterizedTypeReference<Integer>() {}).getBody();
+        Integer onlineTrendLast30Days = restTemplate.exchange("http://"+hostConfig.getIp()+":8080/course/getStudentsOnlineNumTrendOfCourseInPastXDay?x=30", HttpMethod.GET, null, new ParameterizedTypeReference<Integer>() {}).getBody();
         request.setAttribute("course", course);
         request.setAttribute("studentsProgress", studentsProgress);
+        request.setAttribute("studentsOnlineNumLastDay", studentsOnlineNumLastDay);
+        request.setAttribute("onlineTrendLast7Days", onlineTrendLast7Days);
+        request.setAttribute("onlineTrendLast30Days", onlineTrendLast30Days);
         return "course-console";
     }
 

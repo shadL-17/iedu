@@ -16,7 +16,7 @@
     <!-- 最新的 Bootstrap4 核心 JavaScript 文件 -->
     <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </head>
-<body th:with="host=${#httpServletRequest.getAttribute('host')},user=${#httpServletRequest.getAttribute('user')},course=${#httpServletRequest.getAttribute('course')},studentsProgress=${#httpServletRequest.getAttribute('studentsProgress')}">
+<body th:with="host=${#httpServletRequest.getAttribute('host')},user=${#httpServletRequest.getAttribute('user')},course=${#httpServletRequest.getAttribute('course')},studentsProgress=${#httpServletRequest.getAttribute('studentsProgress')},studentsOnlineNumLastDay=${#httpServletRequest.getAttribute('studentsOnlineNumLastDay')}">
 
     <!--顶部导航栏-->
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
@@ -94,14 +94,21 @@
 
     <br>
 
-    <h4 class="area-title">课程热点</h4>
+    <h4 class="area-title">每日统计</h4>
     <div class="console-area">
-        <p>主要显示课程中哪些章节、哪些课目被重复访问得最多</p>
+        <p>昨日在线学习数：<span class="console-number" th:text="${studentsOnlineNumLastDay}"></span></p>
+        <p>过去七天在线学习数变化趋势：</p>
+        <p>过去三十天在线学习数变化趋势：</p>
     </div>
 
-    <h4 class="area-title">视频日志</h4>
+    <br>
+
+    <h4 class="area-title">学习日志</h4>
     <div class="console-area">
-        <p>主要记录课程视频哪些地方经常被跳过、哪些经常被回退重复观看</p>
+        <p>以下视频片段被跳过观看的记录最多：</p>
+        <p>以下视频片段被回退重看的记录最多：</p>
+        <p>以下章节经常有学生在未完成时退出：</p>
+        <p>以下章节经常被学生反复观看和复习：</p>
     </div>
 
 </body>
