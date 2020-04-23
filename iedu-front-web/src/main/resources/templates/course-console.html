@@ -15,8 +15,10 @@
     <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
     <!-- 最新的 Bootstrap4 核心 JavaScript 文件 -->
     <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <!--Echarts-->
+    <script src="http://echarts.baidu.com/gallery/vendors/echarts/echarts-all-3.js"></script>
 </head>
-<body th:with="host=${#httpServletRequest.getAttribute('host')},user=${#httpServletRequest.getAttribute('user')},course=${#httpServletRequest.getAttribute('course')},studentsProgress=${#httpServletRequest.getAttribute('studentsProgress')},studentsOnlineNumLastDay=${#httpServletRequest.getAttribute('studentsOnlineNumLastDay')}">
+<body th:with="host=${#httpServletRequest.getAttribute('host')},user=${#httpServletRequest.getAttribute('user')},course=${#httpServletRequest.getAttribute('course')},studentsProgress=${#httpServletRequest.getAttribute('studentsProgress')},studentsOnlineNumLastDay=${#httpServletRequest.getAttribute('studentsOnlineNumLastDay')},onlineTrendLast7Days=${#httpServletRequest.getAttribute('onlineTrendLast7Days')},onlineTrendLast30Days=${#httpServletRequest.getAttribute('onlineTrendLast30Days')}">
 
     <!--顶部导航栏-->
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
@@ -95,10 +97,54 @@
     <br>
 
     <h4 class="area-title">每日统计</h4>
+    <script>var graphicsData = [[${onlineTrendLast7Days}]]</script>
     <div class="console-area">
         <p>昨日在线学习数：<span class="console-number" th:text="${studentsOnlineNumLastDay}"></span></p>
-        <p>过去七天在线学习数变化趋势：</p>
-        <p>过去三十天在线学习数变化趋势：</p>
+        <p>在线学习人数变化趋势：</p>
+        <ul class="nav nav-pills" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="pill" onclick="showObj('7days-data-graphics','block');hideObj('30days-data-graphics')" style="cursor: pointer">近七天</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="pill" onclick="showObj('30days-data-graphics','block');hideObj('7days-data-graphics')" style="cursor: pointer">过去30天</a>
+            </li>
+        </ul>
+        <div id="7days-data-graphics" style="width: 800px;height:500px;"></div>
+        <script type="text/javascript">
+            var chart_7days = echarts.init(document.getElementById('7days-data-graphics'));
+            option7 = {
+                xAxis: {
+                    type: 'category',
+                    data: [1,2,3,4,5,6,7]
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [{
+                    data: graphicsData,
+                    type: 'line'
+                }]
+            };
+            chart_7days.setOption(option7);
+        </script>
+        <div id="30days-data-graphics" style="width: 800px;height:500px;display: none;"></div>
+        <script type="text/javascript">
+            var chart_30days = echarts.init(document.getElementById('30days-data-graphics'));
+            option30 = {
+                xAxis: {
+                    type: 'category',
+                    data: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [{
+                    data: [[${onlineTrendLast30Days}]],
+                    type: 'line'
+                }]
+            };
+            chart_30days.setOption(option30);
+        </script>
     </div>
 
     <br>

@@ -167,14 +167,24 @@ public class CourseController {
 
     @GetMapping("/getStudentsOnlineNumOfCourseLastDay")
     public Integer getStudentsOnlineNumOfCourseLastDay(Integer cid, Date date) {
-        System.out.println("param: cid="+cid+", date="+date);
         return studentCourseDailyService.getStudentsOnlineNumOfCourseLastDay(cid, date);
     }
 
     @GetMapping("/getStudentsOnlineNumTrendOfCourseInPastXDay")
-    public Integer[] getStudentsOnlineNumTrendOfCourseInPastXDay(Integer x) {
+    public List<Integer> getStudentsOnlineNumTrendOfCourseInPastXDay(Integer x) {
         return studentCourseDailyService.getStudentsOnlineNumTrendOfCourseInPastXDay(x);
     }
+
+    @GetMapping("/getDatesRecentlyByPresent")
+    public List<String> getDatesRecentlyByPresent(Integer x) {
+        return studentCourseDailyService.getDatesRecentlyByPresent(x);
+    }
+
+    @GetMapping("/saveCourseDailyRecord")
+    public StudentCourseDaily saveCourseDailyRecord(Integer uid, Integer cid, Date date) {
+        return studentCourseDailyService.saveCourseDailyRecord(uid, cid, date);
+    }
+
 
     @RequestMapping("/test")
     public void test() {

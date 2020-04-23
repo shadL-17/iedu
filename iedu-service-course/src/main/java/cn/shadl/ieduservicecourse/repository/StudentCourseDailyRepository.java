@@ -15,4 +15,8 @@ public interface StudentCourseDailyRepository extends JpaRepository<StudentCours
 
     @Query(nativeQuery = true, value = "select COUNT(scdid) from student_course_daily where date(NOW())-date=:#{#x}")
     Integer getStudentsOnlineNumOfCourseXDaysAgo(Integer x);
+
+    //获取系统时间x天后的日期，可为负数
+    @Query(nativeQuery = true, value = "select DATE_ADD(DATE(NOW()),INTERVAL :#{#x} DAY)")
+    Date getDateByPresent(Integer x);
 }

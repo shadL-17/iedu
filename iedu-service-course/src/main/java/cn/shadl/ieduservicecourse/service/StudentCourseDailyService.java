@@ -32,18 +32,40 @@ public class StudentCourseDailyService {
         }
     }
 
+    public StudentCourseDaily saveCourseDailyRecord(Integer uid, Integer cid, Date date) {
+        if (findByUidAndCidAndDate(uid, cid, date) == null) {//无记录
+            StudentCourseDaily studentCourseDaily = new StudentCourseDaily();
+            studentCourseDaily.setUid(uid);
+            studentCourseDaily.setCid(cid);
+            studentCourseDaily.setDate(date);
+            return studentCourseDailyRepository.save(studentCourseDaily);
+        }
+        else {
+            return null;
+        }
+    }
+
     public Integer getStudentsOnlineNumOfCourseLastDay(Integer cid, Date date) {
         return studentCourseDailyRepository.getStudentsOnlineNumOfCourseLastDay(cid, date);
     }
 
-    public Integer[] getStudentsOnlineNumTrendOfCourseInPastXDay(Integer x) {
+    public List<Integer> getStudentsOnlineNumTrendOfCourseInPastXDay(Integer x) {
         if (x<1) {
             return null;
         }
         List<Integer> trend = new ArrayList<>();
-        for (int i=1;i<=x;i++) {
+        for (int i=x;i>=1;i--) {
             trend.add(studentCourseDailyRepository.getStudentsOnlineNumOfCourseXDaysAgo(i));
         }
-        return trend.toArray(new Integer[0]);
+        return trend;
+    }
+
+    public List<String> getDatesRecentlyByPresent(Integer x) {//获取1-x天前的每个日期
+        if (x<1) return null;
+        List<String> strs = new ArrayList<>();
+        for (int i=x;i>=1;i--) {
+            strs.add(studentCourseDailyRepository.getDateByPresent(i).toString());
+        }
+        return strs;
     }
 }

@@ -9,6 +9,10 @@
     padding: 10px 25px;
     background-color: #F7F7F7;
 }
+.console-number{
+    color: darkorange;
+    font-weight: bolder;
+}
 .progress-row-student-name{
     width: 7%;
     overflow: hidden;

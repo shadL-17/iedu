@@ -5,6 +5,7 @@ import cn.shadl.ieducommonbeans.domain.dto.CommentFloorDTO;
 import cn.shadl.ieducommonbeans.domain.dto.ExamQuestionDTO;
 import cn.shadl.ieducommonbeans.domain.dto.StudentCourseProgressDTO;
 import cn.shadl.iedufrontweb.config.HostConfig;
+import cn.shadl.iedufrontweb.util.DataUtil;
 import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -174,8 +175,13 @@ public class WebController {
         request.setAttribute("creator", creator);
         //检测是否已加入该课程，是则获取进度，否则跳转申请加入页
         Integer progress = restTemplate.exchange("http://" + hostConfig.getIp() + ":8080/course/getStudentCourseProgress?uid="+user.getUid()+"&cid="+cid, HttpMethod.GET, null, new ParameterizedTypeReference<Integer>() {}).getBody();
-        if(progress!=null || user.getUid()==creator.getUid()) {//是该课程学员或创建者
+        if(user.getUid()==creator.getUid()) {//是创建者
+            request.setAttribute("progress", 99999);
+        }
+        else if(progress!=null) {//是学员
             request.setAttribute("progress", progress);
+            String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date(System.currentTimeMillis()));
+            restTemplate.exchange("http://"+hostConfig.getIp()+":8080/course/saveCourseDailyRecord?uid="+user.getUid()+"&cid="+cid+"&date="+date, HttpMethod.GET, null, new ParameterizedTypeReference<StudentCourseDaily>() {});
         }
         else {//未加入该课程
             try {
@@ -296,8 +302,8 @@ public class WebController {
         List<StudentCourseProgressDTO> studentsProgress = restTemplate.exchange("http://"+hostConfig.getIp()+":8080/course/getAllStudentsProgressOfCourse?cid="+cid, HttpMethod.GET, null, new ParameterizedTypeReference<List<StudentCourseProgressDTO>>() {}).getBody();
         String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date(System.currentTimeMillis()));
         Integer studentsOnlineNumLastDay = restTemplate.exchange("http://"+hostConfig.getIp()+":8080/course/getStudentsOnlineNumOfCourseLastDay?cid="+cid+"&date="+date, HttpMethod.GET, null, new ParameterizedTypeReference<Integer>() {}).getBody();
-        Integer onlineTrendLast7Days = restTemplate.exchange("http://"+hostConfig.getIp()+":8080/course/getStudentsOnlineNumTrendOfCourseInPastXDay?x=7", HttpMethod.GET, null, new ParameterizedTypeReference<Integer>() {}).getBody();
-        Integer onlineTrendLast30Days = restTemplate.exchange("http://"+hostConfig.getIp()+":8080/course/getStudentsOnlineNumTrendOfCourseInPastXDay?x=30", HttpMethod.GET, null, new ParameterizedTypeReference<Integer>() {}).getBody();
+        List<Integer> onlineTrendLast7Days = restTemplate.exchange("http://"+hostConfig.getIp()+":8080/course/getStudentsOnlineNumTrendOfCourseInPastXDay?x=7", HttpMethod.GET, null, new ParameterizedTypeReference<List<Integer>>() {}).getBody();
+        List<Integer> onlineTrendLast30Days = restTemplate.exchange("http://"+hostConfig.getIp()+":8080/course/getStudentsOnlineNumTrendOfCourseInPastXDay?x=30", HttpMethod.GET, null, new ParameterizedTypeReference<List<Integer>>() {}).getBody();
         request.setAttribute("course", course);
         request.setAttribute("studentsProgress", studentsProgress);
         request.setAttribute("studentsOnlineNumLastDay", studentsOnlineNumLastDay);
