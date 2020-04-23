@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS `annex` (
   `url` text CHARACTER SET utf8 NOT NULL COMMENT '附件地址',
   `lid` int(8) unsigned zerofill NOT NULL COMMENT '所属课目',
   PRIMARY KEY (`aid`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='附件';
 
 -- 正在导出表  iedu.annex 的数据：~0 rows (大约)
 /*!40000 ALTER TABLE `annex` DISABLE KEYS */;
@@ -36,9 +36,9 @@ CREATE TABLE IF NOT EXISTS `chapter` (
   `description` text CHARACTER SET utf8 NOT NULL COMMENT '章节概要',
   `cid` int(8) unsigned zerofill NOT NULL COMMENT '所属课程',
   PRIMARY KEY (`chid`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1 COMMENT='章节';
 
--- 正在导出表  iedu.chapter 的数据：~3 rows (大约)
+-- 正在导出表  iedu.chapter 的数据：~2 rows (大约)
 /*!40000 ALTER TABLE `chapter` DISABLE KEYS */;
 INSERT INTO `chapter` (`chid`, `title`, `description`, `cid`) VALUES
 	(00000001, 'Spring体系介绍', '主要讲述Spring框架体系的发展史及其主要成员', 00000001),
@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS `comment` (
   `reply_to` int(8) unsigned zerofill DEFAULT NULL COMMENT '回复对象（另一评论的id）',
   `create_date` datetime NOT NULL COMMENT '评论日期',
   PRIMARY KEY (`cmid`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1 COMMENT='评论';
 
 -- 正在导出表  iedu.comment 的数据：~4 rows (大约)
 /*!40000 ALTER TABLE `comment` DISABLE KEYS */;
@@ -77,7 +77,7 @@ CREATE TABLE IF NOT EXISTS `course` (
   `status` varchar(50) CHARACTER SET utf8 NOT NULL DEFAULT '更新中' COMMENT '课程状态（更新中/已完结）',
   `creator` int(8) unsigned zerofill NOT NULL COMMENT '创建者',
   PRIMARY KEY (`cid`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1 COMMENT='课程';
 
 -- 正在导出表  iedu.course 的数据：~5 rows (大约)
 /*!40000 ALTER TABLE `course` DISABLE KEYS */;
@@ -95,9 +95,9 @@ CREATE TABLE IF NOT EXISTS `exam` (
   `title` varchar(30) CHARACTER SET utf8 NOT NULL DEFAULT '章节测验' COMMENT '测验标题',
   `chid` int(8) unsigned zerofill NOT NULL COMMENT '所属章节',
   PRIMARY KEY (`eid`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1 COMMENT='测验';
 
--- 正在导出表  iedu.exam 的数据：~3 rows (大约)
+-- 正在导出表  iedu.exam 的数据：~2 rows (大约)
 /*!40000 ALTER TABLE `exam` DISABLE KEYS */;
 INSERT INTO `exam` (`eid`, `title`, `chid`) VALUES
 	(00000001, '章节测验：Spring体系概念', 00000001),
@@ -113,7 +113,7 @@ CREATE TABLE IF NOT EXISTS `lession` (
   `vid` varchar(100) CHARACTER SET utf8 NOT NULL COMMENT '课目视频',
   `chid` int(8) unsigned zerofill NOT NULL COMMENT '所属章节',
   PRIMARY KEY (`lid`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1 COMMENT='课目';
 
 -- 正在导出表  iedu.lession 的数据：~10 rows (大约)
 /*!40000 ALTER TABLE `lession` DISABLE KEYS */;
@@ -139,7 +139,7 @@ CREATE TABLE IF NOT EXISTS `question` (
   `value` int(11) NOT NULL DEFAULT '10' COMMENT '题目分值',
   `eid` int(8) unsigned zerofill NOT NULL COMMENT '所属测验',
   PRIMARY KEY (`qid`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1 COMMENT='试题';
 
 -- 正在导出表  iedu.question 的数据：~13 rows (大约)
 /*!40000 ALTER TABLE `question` DISABLE KEYS */;
@@ -167,7 +167,7 @@ CREATE TABLE IF NOT EXISTS `student_course` (
   `progress` int(8) unsigned NOT NULL DEFAULT '0' COMMENT '进度',
   `score` int(8) unsigned NOT NULL DEFAULT '0' COMMENT '成绩',
   PRIMARY KEY (`ucid`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1 COMMENT='学生课程表';
 
 -- 正在导出表  iedu.student_course 的数据：~6 rows (大约)
 /*!40000 ALTER TABLE `student_course` DISABLE KEYS */;
@@ -175,10 +175,30 @@ INSERT INTO `student_course` (`ucid`, `uid`, `cid`, `progress`, `score`) VALUES
 	(00000001, 00000003, 00000001, 2, 0),
 	(00000002, 00000004, 00000001, 3, 0),
 	(00000003, 00000005, 00000001, 0, 0),
-	(00000004, 00000006, 00000001, 0, 0),
+	(00000004, 00000006, 00000001, 5, 0),
 	(00000005, 00000013, 00000001, 0, 0),
 	(00000006, 00000015, 00000001, 1, 0);
 /*!40000 ALTER TABLE `student_course` ENABLE KEYS */;
+
+-- 导出  表 iedu.student_course_daily 结构
+CREATE TABLE IF NOT EXISTS `student_course_daily` (
+  `scdid` int(8) unsigned zerofill NOT NULL AUTO_INCREMENT COMMENT '表主键',
+  `uid` int(8) unsigned zerofill NOT NULL COMMENT '学生',
+  `cid` int(8) unsigned zerofill NOT NULL COMMENT '课程',
+  `date` date NOT NULL COMMENT '日期',
+  PRIMARY KEY (`scdid`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1 COMMENT='课程每日学习情况';
+
+-- 正在导出表  iedu.student_course_daily 的数据：~6 rows (大约)
+/*!40000 ALTER TABLE `student_course_daily` DISABLE KEYS */;
+INSERT INTO `student_course_daily` (`scdid`, `uid`, `cid`, `date`) VALUES
+	(00000001, 00000004, 00000001, '2020-04-20'),
+	(00000002, 00000003, 00000001, '2020-04-21'),
+	(00000003, 00000004, 00000001, '2020-04-21'),
+	(00000004, 00000004, 00000001, '2020-04-22'),
+	(00000005, 00000003, 00000001, '2020-04-22'),
+	(00000006, 00000006, 00000001, '2020-04-22');
+/*!40000 ALTER TABLE `student_course_daily` ENABLE KEYS */;
 
 -- 导出  表 iedu.user 结构
 CREATE TABLE IF NOT EXISTS `user` (
@@ -191,7 +211,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `contact` varchar(50) CHARACTER SET big5 DEFAULT NULL,
   `avatar` varchar(50) CHARACTER SET big5 NOT NULL DEFAULT '/image/user-avatar/default.jpg',
   PRIMARY KEY (`uid`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1 COMMENT='用户';
 
 -- 正在导出表  iedu.user 的数据：~11 rows (大约)
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
@@ -208,6 +228,44 @@ INSERT INTO `user` (`uid`, `username`, `password`, `role`, `gender`, `birthday`,
 	(00000014, 'rick', 'asdasd', 'teacher', NULL, NULL, NULL, '/image/user-avatar/default.jpg'),
 	(00000015, 'jack', 'asdasd', 'student', NULL, NULL, NULL, '/image/user-avatar/default.jpg');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
+
+-- 导出  表 iedu.video_action 结构
+CREATE TABLE IF NOT EXISTS `video_action` (
+  `vaid` int(8) unsigned zerofill NOT NULL AUTO_INCREMENT COMMENT '表主键',
+  `uid` int(8) unsigned zerofill NOT NULL COMMENT '用户id',
+  `lid` int(8) unsigned zerofill NOT NULL COMMENT '课目id',
+  `action` varchar(20) NOT NULL COMMENT '操作(pause, skip, fallback)',
+  `action_time` datetime DEFAULT NULL,
+  `time_after` varchar(255) DEFAULT NULL,
+  `time_before` varchar(255) DEFAULT NULL,
+  `num` int(11) DEFAULT NULL,
+  `record_number` int(11) DEFAULT NULL,
+  PRIMARY KEY (`vaid`)
+) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=latin1 COMMENT='观看视频的操作日志';
+
+-- 正在导出表  iedu.video_action 的数据：~19 rows (大约)
+/*!40000 ALTER TABLE `video_action` DISABLE KEYS */;
+INSERT INTO `video_action` (`vaid`, `uid`, `lid`, `action`, `action_time`, `time_after`, `time_before`, `num`, `record_number`) VALUES
+	(00000001, 00000004, 00000004, 'skip', '2020-03-02 15:16:20', '00:01:16', '00:00:02', NULL, NULL),
+	(00000002, 00000004, 00000004, 'pause', '2020-03-02 15:16:27', '00:01:17', '00:01:17', NULL, NULL),
+	(00000003, 00000004, 00000002, 'skip', '2020-03-02 15:16:36', '00:02:27', '00:01:18', NULL, NULL),
+	(00000004, 00000004, 00000004, 'fallback', '2020-03-02 15:16:38', '00:00:40', '00:02:28', NULL, NULL),
+	(00000005, 00000004, 00000007, 'skip', '2020-03-02 15:16:51', '00:01:45', '00:00:02', NULL, NULL),
+	(00000006, 00000004, 00000007, 'pause', '2020-03-02 15:16:59', '00:01:46', '00:01:46', NULL, NULL),
+	(00000007, 00000004, 00000007, 'fallback', '2020-03-02 15:17:00', '00:01:15', '00:01:46', NULL, NULL),
+	(00000008, 00000004, 00000007, 'fallback', '2020-03-02 15:17:03', '00:00:13', '00:01:17', NULL, NULL),
+	(00000009, 00000003, 00000003, 'skip', '2020-03-02 15:17:28', '00:01:54', '00:00:01', NULL, NULL),
+	(00000010, 00000003, 00000003, 'pause', '2020-03-02 15:17:35', '00:01:55', '00:01:55', NULL, NULL),
+	(00000011, 00000004, 00000002, 'review', '2020-03-02 15:35:22', '00:00:00', '00:00:00', NULL, NULL),
+	(00000012, 00000004, 00000005, 'pause', '2020-03-02 15:35:51', '00:00:00', '00:00:00', NULL, NULL),
+	(00000013, 00000004, 00000005, 'skip', '2020-03-02 15:35:52', '00:00:40', '00:00:00', NULL, NULL),
+	(00000014, 00000004, 00000005, 'abandon', '2020-03-02 15:35:58', '00:00:45', '00:00:45', NULL, NULL),
+	(00000051, 00000006, 00000001, 'pause', '2020-03-04 09:13:26', '00:00:05', '00:00:05', NULL, NULL),
+	(00000052, 00000006, 00000002, 'skip', '2020-03-04 09:17:39', '00:00:02', '00:00:36', NULL, NULL),
+	(00000053, 00000006, 00000002, 'skip', '2020-03-04 09:17:44', '00:00:38', '00:01:22', NULL, NULL),
+	(00000054, 00000006, 00000002, 'abandon', '2020-03-04 09:17:45', '00:00:00', '00:00:00', NULL, NULL),
+	(00000055, 00000006, 00000004, 'pause', '2020-03-04 09:41:48', '00:04:01', '00:04:01', NULL, NULL);
+/*!40000 ALTER TABLE `video_action` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
