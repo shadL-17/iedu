@@ -1,6 +1,7 @@
 package cn.shadl.ieduservicecourse.service;
 
 import cn.shadl.ieducommonbeans.domain.VideoAction;
+import cn.shadl.ieducommonbeans.domain.dto.LessionVideoActionRecordDTO;
 import cn.shadl.ieduservicecourse.repository.VideoActionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,7 +9,10 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class VideoActionService {
@@ -72,5 +76,21 @@ public class VideoActionService {
             e.printStackTrace();
         }
         return datetime;
+    }
+
+    public List<LessionVideoActionRecordDTO> selectTopNLessionsHavingMostActionRecord(Integer cid, String action, Integer n) {
+        List<Map<String, Object>> data = videoActionRepository.selectTopNLessionsHavingMostActionRecord(cid, action, n);
+        if (data==null || data.isEmpty()) {
+            return null;
+        }
+        List<LessionVideoActionRecordDTO> dtos = new ArrayList<>();
+        for (Map<String, Object> row : data) {
+            LessionVideoActionRecordDTO dto = new LessionVideoActionRecordDTO();
+            dto.setLession(lessionService.findByLid(Integer.valueOf(row.get("lid").toString())));
+            dto.setNum(Integer.valueOf(row.get("num").toString()));
+            dto.setAction(action);
+            dtos.add(dto);
+        }
+        return dtos;
     }
 }

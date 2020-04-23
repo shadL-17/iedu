@@ -3,6 +3,7 @@ package cn.shadl.ieduservicecourse.controller;
 import cn.shadl.ieducommonbeans.domain.*;
 import cn.shadl.ieducommonbeans.domain.dto.CommentFloorDTO;
 import cn.shadl.ieducommonbeans.domain.dto.ExamQuestionDTO;
+import cn.shadl.ieducommonbeans.domain.dto.LessionVideoActionRecordDTO;
 import cn.shadl.ieducommonbeans.domain.dto.StudentCourseProgressDTO;
 import cn.shadl.ieduservicecourse.config.HostConfig;
 import cn.shadl.ieduservicecourse.service.*;
@@ -183,6 +184,11 @@ public class CourseController {
     @GetMapping("/saveCourseDailyRecord")
     public StudentCourseDaily saveCourseDailyRecord(Integer uid, Integer cid, Date date) {
         return studentCourseDailyService.saveCourseDailyRecord(uid, cid, date);
+    }
+
+    @GetMapping("/selectTopNLessionsHavingMostActionRecord")
+    public List<LessionVideoActionRecordDTO> selectTopNLessionsHavingMostActionRecord(Integer cid, String action, Integer n) {
+        return videoActionService.selectTopNLessionsHavingMostActionRecord(cid, action, n);
     }
 
 

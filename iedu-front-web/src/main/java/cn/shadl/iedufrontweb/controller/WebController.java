@@ -3,6 +3,7 @@ package cn.shadl.iedufrontweb.controller;
 import cn.shadl.ieducommonbeans.domain.*;
 import cn.shadl.ieducommonbeans.domain.dto.CommentFloorDTO;
 import cn.shadl.ieducommonbeans.domain.dto.ExamQuestionDTO;
+import cn.shadl.ieducommonbeans.domain.dto.LessionVideoActionRecordDTO;
 import cn.shadl.ieducommonbeans.domain.dto.StudentCourseProgressDTO;
 import cn.shadl.iedufrontweb.config.HostConfig;
 import cn.shadl.iedufrontweb.util.DataUtil;
@@ -304,11 +305,19 @@ public class WebController {
         Integer studentsOnlineNumLastDay = restTemplate.exchange("http://"+hostConfig.getIp()+":8080/course/getStudentsOnlineNumOfCourseLastDay?cid="+cid+"&date="+date, HttpMethod.GET, null, new ParameterizedTypeReference<Integer>() {}).getBody();
         List<Integer> onlineTrendLast7Days = restTemplate.exchange("http://"+hostConfig.getIp()+":8080/course/getStudentsOnlineNumTrendOfCourseInPastXDay?x=7", HttpMethod.GET, null, new ParameterizedTypeReference<List<Integer>>() {}).getBody();
         List<Integer> onlineTrendLast30Days = restTemplate.exchange("http://"+hostConfig.getIp()+":8080/course/getStudentsOnlineNumTrendOfCourseInPastXDay?x=30", HttpMethod.GET, null, new ParameterizedTypeReference<List<Integer>>() {}).getBody();
+        List<LessionVideoActionRecordDTO> lessionsOftenBeingSkip = restTemplate.exchange("http://"+hostConfig.getIp()+":8080/course/selectTopNLessionsHavingMostActionRecord?cid="+cid+"&action=skip&n=3", HttpMethod.GET, null, new ParameterizedTypeReference<List<LessionVideoActionRecordDTO>>() {}).getBody();
+        List<LessionVideoActionRecordDTO> lessionsOftenBeingFallback = restTemplate.exchange("http://"+hostConfig.getIp()+":8080/course/selectTopNLessionsHavingMostActionRecord?cid="+cid+"&action=fallback&n=3", HttpMethod.GET, null, new ParameterizedTypeReference<List<LessionVideoActionRecordDTO>>() {}).getBody();
+        List<LessionVideoActionRecordDTO> lessionsOftenBeingAbandon = restTemplate.exchange("http://"+hostConfig.getIp()+":8080/course/selectTopNLessionsHavingMostActionRecord?cid="+cid+"&action=abandon&n=3", HttpMethod.GET, null, new ParameterizedTypeReference<List<LessionVideoActionRecordDTO>>() {}).getBody();
+        List<LessionVideoActionRecordDTO> lessionsOftenBeingReview = restTemplate.exchange("http://"+hostConfig.getIp()+":8080/course/selectTopNLessionsHavingMostActionRecord?cid="+cid+"&action=review&n=3", HttpMethod.GET, null, new ParameterizedTypeReference<List<LessionVideoActionRecordDTO>>() {}).getBody();
         request.setAttribute("course", course);
         request.setAttribute("studentsProgress", studentsProgress);
         request.setAttribute("studentsOnlineNumLastDay", studentsOnlineNumLastDay);
         request.setAttribute("onlineTrendLast7Days", onlineTrendLast7Days);
         request.setAttribute("onlineTrendLast30Days", onlineTrendLast30Days);
+        request.setAttribute("lessionsOftenBeingSkip", lessionsOftenBeingSkip);
+        request.setAttribute("lessionsOftenBeingFallback", lessionsOftenBeingFallback);
+        request.setAttribute("lessionsOftenBeingAbandon", lessionsOftenBeingAbandon);
+        request.setAttribute("lessionsOftenBeingReview", lessionsOftenBeingReview);
         return "course-console";
     }
 

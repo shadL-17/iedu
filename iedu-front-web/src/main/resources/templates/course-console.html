@@ -18,7 +18,7 @@
     <!--Echarts-->
     <script src="http://echarts.baidu.com/gallery/vendors/echarts/echarts-all-3.js"></script>
 </head>
-<body th:with="host=${#httpServletRequest.getAttribute('host')},user=${#httpServletRequest.getAttribute('user')},course=${#httpServletRequest.getAttribute('course')},studentsProgress=${#httpServletRequest.getAttribute('studentsProgress')},studentsOnlineNumLastDay=${#httpServletRequest.getAttribute('studentsOnlineNumLastDay')},onlineTrendLast7Days=${#httpServletRequest.getAttribute('onlineTrendLast7Days')},onlineTrendLast30Days=${#httpServletRequest.getAttribute('onlineTrendLast30Days')}">
+<body th:with="host=${#httpServletRequest.getAttribute('host')},user=${#httpServletRequest.getAttribute('user')},course=${#httpServletRequest.getAttribute('course')},studentsProgress=${#httpServletRequest.getAttribute('studentsProgress')},studentsOnlineNumLastDay=${#httpServletRequest.getAttribute('studentsOnlineNumLastDay')},onlineTrendLast7Days=${#httpServletRequest.getAttribute('onlineTrendLast7Days')},onlineTrendLast30Days=${#httpServletRequest.getAttribute('onlineTrendLast30Days')},lessionsOftenBeingSkip=${#httpServletRequest.getAttribute('lessionsOftenBeingSkip')},lessionsOftenBeingFallback=${#httpServletRequest.getAttribute('lessionsOftenBeingFallback')},lessionsOftenBeingAbandon=${#httpServletRequest.getAttribute('lessionsOftenBeingAbandon')},lessionsOftenBeingReview=${#httpServletRequest.getAttribute('lessionsOftenBeingReview')}">
 
     <!--顶部导航栏-->
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
@@ -151,10 +151,22 @@
 
     <h4 class="area-title">学习日志</h4>
     <div class="console-area">
-        <p>以下视频片段被跳过观看的记录最多：</p>
-        <p>以下视频片段被回退重看的记录最多：</p>
-        <p>以下章节经常有学生在未完成时退出：</p>
-        <p>以下章节经常被学生反复观看和复习：</p>
+        <span>以下课程视频经常被快进跳过观看：</span> <br>
+        <div th:each="record : ${lessionsOftenBeingSkip}">
+            <a th:href="'/Lession?lid='+${record.lession.lid}">[[${course.name+' - '+record.lession.title}]]</a> &nbsp;&nbsp;&nbsp; <span>操作记录 累计<span class="console-number">[[${record.num}]]</span>次</span> <br>
+        </div> <br>
+        <span>以下课程视频经常被回退重复观看：</span> <br>
+        <div th:each="record : ${lessionsOftenBeingFallback}">
+            <a th:href="'/Lession?lid='+${record.lession.lid}">[[${course.name+' - '+record.lession.title}]]</a> &nbsp;&nbsp;&nbsp; <span>操作记录 累计<span class="console-number">[[${record.num}]]</span>次</span> <br>
+        </div> <br>
+        <span>以下章节经常有学生在未完成时退出：</span> <br>
+        <div th:each="record : ${lessionsOftenBeingAbandon}">
+            <a th:href="'/Lession?lid='+${record.lession.lid}">[[${course.name+' - '+record.lession.title}]]</a> &nbsp;&nbsp;&nbsp; <span>操作记录 累计<span class="console-number">[[${record.num}]]</span>次</span> <br>
+        </div> <br>
+        <span>以下章节经常被学生反复观看和复习：</span> <br>
+        <div th:each="record : ${lessionsOftenBeingReview}">
+            <a th:href="'/Lession?lid='+${record.lession.lid}">[[${course.name+' - '+record.lession.title}]]</a> &nbsp;&nbsp;&nbsp; <span>操作记录 累计<span class="console-number">[[${record.num}]]</span>次</span> <br>
+        </div> <br>
     </div>
 
 </body>
