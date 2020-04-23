@@ -14,4 +14,7 @@ public interface LessionRepository extends JpaRepository<Lession, Long> {
 
     @Query(nativeQuery = true, value = "SELECT * FROM lession WHERE chid IN (SELECT chid FROM chapter WHERE cid=:#{#cid})")
     List<Lession> findByCid(Integer cid);
+
+    @Query(nativeQuery = true, value = "SELECT cid FROM chapter WHERE chid IN (SELECT chid FROM lession WHERE lid=:#{#lid})")
+    Integer getCidBelong(Integer lid);
 }

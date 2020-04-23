@@ -119,12 +119,12 @@
     <!--视频窗口-->
     <div class="lession-video">
         <!--视频对象（未解锁的课程）-->
-        <video th:if="${progress<lessionNo}" id="video-obj" width="100%" height="97.8%" controls oncanplay="init()" onplay="startVideoTimer();clearPauseTimer();" onpause="stopVideoTimer();startPauseTimer();" onseeked="setCurrentTime();clearPauseTimer();">
+        <video th:if="${progress<lessionNo}" id="video-obj" width="100%" height="97.8%" controls oncanplay="init(false)" onplay="startVideoTimer();clearPauseTimer();" onpause="stopVideoTimer();startPauseTimer();" onseeked="setCurrentTime();clearPauseTimer();">
             <source th:src="${currentLession.vid}" type="video/mp4">
             <script>document.getElementById("lessionStat").value = "unfinish";</script>
         </video>
         <!--视频对象（已完成的课程）-->
-        <video th:if="${progress>=lessionNo}" id="video-obj-1" width="100%" height="97.8%" controls onplay="recordReview()">
+        <video th:if="${progress>=lessionNo}" id="video-obj-1" width="100%" height="97.8%" controls oncanplay="init(true)" onplay="recordReview()">
             <source th:src="${currentLession.vid}" type="video/mp4">
             <script>document.getElementById("lessionStat").value = "finished";</script>
         </video>

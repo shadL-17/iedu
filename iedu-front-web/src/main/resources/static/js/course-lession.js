@@ -10,14 +10,16 @@ var persent;
 var page_title;
 var reqSender;
 var pauseTime;
+var completed;
 
-function init() {
+function init(isFinished) {
     progress_bar = document.getElementById("progress-bar");
     progress_bar_bg = document.getElementById("progress-bar-bg");
     video_obj = document.getElementById("video-obj");
     v_total = video_obj.duration;
     page_title = document.getElementById('page-course-title');
     reqSender = document.getElementById('requestSender');
+    completed = isFinished;
 }
 
 function updateProgress() {
@@ -29,12 +31,15 @@ function updateProgress() {
         progress_bar_bg.title = '当前进度：'+persent+'%';
         progress_bar_bg.dataset.originalTitle = '当前进度：'+persent+'%';
     }
-    if (persent>98) {
+    if (persent>98&&!completed) {
         const host_ip = document.getElementById('hostConfig').value;
         const uid = document.getElementById('hostConfig').dataset.uid;
         const cid = document.getElementById('hostConfig').dataset.cid;
         document.getElementById('lessionStat').value = 'finished';
         reqSender.src = 'http://'+host_ip+':8080/course/upgradeProgress?uid='+uid+'&cid='+cid;
+        completed = true;
+        stopVideoTimer();
+        clearPauseTimer();
         window.location.reload();
     }
 }

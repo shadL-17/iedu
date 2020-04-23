@@ -16,12 +16,23 @@ public class VideoActionService {
     @Autowired
     private VideoActionRepository videoActionRepository;
 
+    @Autowired
+    private LessionService lessionService;
+
+    @Autowired
+    private StudentCourseService studentCourseService;
+
     public VideoAction save(VideoAction videoAction) {
         return videoActionRepository.save(videoAction);
     }
 
     public VideoAction save(Integer uid, Integer lid, String action, String timeBefore, String timeAfter, String actionTime) {
         try{
+            Integer cid = lessionService.getCidBelong(lid);
+            String role = studentCourseService.checkRole(uid, cid);
+            if (!"student".equals(role)) {
+                return null;//只记录学生的操作记录，游客和教师/创建者的操作不记录
+            }
             VideoAction videoAction = new VideoAction();
             videoAction.setUid(uid);
             videoAction.setLid(lid);

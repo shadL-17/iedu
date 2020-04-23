@@ -59,4 +59,8 @@ public class LessionService {
         return -1;
     }
 
+    public Integer getCidBelong(Integer lid) {
+        return lessionRepository.getCidBelong(lid);
+    }
+
 }

@@ -1,6 +1,8 @@
 package cn.shadl.ieduservicecourse.service;
 
+import cn.shadl.ieducommonbeans.domain.Course;
 import cn.shadl.ieducommonbeans.domain.StudentCourse;
+import cn.shadl.ieducommonbeans.domain.User;
 import cn.shadl.ieducommonbeans.domain.dto.StudentCourseProgressDTO;
 import cn.shadl.ieduservicecourse.repository.StudentCourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +62,20 @@ public class StudentCourseService {
                 dtos.add(dto);
             }
             return dtos;
+        }
+    }
+
+    public String checkRole(Integer uid, Integer cid) {
+        Course course = courseService.findByCid(cid);
+        User user = userService.findByUid(uid);
+        if (course.getCreator() == user.getUid()) {
+            return "teacher";
+        }
+        else if (studentCourseRepository.findByUidAndCid(uid, cid) != null) {
+            return "student";
+        }
+        else {
+            return "guest";
         }
     }
 
