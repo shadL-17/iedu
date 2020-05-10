@@ -52,6 +52,7 @@ public class PostController {
             dto.setTitle(post.getTitle());
             dto.setContent(post.getContent());
             dto.setPublishDate(post.getPublishDate());
+            dto.setLastUpdateDate(post.getLastUpdateDate());
             dto.setCreator(userService.findByUid(post.getCreator()));
             dto.setType(post.getType());
             dto.setStatus(post.getStatus());

@@ -15,6 +15,8 @@ public class PostDTO {
 
     private Date publishDate;//发表日期
 
+    private Date lastUpdateDate;//最后更新日期（被修改、被回复）
+
     private User creator;//发布者
 
     private String type;//帖子类型（公告：public，求助：help，讨论：discussion，交易：trade，灌水：chat）

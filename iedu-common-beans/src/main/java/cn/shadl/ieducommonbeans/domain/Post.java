@@ -28,6 +28,9 @@ public class Post {
     private Date publishDate;//发表日期
 
     @Column
+    private Date lastUpdateDate;//最后更新日期（被修改、被回复）
+
+    @Column
     private Integer creator;//发布者
 
     @Column

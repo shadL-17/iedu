@@ -69,6 +69,7 @@
 
 <div id="headArea">
     <h1 id="pageTitle">社区论坛</h1>
+    <span th:if="${user.role=='admin'}" href="/Community/UserManage">用户管理</span>
 </div>
 
 <div id="postsArea">
