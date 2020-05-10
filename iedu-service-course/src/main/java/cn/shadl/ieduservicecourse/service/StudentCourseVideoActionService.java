@@ -1,8 +1,8 @@
 package cn.shadl.ieduservicecourse.service;
 
-import cn.shadl.ieducommonbeans.domain.VideoAction;
+import cn.shadl.ieducommonbeans.domain.StudentCourseVideoAction;
 import cn.shadl.ieducommonbeans.domain.dto.LessionVideoActionRecordDTO;
-import cn.shadl.ieduservicecourse.repository.VideoActionRepository;
+import cn.shadl.ieduservicecourse.repository.StudentCourseVideoActionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,10 +15,10 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class VideoActionService {
+public class StudentCourseVideoActionService {
 
     @Autowired
-    private VideoActionRepository videoActionRepository;
+    private StudentCourseVideoActionRepository studentCourseVideoActionRepository;
 
     @Autowired
     private LessionService lessionService;
@@ -26,25 +26,25 @@ public class VideoActionService {
     @Autowired
     private StudentCourseService studentCourseService;
 
-    public VideoAction save(VideoAction videoAction) {
-        return videoActionRepository.save(videoAction);
+    public StudentCourseVideoAction save(StudentCourseVideoAction studentCourseVideoAction) {
+        return studentCourseVideoActionRepository.save(studentCourseVideoAction);
     }
 
-    public VideoAction save(Integer uid, Integer lid, String action, String timeBefore, String timeAfter, String actionTime) {
+    public StudentCourseVideoAction save(Integer uid, Integer lid, String action, String timeBefore, String timeAfter, String actionTime) {
         try{
             Integer cid = lessionService.getCidBelong(lid);
             String role = studentCourseService.checkRole(uid, cid);
             if (!"student".equals(role)) {
                 return null;//只记录学生的操作记录，游客和教师/创建者的操作不记录
             }
-            VideoAction videoAction = new VideoAction();
-            videoAction.setUid(uid);
-            videoAction.setLid(lid);
-            videoAction.setAction(action);
-            videoAction.setTimeBefore(formatTime(timeBefore));
-            videoAction.setTimeAfter(formatTime(timeAfter));
-            videoAction.setActionTime(formatDateTime(actionTime));
-            return save(videoAction);
+            StudentCourseVideoAction studentCourseVideoAction = new StudentCourseVideoAction();
+            studentCourseVideoAction.setUid(uid);
+            studentCourseVideoAction.setLid(lid);
+            studentCourseVideoAction.setAction(action);
+            studentCourseVideoAction.setTimeBefore(formatTime(timeBefore));
+            studentCourseVideoAction.setTimeAfter(formatTime(timeAfter));
+            studentCourseVideoAction.setActionTime(formatDateTime(actionTime));
+            return save(studentCourseVideoAction);
         }catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -79,7 +79,7 @@ public class VideoActionService {
     }
 
     public List<LessionVideoActionRecordDTO> selectTopNLessionsHavingMostActionRecord(Integer cid, String action, Integer n) {
-        List<Map<String, Object>> data = videoActionRepository.selectTopNLessionsHavingMostActionRecord(cid, action, n);
+        List<Map<String, Object>> data = studentCourseVideoActionRepository.selectTopNLessionsHavingMostActionRecord(cid, action, n);
         if (data==null || data.isEmpty()) {
             return null;
         }

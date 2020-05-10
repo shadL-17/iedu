@@ -47,7 +47,7 @@ public class CourseController {
     private StudentCourseService studentCourseService;
 
     @Autowired
-    private VideoActionService videoActionService;
+    private StudentCourseVideoActionService studentCourseVideoActionService;
 
     @Autowired
     private StudentCourseDailyService studentCourseDailyService;
@@ -163,7 +163,7 @@ public class CourseController {
 
     @PostMapping("/saveVideoActionRecord")
     public void saveVideoActionRecord(Integer uid, Integer lid, String action, String timeBefore, String timeAfter, String actionTime) {
-        videoActionService.save(uid, lid, action, timeBefore, timeAfter, actionTime);
+        studentCourseVideoActionService.save(uid, lid, action, timeBefore, timeAfter, actionTime);
     }
 
     @GetMapping("/getStudentsOnlineNumOfCourseLastDay")
@@ -188,7 +188,7 @@ public class CourseController {
 
     @GetMapping("/selectTopNLessionsHavingMostActionRecord")
     public List<LessionVideoActionRecordDTO> selectTopNLessionsHavingMostActionRecord(Integer cid, String action, Integer n) {
-        return videoActionService.selectTopNLessionsHavingMostActionRecord(cid, action, n);
+        return studentCourseVideoActionService.selectTopNLessionsHavingMostActionRecord(cid, action, n);
     }
 
 

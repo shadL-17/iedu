@@ -1,0 +1,27 @@
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:9000/eureka/
+
+server:
+  port: 8083
+
+spring:
+  application:
+    name: iedu-service-community
+  datasource:
+    url: jdbc:mysql://47.112.227.13:3306/iedu?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
+    username: root
+    password: ShadL-17
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    database: MySQL
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+
+host:
+  #ip: 47.112.227.13
+  #ip: 192.168.100.6
+  ip: 192.168.137.1

@@ -15,7 +15,7 @@
     <!-- 最新的 Bootstrap4 核心 JavaScript 文件 -->
     <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </head>
-<body th:with="host=${#httpServletRequest.getAttribute('host')}, user=${#httpServletRequest.getAttribute('user')}, topThemes=${#httpServletRequest.getAttribute('topThemes')}, noneTopThemes=${#httpServletRequest.getAttribute('noneTopThemes')}">
+<body th:with="host=${#httpServletRequest.getAttribute('host')}, user=${#httpServletRequest.getAttribute('user')}, theme=${#httpServletRequest.getAttribute('theme')}, floors=${#httpServletRequest.getAttribute('floors')}">
 
 <!--顶部导航栏-->
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
@@ -67,46 +67,24 @@
     </ul>
 </nav>
 
-<div id="headArea">
-    <h1 id="pageTitle">社区论坛</h1>
+<div class="postTheme" th:text="'主题：'+${theme.title}">
 </div>
 
-<div id="postsArea">
-    <p id="ForumDataEmpty" th:if="${topThemes==null && noneTopThemes==null}">暂无帖子</p>
-    <div th:if="${topThemes!=null || noneTopThemes!=null}">
-        <div class="postRow" th:each="post:${topThemes}">
-            <span th:if="${post.status=='top'}" th:text="'[置顶]'"></span>
-            <span th:if="${post.status=='recommended'}" th:text="'[精品]'"></span>
-            <span th:if="${post.status=='top-recommended'}" th:text="'[置顶][精品]'"></span>
-            <a th:text="${post.title}" th:href="'/Post?pid='+${post.pid}"></a>
-            <span class="postInfo" th:text="${post.publishDate}"></span>
-        </div>
-        <div class="postRow" th:each="post:${noneTopThemes}">
-            <span th:if="${post.status=='top'}" th:text="'[置顶]'"></span>
-            <span th:if="${post.status=='recommended'}" th:text="'[精品]'"></span>
-            <span th:if="${post.status=='top-recommended'}" th:text="'[置顶][精品]'"></span>
-            <a th:text="${post.title}" th:href="'/Post?pid='+${post.pid}"></a>
-            <span class="postInfo" th:text="${post.publishDate}"></span>
-        </div>
-    </div>
+<div class="postFloor" th:each="floor:${floors}">
+    <span th:text="${floor.floor}+'楼 '+${floor.creator.username}+':'"></span>
+    <p class="postContent" th:utext="${floor.content}"></p>
+    <a th:if="${user.role=='admin'}" th:href="'/community/post/delete?pid='+${floor.pid}">删除</a>
+    <nobr class="postInfo" th:text="${floor.publishDate}"></nobr>
 </div>
 
 <br><br><br>
 
 <div id="replyArea">
-    <form action="/forum/newPost" method="post">
-        <input class="np_inputTitle" type="text" name="title" placeholder="在此输入主题">
+    <form action="/forum/replyPost" method="post">
+        <input type="hidden" name="themeId" th:value="${theme.pid}">
+        <textarea class="np_inputContent" name="content" placeholder="请输入回复的内容"></textarea>
         <br>
-        <textarea class="np_inputContent" name="content" placeholder="在此输入正文内容"></textarea>
-        <br>
-        <input class="np_submit" type="submit" value="发布">
-        <select class="np_inputType" name="type">
-            <option value="discussion">讨论帖</option>
-            <option value="help">求助帖</option>
-            <option value="trade">交易帖</option>
-            <option value="public">公告帖</option>
-            <option value="chat">灌水帖</option>
-        </select>
+        <input class="np_submit" type="submit" value="回复">
     </form>
 </div>
 

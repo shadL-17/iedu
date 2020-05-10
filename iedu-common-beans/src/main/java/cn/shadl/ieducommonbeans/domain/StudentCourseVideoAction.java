@@ -9,10 +9,10 @@ import java.sql.Timestamp;
 
 @Data
 @Entity
-@Table(name = "video_action")
+@Table(name = "student_course_video_action")
 @DynamicInsert
 @DynamicUpdate
-public class VideoAction {
+public class StudentCourseVideoAction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

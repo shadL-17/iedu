@@ -1,10 +1,7 @@
 package cn.shadl.iedufrontweb.controller;
 
 import cn.shadl.ieducommonbeans.domain.*;
-import cn.shadl.ieducommonbeans.domain.dto.CommentFloorDTO;
-import cn.shadl.ieducommonbeans.domain.dto.ExamQuestionDTO;
-import cn.shadl.ieducommonbeans.domain.dto.LessionVideoActionRecordDTO;
-import cn.shadl.ieducommonbeans.domain.dto.StudentCourseProgressDTO;
+import cn.shadl.ieducommonbeans.domain.dto.*;
 import cn.shadl.iedufrontweb.config.HostConfig;
 import cn.shadl.iedufrontweb.util.DataUtil;
 import com.alibaba.fastjson.JSON;
@@ -26,10 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 public class WebController {
@@ -104,8 +98,28 @@ public class WebController {
 
     @RequestMapping("/Community")
     public String community(HttpServletRequest request) {
-        initRequest(request);
+        Map<String, Object> info = initRequest(request);
+        if (info.get("user")==null) {
+            return "login";
+        }
+        List<Post> topThemes = restTemplate.exchange("http://" + hostConfig.getIp() + ":8080/community/post/findTopThemes", HttpMethod.GET, null, new ParameterizedTypeReference<List<Post>>() {}).getBody();
+        List<Post> noneTopThemes = restTemplate.exchange("http://" + hostConfig.getIp() + ":8080/community/post/findNoneTopThemes", HttpMethod.GET, null, new ParameterizedTypeReference<List<Post>>() {}).getBody();
+        request.setAttribute("topThemes", topThemes);
+        request.setAttribute("noneTopThemes", noneTopThemes);
         return "community";
+    }
+
+    @RequestMapping("/Post")
+    public String post(HttpServletRequest request, @RequestParam("pid") Integer pid) {
+        Map<String, Object> info = initRequest(request);
+        if (info.get("user")==null) {
+            return "login";
+        }
+        Post theme = restTemplate.exchange("http://" + hostConfig.getIp() + ":8080/community/post/findByPid?pid="+pid, HttpMethod.GET, null, new ParameterizedTypeReference<Post>() {}).getBody();
+        List<PostDTO> floors = restTemplate.exchange("http://" + hostConfig.getIp() + ":8080/community/post/readThemePost?pid="+pid, HttpMethod.GET, null, new ParameterizedTypeReference<List<PostDTO>>() {}).getBody();
+        request.setAttribute("floors", floors);
+        request.setAttribute("theme", theme);
+        return "community-post";
     }
 
     @RequestMapping("/About")

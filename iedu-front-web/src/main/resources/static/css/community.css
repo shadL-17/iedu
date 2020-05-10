@@ -1,0 +1,83 @@
+#headArea{
+    height: 70px;
+    border-bottom: 3px solid black;
+    background-color: darkblue;
+}
+#postsArea{
+    width: 99%;
+    height: auto;
+    background-color: white;
+}
+#replyArea{
+    width: 99%;
+    height: auto;
+    background-color: white;
+}
+#pageTitle{
+    margin: 0px 20px 20px;
+    padding-top: 0.5rem;
+    color: white;
+}
+#ForumDataEmpty{
+    text-align: center;
+}
+.postRow{
+    width: 100%;
+    height: 30px;
+    padding-top: 5px;
+    background-color: #F5F5F5;
+    border: 1px solid gray;
+}
+.postTheme{
+    background-color: #ddd;
+    font-size: 20px;
+    font-weight: bold;
+}
+.postFloor{
+    width: 100%;
+    height: auto;
+    padding-top: 5px;
+    background-color: #F5F5F5;
+    border: 1px solid gray;
+    padding-bottom: 20px;
+}
+.postRow:hover{
+    background-color: lightgray;
+}
+.prefix{
+    color: #505077;
+    cursor: default;
+}
+.postTitle{
+    width: 100%;
+    padding: 10px;
+    background-color: #7777FF;
+}
+.postContent{
+    margin-left: 20px;
+}
+.postInfo{
+    float: right;
+    cursor: default;
+}
+.np_inputTitle{
+    margin: 10px;
+    width: 98.5%;
+    height: 27px;
+}
+.np_inputContent{
+    margin: 10px;
+    width: 98.5%;
+    height: 300px;
+    resize: none;
+}
+.np_inputType{
+    height: 25px;
+    margin: 15px;
+    float: right;
+}
+.np_submit{
+    height: 25px;
+    margin: 15px;
+    float: right;
+}
