@@ -6,6 +6,7 @@
     <link rel="stylesheet" type="text/css" th:href="@{~/css/index.css}" />
     <script type="text/javascript" th:src="@{~/js/common.js}"></script>
     <link rel="stylesheet" type="text/css" th:href="@{~/css/community.css}" />
+    <script type="text/javascript" th:src="@{~/js/community.js}"></script>
     <!-- 新 Bootstrap4 核心 CSS 文件 -->
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
     <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
@@ -95,19 +96,21 @@
 <br><br><br>
 
 <div id="replyArea">
-    <form action="/forum/newPost" method="post">
-        <input class="np_inputTitle" type="text" name="title" placeholder="在此输入主题">
+    <form action="/newPost" method="post" onsubmit="return postSubmitCheck()">
+        <input id="post_title_input" class="np_inputTitle" type="text" name="title" placeholder="在此输入主题">
         <br>
-        <textarea class="np_inputContent" name="content" placeholder="在此输入正文内容"></textarea>
+        <textarea id="post_content_input" class="np_inputContent" name="content" placeholder="在此输入正文内容"></textarea>
         <br>
         <input class="np_submit" type="submit" value="发布">
-        <select class="np_inputType" name="type">
+        <select id="post_type_input" class="np_inputType" name="type">
             <option value="discussion">讨论帖</option>
             <option value="help">求助帖</option>
             <option value="trade">交易帖</option>
             <option value="public">公告帖</option>
             <option value="chat">灌水帖</option>
         </select>
+        <input type="hidden" name="uid" th:value="${user.uid}">
+        <input type="hidden" name="userRole" id="userRole" th:value="${user.role}">
     </form>
 </div>
 

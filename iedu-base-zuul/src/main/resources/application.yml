@@ -28,3 +28,10 @@ zuul:
 ribbon:
   ReadTimeout: 90000
   ConnectTimeout: 90000
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 90000

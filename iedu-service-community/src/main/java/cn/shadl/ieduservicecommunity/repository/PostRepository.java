@@ -15,9 +15,10 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findTopThemes();
 
     //查找所有非置顶主题帖
-    @Query(nativeQuery = true, value = "select * from post where status!='top' and status!='top-recommended' and pid=parent")
+    @Query(nativeQuery = true, value = "select * from post where status!='top' and status!='top-recommended' and pid=parent order by last_update_date")
     List<Post> findNoneTopThemes();
 
     //查找主题帖下所有回复
     List<Post> findByParentOrderByFloorAsc(Integer parent);
+
 }

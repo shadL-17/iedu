@@ -6,9 +6,11 @@ import cn.shadl.ieduservicecommunity.service.PostService;
 import cn.shadl.ieduservicecommunity.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,4 +64,22 @@ public class PostController {
         }
         return dtos;
     }
+
+    @PostMapping("/publish")
+    public Post publishNewPost(String title, String content, String type, Integer uid) {
+        long timeMillis = System.currentTimeMillis();
+        Post post = new Post();
+        post.setPid(null);
+        post.setTitle(title);
+        post.setContent(content);
+        post.setType(type);
+        post.setCreator(uid);
+        post.setFloor(1);
+        post.setParent(null);
+        post.setStatus("normal");
+        post.setPublishDate(new Date(timeMillis));
+        post.setLastUpdateDate(new Date(timeMillis));
+        return postService.saveNewThemePost(post);
+    }
+
 }

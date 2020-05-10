@@ -11,10 +11,7 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.Cookie;
@@ -107,19 +104,6 @@ public class WebController {
         request.setAttribute("topThemes", topThemes);
         request.setAttribute("noneTopThemes", noneTopThemes);
         return "community";
-    }
-
-    @RequestMapping("/Post")
-    public String post(HttpServletRequest request, @RequestParam("pid") Integer pid) {
-        Map<String, Object> info = initRequest(request);
-        if (info.get("user")==null) {
-            return "login";
-        }
-        Post theme = restTemplate.exchange("http://" + hostConfig.getIp() + ":8080/community/post/findByPid?pid="+pid, HttpMethod.GET, null, new ParameterizedTypeReference<Post>() {}).getBody();
-        List<PostDTO> floors = restTemplate.exchange("http://" + hostConfig.getIp() + ":8080/community/post/readThemePost?pid="+pid, HttpMethod.GET, null, new ParameterizedTypeReference<List<PostDTO>>() {}).getBody();
-        request.setAttribute("floors", floors);
-        request.setAttribute("theme", theme);
-        return "community-post";
     }
 
     @RequestMapping("/About")
@@ -333,6 +317,40 @@ public class WebController {
         request.setAttribute("lessionsOftenBeingAbandon", lessionsOftenBeingAbandon);
         request.setAttribute("lessionsOftenBeingReview", lessionsOftenBeingReview);
         return "course-console";
+    }
+
+    @RequestMapping("/Post")
+    public String post(HttpServletRequest request, @RequestParam("pid") Integer pid) {
+        Map<String, Object> info = initRequest(request);
+        if (info.get("user")==null) {
+            return "login";
+        }
+        Post theme = restTemplate.exchange("http://" + hostConfig.getIp() + ":8080/community/post/findByPid?pid="+pid, HttpMethod.GET, null, new ParameterizedTypeReference<Post>() {}).getBody();
+        List<PostDTO> floors = restTemplate.exchange("http://" + hostConfig.getIp() + ":8080/community/post/readThemePost?pid="+pid, HttpMethod.GET, null, new ParameterizedTypeReference<List<PostDTO>>() {}).getBody();
+        request.setAttribute("floors", floors);
+        request.setAttribute("theme", theme);
+        return "community-post";
+    }
+
+    @PostMapping("/newPost")
+    public String post(HttpServletRequest request, HttpServletResponse response, String title, String content, String type, Integer uid) {
+        Map<String, Object> info = initRequest(request);
+        if (info.get("user")==null) {
+            return "login";
+        }
+        String url = "http://"+hostConfig.getIp()+":8080/community/post/publish";
+        MultiValueMap<String, Object> params = new LinkedMultiValueMap<String, Object>();
+        params.add("title",title);
+        params.add("content",content);
+        params.add("type",type);
+        params.add("uid",uid);
+        Post post = restTemplate.postForObject(url, params, Post.class);
+        try {
+            response.sendRedirect("http://"+hostConfig.getIp()+"/Community");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @RequestMapping("/test")

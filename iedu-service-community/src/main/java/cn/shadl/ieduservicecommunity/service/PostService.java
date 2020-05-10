@@ -33,4 +33,14 @@ public class PostService {
     public List<Post> findByParentOrderByFloorAsc(Integer parent) {
         return postRepository.findByParentOrderByFloorAsc(parent);
     }
+
+    public Post savePost(Post post) {
+        return postRepository.save(post);
+    }
+
+    public Post saveNewThemePost(Post post) {
+        Post returnPost = postRepository.save(post);
+        returnPost.setParent(returnPost.getPid());
+        return postRepository.save(returnPost);
+    }
 }
