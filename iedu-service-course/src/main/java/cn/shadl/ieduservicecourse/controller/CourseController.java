@@ -191,6 +191,16 @@ public class CourseController {
         return studentCourseVideoActionService.selectTopNLessionsHavingMostActionRecord(cid, action, n);
     }
 
+    @GetMapping("/findUserCreated")
+    public List<Course> findUserCreated(Integer uid) {
+        return courseService.findUserCreated(uid);
+    }
+
+    @GetMapping("/findUserJoined")
+    public List<Course> findUserJoined(Integer uid) {
+        return courseService.findUserJoined(uid);
+    }
+
 
     @RequestMapping("/test")
     public void test() {

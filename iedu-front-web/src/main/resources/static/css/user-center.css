@@ -1,0 +1,139 @@
+body{
+    moz-user-select: -moz-none;
+    -moz-user-select: none;
+    -o-user-select:none;
+    -khtml-user-select:none;
+    -webkit-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
+}
+#header{
+    position: absolute;
+    left: 0%;
+    top: 0%;
+    width: 100%;
+    height: 25%;
+    background-color: black;
+}
+#main{
+    position: absolute;
+    left: 0%;
+    bottom: 0%;
+    width: 100%;
+    height: 75%;
+    background-color: white;
+}
+#userAvatar{
+    position: absolute;
+    transform: translate(0,-50%);
+    top: 95px;
+    left: 40px;
+    width: 100px;
+    height: 100px;
+    border: 2px solid white;
+    border-radius: 50px;
+}
+#userName{
+    position: absolute;
+    left: 170px;
+    top: 65px;
+    color: white;
+    font-size: 25px;
+    font-weight: bolder;
+}
+#userLevel{
+    position: absolute;
+    left: 170px;
+    top: 100px;
+    color: white;
+    background-color: #7777FF;
+    font-size: 12px;
+    padding: 2px 7px;
+    border-radius: 10px;
+
+}
+#guideBar{
+    position: absolute;
+    bottom: 0%;
+    left: 300px;
+}
+.tabButton{
+    color: #7777FF;
+    font-weight: bolder;
+}
+.user-center-pane{
+    position: absolute;
+    transform: translate(-50%,0);
+    left: 50%;
+    top: 30px;
+    width: 75%;
+    background-color: lightgray;
+}
+#pane_home{
+    display: block;
+    height: auto;
+}
+#pane_info{
+    display: none;
+    height: 260px;
+}
+#pane_account{
+    display: none;
+    height: 350px;
+}
+#pane_userCourse{
+    display: none;
+    height: auto;
+}
+#pane_userCommunity{
+    display: none;
+    height: auto;
+}
+.titleText{
+    font-size: 18px;
+    font-weight: bolder;
+    margin-left: 15px;
+    margin-top: 15px;
+}
+.moneyNumber{
+    font-size: 18px;
+    font-weight: bolder;
+    color: darkorange;
+    margin-left: 35px;
+}
+.tinyButton{
+    font-size: 9px;
+    width: auto;
+    height: 20px;
+    margin: 0px 10px;
+}
+.tinyText{
+    font-size: 11px;
+    color: gray;
+    text-align: center;
+}
+.infoName{
+    margin-left: 30px;
+    line-height: 30px;
+}
+.infoValue{
+    display: inline;
+}
+.infoInput{
+    display: none;
+}
+#inputBirthday{
+    width: 150px;
+}
+#inputAddress{
+    width: 500px;
+}
+.courseItem{
+    position: relative;
+    margin: 30px 70px;
+    width: 1000px;
+    height: 100px;
+    border: 1px solid gray;
+    background-color: white;
+    cursor: pointer;
+}

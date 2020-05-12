@@ -85,4 +85,12 @@ public class CourseService {
         scData.setScore(0);
         return studentCourseRepository.save(scData);
     }
+
+    public List<Course> findUserCreated(Integer uid) {
+        return courseRepository.findUserCreated(uid);
+    }
+
+    public List<Course> findUserJoined(Integer uid) {
+        return courseRepository.findUserJoined(uid);
+    }
 }

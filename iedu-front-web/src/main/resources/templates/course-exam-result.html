@@ -59,8 +59,8 @@
                 <div class="dropdown">
                     <li class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown" th:text="'当前用户：'+${user.username}"></li>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">个人中心</a>
-                        <a class="dropdown-item" href="#">账号管理</a>
+                        <a class="dropdown-item" href="/UserCenter">个人中心</a>
+                        <a class="dropdown-item" href="/UserCenter">账号管理</a>
                         <a class="dropdown-item" th:href="'http://'+${host}+':8080/user/logout'">退出登录</a>
                     </div>
                 </div>

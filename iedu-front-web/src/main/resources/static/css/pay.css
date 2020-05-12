@@ -1,0 +1,85 @@
+#title{
+    text-align: center;
+    font-size: 40px;
+    font-weight: bolder;
+}
+#title2{
+    margin-left: 260px;
+    font-size: 18px;
+    font-weight: bolder;
+}
+#orderInfoArea{
+    position: absolute;
+    transform: translate(-50%,0);
+    left: 50%;
+    top: 170px;
+    width: 1000px;
+    height: 100px;
+    background-color: lightgray;
+}
+.imgPortrait{
+    position: absolute;
+    left: 5px;
+    top: 5px;
+    width: 90px;
+    height: 90px;
+}
+.orderInfoText{
+    position: absolute;
+    display: inline;
+    left: 120px;
+    top: 5px;
+    font-size: 12px;
+}
+.orderStatus{
+    position: absolute;
+    display: inline;
+    left: 870px;
+    top: 2px;
+    text-align: left;
+    font-size: 12px;
+}
+.statusValue{
+    color: #FF3322;
+}
+.totalInfo{
+    position: absolute;
+    display: inline;
+    left: 835px;
+    bottom: 5px;
+    text-align: right;
+    font-size: 16px;
+    font-weight: bolder;
+}
+.totalAmount{
+    font-size: 18px;
+    color: orange;
+}
+#title3{
+    position: absolute;
+    left: 0px;
+    top: 300px;
+    margin-left: 260px;
+    font-size: 18px;
+    font-weight: bolder;
+}
+#passwdInput{
+    position: absolute;
+    left: 260px;
+    top: 360px;
+    width: 200px;
+    height: 25px;
+    font-size: 18px;
+}
+#payButton{
+    position: absolute;
+    left: 465px;
+    top: 360px;
+    width: 120px;
+    height: 30px;
+    font-size: 16px;
+    color: white;
+    background-color: orangered;
+    border: orangered;
+    cursor: pointer;
+}

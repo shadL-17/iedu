@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>iEdu - 在线教育平台</title>
+    <link rel="stylesheet" type="text/css" th:href="@{~/css/index.css}" />
+    <script type="text/javascript" th:src="@{~/js/common.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{~/css/community.css}" />
+    <script type="text/javascript" th:src="@{~/js/community.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{~/css/user-center.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{~/css/pay.css}" />
+    <script type="text/javascript" th:src="@{~/js/user-center.js}"></script>
+    <!-- 新 Bootstrap4 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+    <!-- bootstrap.bundle.min.js 用于弹窗、提示、下拉菜单，包含了 popper.min.js -->
+    <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+    <!-- 最新的 Bootstrap4 核心 JavaScript 文件 -->
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <!--Bootstrap3-->
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body th:with="host=${#httpServletRequest.getAttribute('host')}, user=${#httpServletRequest.getAttribute('user')}, createdCourses=${#httpServletRequest.getAttribute('createdCourses')}, joinedCourses=${#httpServletRequest.getAttribute('joinedCourses')}">
+
+<!--顶部导航栏-->
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+    <ul class="navbar-nav">
+        <li class="nav-item active">
+            <a class="nav-link" href="/"><b>iEdu</b></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/CourseCenter">课程中心</a>
+        </li>
+        <li class="nav-item active">
+            <a class="nav-link" href="/Community">社区中心</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/About">关于网站</a>
+        </li>
+        <li class="nav-item">
+            <span class="nav-link">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        </li>
+        <form class="form-inline">
+            <input id="search-input" class="form-control" type="text" placeholder="输入你想要找的内容">
+            <button id="search-button" class="btn btn-secondary" type="button">搜索</button>
+        </form>
+        <li class="nav-item">
+            <span class="nav-link">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        </li>
+        <div class="nav-user float-right" th:switch="${user}">
+            <!--无登录状态信息-->
+            <div th:case="null">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="'http://'+${host}+'/login'">登录/注册</a>
+                </li>
+            </div>
+            <!--有登录状态信息-->
+            <div th:case="*">
+                <div class="dropdown">
+                    <li class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown" th:text="'当前用户：'+${user.username}"></li>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="/UserCenter">个人中心</a>
+                        <a class="dropdown-item" href="/UserCenter">账号管理</a>
+                        <a class="dropdown-item" th:href="'http://'+${host}+':8080/user/logout'">退出登录</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ul>
+</nav>
+
+<div id="header">
+    <img id="userAvatar" src="/image/user-avatar/default.jpg">
+    <span id="userName" th:text="${user.username}"></span>
+
+    <ul class="nav nav-tabs" id="guideBar">
+        <li class="active" id="tb1"><a href="#" class="tabButton" onclick="tabButton1()">主 &nbsp; 页</a></li>
+        <li id="tb2"><a href="#" class="tabButton" onclick="tabButton2()">个 人 资 料</a></li>
+        <li id="tb3"><a href="#" class="tabButton" onclick="tabButton3()">账 户 管 理</a></li>
+        <li id="tb4"><a href="#" class="tabButton" onclick="tabButton4()">我 的 课 程</a></li>
+        <li id="tb6"><a href="#" class="tabButton" onclick="tabButton5()">社 区 事 务</a></li>
+    </ul>
+</div>
+<div id="main">
+    <div id="pane_home" class="user-center-pane">
+        <p class="titleText">最近浏览</p>
+        <p class="tinyText">此功能尚未开放</p>
+        <p class="titleText">正在进行的订单</p>
+        <p class="tinyText">此功能尚未开放</p>
+        <p class="titleText">个人动态</p>
+        <p class="tinyText">此功能尚未开放</p>
+        <p class="titleText">热门推荐</p>
+        <p class="tinyText">此功能尚未开放</p>
+    </div>
+    <div id="pane_info" class="user-center-pane">
+        <p class="titleText">个人资料
+            <button class="tinyButton" onclick="infoEditShow()">编辑个人资料</button>
+        </p>
+        <p class="infoName">
+            <b>用户名：</b>
+            <span th:text="${user.username}"></span>
+        </p>
+        <p class="infoName">
+            <b>性别：</b>
+            <span class="infoValue" th:text="${user.gender}"></span>
+            <input class="infoInput" name="sex" type="radio" value="男" th:checked="${user.gender}=='男'"><span class="infoInput">男</span>
+            <input class="infoInput" name="sex" type="radio" value="女" th:checked="${user.gender}=='女'"><span class="infoInput">女</span>
+            <input class="infoInput" name="sex" type="radio" value="保密" th:checked="${user.gender}=='保密'"><span class="infoInput">保密</span>
+        </p>
+        <p class="infoName">
+            <b>生日：</b>
+            <span class="infoValue" th:text="${#dates.format(user.birthday,'yyyy-MM-dd')}"></span>
+            <input class="infoInput" id="inputBirthday" name="birthday" type="date" th:value="${user.birthday}">
+        </p>
+        <p class="infoName">
+            <b>地址：</b>
+            <span class="infoValue" th:text="${user.contact}"></span>
+            <input class="infoInput" id="inputAddress" name="address" type="text" th:value="${user.contact}">
+        </p>
+        <p class="infoInput">
+            <button class="tinyButton" onclick="infoEditHide()">完成</button>
+            <button class="tinyButton" onclick="infoEditHide()">取消</button>
+        </p>
+    </div>
+    <div id="pane_account" class="user-center-pane">
+        <p class="titleText">账户状态</p>
+        <p class="tinyText" style="text-align:left;margin-left:30px;" th:utext="'等级：Lv.'+'<br>类型：普通用户<br>状态：正常'"></p>
+        <p class="titleText">密码管理</p>
+        <span class="tinyText" style="text-align:left;margin-left:30px;">密码安全性：强</span>
+        <button class="tinyButton">更改密码</button>
+        <p class="titleText">权限申诉</p>
+        <span class="tinyText" style="text-align:left;margin-left:30px;">用户类型：普通用户</span>
+        <button class="tinyButton">申请成为管理员</button>
+    </div>
+    <div id="pane_userCourse" class="user-center-pane">
+        <p class="titleText">我创建的课程</p>
+        <p class="tinyText" th:if="${createdCourses==null}">你尚未创建任何课程</p>
+        <div th:if="${createdCourses!=null}">
+            <div class="courseItem" th:each="course:${createdCourses}">
+                <img class="imgPortrait" th:src="@{${course.image}}">
+                <span class="orderInfoText" th:utext="'<b>名称：</b>'+${course.name}+'<br><b>简介：</b>'+${course.description}+'<br><b>分类标签：</b>'+${course.type}"></span>
+                <span class="orderStatus">课程状态：
+                    <span th:if="${course.status=='已完结'}" class="badge badge-success" style="background-color: #11AA11">· 已完结</span>
+                    <span th:if="${course.status=='更新中'}" class="badge badge-warning" style="background-color: #ffc107">· 更新中</span>
+                </span>
+            </div>
+        </div>
+        <p class="titleText">我加入的课程</p>
+        <p class="tinyText" th:if="${joinedCourses==null}">你尚未加入任何课程</p>
+        <div th:if="${joinedCourses!=null}">
+            <div class="courseItem" th:each="course : ${joinedCourses}">
+                <img class="imgPortrait" th:src="${course.image}">
+                <span class="orderInfoText" th:utext="'<b>名称：</b>'+${course.name}+'<br><b>简介：</b>'+${course.description}+'<br><b>分类标签：</b>'+${course.type}"></span>
+                <span class="orderStatus">课程状态：
+                    <span th:if="${course.status=='已完结'}" class="badge badge-success">· 已完结</span>
+                    <span th:if="${course.status=='更新中'}" class="badge badge-warning">· 更新中</span>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div id="pane_userCommunity" class="user-center-pane">
+        <p class="titleText">我的社区事务</p>
+        <p class="tinyText" th:if="${joinedCourses==null || joinedCourses.size()<=0}">你尚无社区事务记录</p>
+        <div th:if="${joinedCourses!=null && joinedCourses.size()>0}">
+            <div class="courseItem" th:each="course : ${joinedCourses}">
+                <img class="imgPortrait" th:src="${course.thumbnail}">
+                span class="orderInfoText" th:utext="'<b>名称：</b>'+${course.title}+'<br><b>所有者：</b>'+${user.username}+'<br><b>状态：</b>'+${course.status}"></span>
+                <span class="orderStatus">课程状态：<span class="statusValue" th:text="${course.status}"></span></span>
+                <span class="totalInfo">分类标签：<span class="totalAmount" th:text="'￥'+${course.type}"></span></span>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

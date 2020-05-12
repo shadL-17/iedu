@@ -353,6 +353,20 @@ public class WebController {
         return null;
     }
 
+    @RequestMapping("/UserCenter")
+    public String userCenter(HttpServletRequest request) {
+        Map<String, Object> info = initRequest(request);
+        User user = (User) info.get("user");
+        if (user == null) {
+            return "login";
+        }
+        List<Course> createdCourses = restTemplate.exchange("http://"+hostConfig.getIp()+":8080/course/findUserCreated?uid="+user.getUid(), HttpMethod.GET, null, new ParameterizedTypeReference<List<Course>>(){}).getBody();
+        List<Course> joinedCourses = restTemplate.exchange("http://"+hostConfig.getIp()+":8080/course/findUserJoined?uid="+user.getUid(), HttpMethod.GET, null, new ParameterizedTypeReference<List<Course>>(){}).getBody();
+        request.setAttribute("createdCourses", createdCourses);
+        request.setAttribute("joinedCourses", joinedCourses);
+        return "user-center";
+    }
+
     @RequestMapping("/test")
     @ResponseBody
     public Object test(HttpServletRequest request) {
