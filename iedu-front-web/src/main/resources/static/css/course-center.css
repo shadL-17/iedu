@@ -57,3 +57,8 @@ b{
     color: dodgerblue !important;
     text-decoration: none !important;
 }
+.tips{
+    font-size: 13px;
+    color: gray;
+    text-align: center;
+}

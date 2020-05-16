@@ -14,7 +14,7 @@
     <!-- 最新的 Bootstrap4 核心 JavaScript 文件 -->
     <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </head>
-<body th:with="host=${#httpServletRequest.getAttribute('host')}, user=${#httpServletRequest.getAttribute('user')}">
+<body th:with="host=${#httpServletRequest.getAttribute('host')}, user=${#httpServletRequest.getAttribute('user')}, tabFocus=${#httpServletRequest.getAttribute('tabFocus')}">
 
 <!--顶部导航栏-->
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
@@ -39,7 +39,7 @@
         </li>
         <form class="form-inline">
             <input id="search-input" class="form-control" type="text" placeholder="输入你想要找的内容">
-            <button id="search-button" class="btn btn-secondary" type="button">搜索</button>
+            <button id="search-button" class="btn btn-secondary" type="button" onclick="searchCourses()">搜索</button>
         </form>
         <li class="nav-item">
             <span class="nav-link">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
@@ -71,24 +71,28 @@
 <div style="padding: 30px;">
     <ul class="nav nav-tabs" role="tablist">
         <li class="nav-item">
-            <b class="nav-link active" data-toggle="tab" href="">全部</b>
+            <b id="tab-0" class="nav-link active" data-toggle="tab" onclick="toURL('/CourseCenter')">全部</b>
         </li>
         <li class="nav-item">
-            <b class="nav-link" data-toggle="tab" href="">编程语言</b>
+            <b id="tab-1" class="nav-link" data-toggle="tab" onclick="toURL('/CourseCenter?type=编程语言&tab=1')">编程语言</b>
         </li>
         <li class="nav-item">
-            <b class="nav-link" data-toggle="tab" href="">测试运维</b>
+            <b id="tab-2" class="nav-link" data-toggle="tab" onclick="toURL('/CourseCenter?type=测试运维&tab=2')">测试运维</b>
         </li>
         <li class="nav-item">
-            <b class="nav-link" data-toggle="tab" href="">平面设计</b>
+            <b id="tab-3" class="nav-link" data-toggle="tab" onclick="toURL('/CourseCenter?type=平面设计&tab=3')">平面设计</b>
         </li>
         <li class="nav-item">
-            <b class="nav-link" data-toggle="tab" href="">公关营销</b>
+            <b id="tab-4" class="nav-link" data-toggle="tab" onclick="toURL('/CourseCenter?type=公关营销&tab=4')">公关营销</b>
         </li>
         <li class="nav-item">
-            <b class="nav-link" data-toggle="tab" href="">创业培训</b>
+            <b id="tab-5" class="nav-link" data-toggle="tab"  onclick="toURL('/CourseCenter?type=创业培训&tab=5')">创业培训</b>
         </li>
     </ul>
+    <script th:if="${tabFocus!=null}">
+        tabUnfocus('tab-0');
+        tabFocus('tab-[[${tabFocus}]]');
+    </script>
     <br>
     <span>排序方式：</span><br><br>
     <ul class="nav nav-pills" role="tablist">
@@ -105,6 +109,7 @@
     <br>
     <!--课程列表-->
     <div th:with="courses=${#httpServletRequest.getAttribute('courses')}" class="courses-view">
+        <p class="tips" th:if="${courses==null || courses.size()<1}" th:utext="'<br>暂无结果'"></p>
         <div th:each="course : ${courses}" class="course-view" th:onclick="'toURL(\'/Course?cid='+${course.cid}+'\')'">
             <img th:src="${course.image}" class="course-image rounded img-thumbnail">
             <div class="course-info">

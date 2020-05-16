@@ -17,3 +17,16 @@ function showObj(id,mode) {
 function hideObj(id) {
     document.getElementById(id).style.display = 'none';
 }
+
+function searchCourses() {
+    const key = document.getElementById('search-input').value;
+    toURL('/CourseCenter?keyword='+key);
+}
+
+function tabUnfocus(id) {
+    document.getElementById(id).classList.remove('active');
+}
+
+function tabFocus(id) {
+    document.getElementById(id).classList.add('active');
+}

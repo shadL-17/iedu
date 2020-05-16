@@ -20,4 +20,8 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
     @Query(nativeQuery = true, value = "select * from course where cid in (select cid from student_course where uid=:#{#uid})")
     List<Course> findUserJoined(Integer uid);
 
+    List<Course> findByTypeLike(String type);
+
+    List<Course> findByNameLike(String name);
+
 }

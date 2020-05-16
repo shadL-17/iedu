@@ -209,6 +209,16 @@ public class CourseController {
         return annexService.findByLid(lid);
     }
 
+    @GetMapping("/findCoursesByTypeLike")
+    public List<Course> findCoursesByTypeLike(String keyword) {
+        return courseService.findByTypeLike("%" + keyword + "%");
+    }
+
+    @GetMapping("/findCoursesByNameLike")
+    public List<Course> findCoursesByNameLike(String keyword) {
+        return courseService.findByNameLike("%" + keyword + "%");
+    }
+
     @RequestMapping("/test")
     public void test() {
 

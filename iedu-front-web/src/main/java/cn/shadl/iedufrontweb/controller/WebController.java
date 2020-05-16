@@ -85,10 +85,19 @@ public class WebController {
     }
 
     @RequestMapping("/CourseCenter")
-    public String courseCenter(HttpServletRequest request) {
+    public String courseCenter(HttpServletRequest request, String keyword, String type, String tab) {
         initRequest(request);
-        ResponseEntity<List<Course>> responseEntity = restTemplate.exchange("http://"+hostConfig.getIp()+":8080/course/findAllCourses", HttpMethod.GET, null, new ParameterizedTypeReference<List<Course>>(){});
-        List<Course> courses = responseEntity.getBody();
+        List<Course> courses;
+        if (keyword!=null && !"".equals(keyword.trim())) {
+            courses = restTemplate.exchange("http://"+hostConfig.getIp()+":8080/course/findCoursesByNameLike?keyword="+keyword, HttpMethod.GET, null, new ParameterizedTypeReference<List<Course>>(){}).getBody();
+        }
+        else if (type!=null && !"".equals(type.trim())) {
+            courses = restTemplate.exchange("http://"+hostConfig.getIp()+":8080/course/findCoursesByTypeLike?keyword="+type, HttpMethod.GET, null, new ParameterizedTypeReference<List<Course>>(){}).getBody();
+            request.setAttribute("tabFocus", tab);
+        }
+        else {
+            courses = restTemplate.exchange("http://"+hostConfig.getIp()+":8080/course/findAllCourses", HttpMethod.GET, null, new ParameterizedTypeReference<List<Course>>(){}).getBody();
+        }
         request.setAttribute("courses", courses);
         return "course-center";
     }

@@ -93,4 +93,12 @@ public class CourseService {
     public List<Course> findUserJoined(Integer uid) {
         return courseRepository.findUserJoined(uid);
     }
+
+    public List<Course> findByTypeLike(String keyword) {
+        return courseRepository.findByTypeLike(keyword);
+    }
+
+    public List<Course> findByNameLike(String keyword) {
+        return courseRepository.findByNameLike(keyword);
+    }
 }
