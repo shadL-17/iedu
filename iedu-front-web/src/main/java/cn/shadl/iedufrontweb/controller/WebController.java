@@ -216,6 +216,8 @@ public class WebController {
         request.setAttribute("comments", comments);
         Integer lessionNo = restTemplate.exchange("http://" + hostConfig.getIp() + ":8080/course/getLessionNumInCourse?lid="+currentLession.getLid()+"&cid="+cid, HttpMethod.GET, null, new ParameterizedTypeReference<Integer>() {}).getBody();
         request.setAttribute("lessionNo", lessionNo);
+        List<Annex> annexes = restTemplate.exchange("http://" + hostConfig.getIp() + ":8080/course/findLessionAnnexes?lid="+currentLession.getLid(), HttpMethod.GET, null, new ParameterizedTypeReference<List<Annex>>() {}).getBody();
+        request.setAttribute("annexes", annexes);
         return "course-lession";
     }
 

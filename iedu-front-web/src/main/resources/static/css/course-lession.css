@@ -2,6 +2,10 @@
     text-align: center;
     margin: 2rem;
 }
+.tips{
+    font-size: 12px;
+    color: gray;
+}
 .course-structure{
     display: inline-block;
     width: 25%;
@@ -116,4 +120,13 @@
 .teacher-console{
     font-size: 13px;
     margin: 7%;
+}
+.annex-area{
+    margin: 0% 7%;
+}
+.annex-link{
+    font-size: 13px;
+}
+.annex-link[href$='.pdf']{
+    background: transparent url(image/file_pdf.jpg) center right no-repeat;
 }

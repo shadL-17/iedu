@@ -52,6 +52,9 @@ public class CourseController {
     @Autowired
     private StudentCourseDailyService studentCourseDailyService;
 
+    @Autowired
+    private AnnexService annexService;
+
     @GetMapping("/findAllCourses")
     public List<Course> findAllCourses() {
         return courseService.findAll();
@@ -201,6 +204,10 @@ public class CourseController {
         return courseService.findUserJoined(uid);
     }
 
+    @GetMapping("/findLessionAnnexes")
+    public List<Annex> findLessionAnnexes(Integer lid)  {
+        return annexService.findByLid(lid);
+    }
 
     @RequestMapping("/test")
     public void test() {
