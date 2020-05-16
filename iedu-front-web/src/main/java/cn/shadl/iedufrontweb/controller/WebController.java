@@ -331,7 +331,7 @@ public class WebController {
     }
 
     @RequestMapping("/Post")
-    public String post(HttpServletRequest request, @RequestParam("pid") Integer pid) {
+    public String newPost(HttpServletRequest request, @RequestParam("pid") Integer pid) {
         Map<String, Object> info = initRequest(request);
         if (info.get("user")==null) {
             return "login";
@@ -344,7 +344,7 @@ public class WebController {
     }
 
     @PostMapping("/newPost")
-    public String post(HttpServletRequest request, HttpServletResponse response, String title, String content, String type, Integer uid) {
+    public String newPost(HttpServletRequest request, HttpServletResponse response, String title, String content, String type, Integer uid) {
         Map<String, Object> info = initRequest(request);
         if (info.get("user")==null) {
             return "login";
@@ -364,6 +364,27 @@ public class WebController {
         return null;
     }
 
+    @PostMapping("/replyPost")
+    public String replyPost(HttpServletRequest request, HttpServletResponse response, String content, Integer themeId) {
+        Map<String, Object> info = initRequest(request);
+        User user = (User) info.get("user");
+        if (user==null) {
+            return "login";
+        }
+        String url = "http://"+hostConfig.getIp()+":8080/community/post/reply";
+        MultiValueMap<String, Object> params = new LinkedMultiValueMap<String, Object>();
+        params.add("content",content);
+        params.add("creator",user.getUid());
+        params.add("parent",themeId);
+        Post post = restTemplate.postForObject(url, params, Post.class);
+        try {
+            response.sendRedirect("http://"+hostConfig.getIp()+"/Post?pid="+themeId);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     @RequestMapping("/UserCenter")
     public String userCenter(HttpServletRequest request) {
         Map<String, Object> info = initRequest(request);
@@ -373,6 +394,8 @@ public class WebController {
         }
         List<Course> createdCourses = restTemplate.exchange("http://"+hostConfig.getIp()+":8080/course/findUserCreated?uid="+user.getUid(), HttpMethod.GET, null, new ParameterizedTypeReference<List<Course>>(){}).getBody();
         List<Course> joinedCourses = restTemplate.exchange("http://"+hostConfig.getIp()+":8080/course/findUserJoined?uid="+user.getUid(), HttpMethod.GET, null, new ParameterizedTypeReference<List<Course>>(){}).getBody();
+        List<Post> myPosts = restTemplate.exchange("http://"+hostConfig.getIp()+":8080/community/post/findByCreator?uid="+user.getUid(), HttpMethod.GET, null, new ParameterizedTypeReference<List<Post>>(){}).getBody();
+        request.setAttribute("myPosts", myPosts);
         request.setAttribute("createdCourses", createdCourses);
         request.setAttribute("joinedCourses", joinedCourses);
         return "user-center";

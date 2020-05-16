@@ -23,7 +23,7 @@
     <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
-<body th:with="host=${#httpServletRequest.getAttribute('host')}, user=${#httpServletRequest.getAttribute('user')}, createdCourses=${#httpServletRequest.getAttribute('createdCourses')}, joinedCourses=${#httpServletRequest.getAttribute('joinedCourses')}">
+<body th:with="host=${#httpServletRequest.getAttribute('host')}, user=${#httpServletRequest.getAttribute('user')}, createdCourses=${#httpServletRequest.getAttribute('createdCourses')}, joinedCourses=${#httpServletRequest.getAttribute('joinedCourses')}, myPosts=${#httpServletRequest.getAttribute('myPosts')}">
 
 <!--顶部导航栏-->
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
@@ -165,15 +165,10 @@
         </div>
     </div>
     <div id="pane_userCommunity" class="user-center-pane">
-        <p class="titleText">我的社区事务</p>
-        <p class="tinyText" th:if="${joinedCourses==null || joinedCourses.size()<=0}">你尚无社区事务记录</p>
-        <div th:if="${joinedCourses!=null && joinedCourses.size()>0}">
-            <div class="courseItem" th:each="course : ${joinedCourses}">
-                <img class="imgPortrait" th:src="${course.thumbnail}">
-                span class="orderInfoText" th:utext="'<b>名称：</b>'+${course.title}+'<br><b>所有者：</b>'+${user.username}+'<br><b>状态：</b>'+${course.status}"></span>
-                <span class="orderStatus">课程状态：<span class="statusValue" th:text="${course.status}"></span></span>
-                <span class="totalInfo">分类标签：<span class="totalAmount" th:text="'￥'+${course.type}"></span></span>
-            </div>
+        <p class="titleText">我的帖子</p>
+        <p class="tinyText" th:if="${myPosts==null || myPosts.size()<=0}">暂无记录</p>
+        <div th:if="${myPosts!=null && myPosts.size()>0}">
+            <a th:href="'/Post?pid='+${post.pid}" th:each="post : ${myPosts}">  [[${post.title}]]<br></a>
         </div>
     </div>
 </div>

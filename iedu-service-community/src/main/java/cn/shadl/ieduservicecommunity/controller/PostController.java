@@ -82,4 +82,25 @@ public class PostController {
         return postService.saveNewThemePost(post);
     }
 
+    @PostMapping("reply")
+    public Post replyExistedPost(String content, Integer creator, Integer parent) {
+        Date now = new Date(System.currentTimeMillis());
+        Post post = new Post();
+        post.setTitle(null);
+        post.setContent(content);
+        post.setPublishDate(now);
+        post.setLastUpdateDate(now);
+        post.setCreator(creator);
+        post.setType("chat");
+        post.setStatus("normal");
+        post.setParent(parent);
+        post.setFloor(postService.findAmountsOfReplies(parent)+1);
+        return postService.savePost(post);
+    }
+
+    @GetMapping("/findByCreator")
+    public List<Post> findByCreator(Integer uid) {
+        return postService.findByCreator(uid);
+    }
+
 }

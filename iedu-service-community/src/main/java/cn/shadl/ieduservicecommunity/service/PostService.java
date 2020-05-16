@@ -43,4 +43,12 @@ public class PostService {
         returnPost.setParent(returnPost.getPid());
         return postRepository.save(returnPost);
     }
+
+    public List<Post> findByCreator(Integer uid) {
+        return postRepository.findByCreator(uid);
+    }
+
+    public Integer findAmountsOfReplies(Integer pid) {
+        return postRepository.findAmountsOfReplies(pid);
+    }
 }
