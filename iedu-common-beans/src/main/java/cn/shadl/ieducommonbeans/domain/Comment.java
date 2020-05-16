@@ -1,25 +1,27 @@
 package cn.shadl.ieducommonbeans.domain;
 
 import lombok.Data;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.sql.Date;
 
 @Data
 @Entity
 @Table(name="comment")
+@DynamicInsert
+@DynamicUpdate
 public class Comment {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer cmid;//评论id
 
-    @Column(name = "target_type")
+    @Column
     private String targetType;//对象类型（course/lession）
 
-    @Column(name = "target_id")
+    @Column
     private Integer targetId;//对象id
 
     @Column
@@ -28,9 +30,9 @@ public class Comment {
     @Column
     private Integer creator;//发布者
 
-    @Column(name = "reply_to")
+    @Column
     private Integer replyTo;//回复对象（另一评论的id，可为null）
 
-    @Column(name = "create_date")
+    @Column
     private Date createDate;//评论日期
 }

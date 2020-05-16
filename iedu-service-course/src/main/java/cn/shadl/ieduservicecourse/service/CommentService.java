@@ -6,6 +6,7 @@ import cn.shadl.ieduservicecourse.repository.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,5 +48,16 @@ public class CommentService {
             }
         }
         return floors;
+    }
+
+    public Comment save(String targetType, Integer targetId, String content, Integer creator, Integer replyTo, Date createDate) {
+        Comment comment = new Comment();
+        comment.setTargetType(targetType);
+        comment.setTargetId(targetId);
+        comment.setContent(content);
+        comment.setCreator(creator);
+        comment.setReplyTo(replyTo);
+        comment.setCreateDate(createDate);
+        return commentRepository.save(comment);
     }
 }

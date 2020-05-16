@@ -378,6 +378,33 @@ public class WebController {
         return "user-center";
     }
 
+    @RequestMapping("/addCommentToLession")
+    public void addComment(HttpServletRequest request, HttpServletResponse response, Integer lid, String content) {
+        Map<String, Object> info = initRequest(request);
+        User user = (User) info.get("user");
+        if(user==null) {
+            try {
+                response.sendRedirect("/Login");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        String url = "http://"+hostConfig.getIp()+":8080/course/addComment";
+        MultiValueMap<String, Object> params = new LinkedMultiValueMap<String, Object>();
+        params.add("targetType","lession");
+        params.add("targetId",lid);
+        params.add("content",content);
+        params.add("creator",user.getUid());
+        params.add("replyTo",null);
+        params.add("createDate",System.currentTimeMillis());
+        Comment comment = restTemplate.postForObject(url, params, Comment.class);
+        try {
+            response.sendRedirect("/Lession?lid="+lid);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @RequestMapping("/test")
     @ResponseBody
     public Object test(HttpServletRequest request) {

@@ -171,8 +171,9 @@
 <!--评论区-->
 <div class="comment-area">
     <h4 class="comment-area-title">最新评论</h4>
-    <form>
-        <textarea class="comment-text-area" placeholder="请输入你的评论"></textarea>
+    <form action="/addCommentToLession">
+        <textarea name="content" class="comment-text-area" placeholder="请输入你的评论"></textarea>
+        <input type="hidden" name="lid" th:value="${currentLession.lid}">
         <button class="comment-send-button">发表</button>
     </form>
     <!--用户评论-->

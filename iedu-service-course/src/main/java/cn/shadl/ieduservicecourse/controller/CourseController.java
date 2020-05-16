@@ -219,6 +219,11 @@ public class CourseController {
         return courseService.findByNameLike("%" + keyword + "%");
     }
 
+    @PostMapping("/addComment")
+    public Comment addComment(String targetType, Integer targetId, String content, Integer creator, Integer replyTo, Long createDate) {
+        return commentService.save(targetType, targetId, content, creator, replyTo, new Date(createDate));
+    }
+
     @RequestMapping("/test")
     public void test() {
 
